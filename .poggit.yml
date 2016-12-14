@@ -1,0 +1,7 @@
+---
+branches: master
+projects:
+  FactionsPro:
+    path: ""
+    model: default
+...
