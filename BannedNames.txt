@@ -1,1 +1,1 @@
-admin, staff, owner, builder, op, coowner, president, console, spide, spidy, spid3r, whor, wh0r, fuck, bitch, prost
+admin, staff, owner, builder, op, coowner, president, console
