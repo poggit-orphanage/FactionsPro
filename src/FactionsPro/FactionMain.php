@@ -39,7 +39,7 @@ class FactionMain extends PluginBase implements Listener {
     public $war_req = [];
     public $wars = [];
     public $war_players = [];
-    public $chatcensor;
+    public $antispam;
 
     public function onEnable() {
 
@@ -54,8 +54,8 @@ class FactionMain extends PluginBase implements Listener {
 
         $this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
 
-        $this->chatcensor = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
-        if (!$this->chatcensor) {
+        $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
+        if (!$this->antispam) {
             $this->getLogger()->info("Unable to find AntiSpamPro");
         }
 
@@ -316,11 +316,10 @@ class FactionMain extends PluginBase implements Listener {
 
     public function isNameBanned($name) {
         $bannedNames = file_get_contents($this->getDataFolder() . "BannedNames.txt");
-        $chatcensorbanned = false;
-        if ($this->chatcensor && $this->chatcensor->getProfanityFilter()->hasProfanity($name))
-            $chatcensorbanned = true;
+        $isbanned = false;
+        if (isset($name) && $this->antispam && $this->antispam->getProfanityFilter()->hasProfanity($name)) $isbanned = true;
         
-        return (strpos(strtolower($bannedNames), strtolower($name)) > 0 || $chatcensorbanned);
+        return (strpos(strtolower($bannedNames), strtolower($name)) > 0 || $isbanned);
     }
 
     public function newPlot($faction, $x1, $z1, $x2, $z2) {
