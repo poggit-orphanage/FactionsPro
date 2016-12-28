@@ -1,3 +1,3 @@
 # FactionsPro
 
-Description goes here
+by Tethered, modified by Awzaw
