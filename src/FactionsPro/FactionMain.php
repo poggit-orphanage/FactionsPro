@@ -319,7 +319,7 @@ class FactionMain extends PluginBase implements Listener {
         $bannedNames = file_get_contents($this->getDataFolder() . "BannedNames.txt");
         $isbanned = false;
         if (isset($name) && $this->antispam && $this->antispam->getProfanityFilter()->hasProfanity($name)) $isbanned = true;
-        
+
         return (strpos(strtolower($bannedNames), strtolower($name)) > 0 || $isbanned);
     }
 
