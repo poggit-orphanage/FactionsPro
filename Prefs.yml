@@ -14,6 +14,5 @@ TheDefaultPowerEveryFactionStartsWith: 0
 EnableOverClaim: true
 AllyLimitPerFaction: 5
 ClaimWorlds: []
-AllowChat: false
+AllowChat: true
 ...
-
