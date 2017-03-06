@@ -1,9 +1,9 @@
 name: FactionsPro
-author: Tethered_ & Awzaw
+author: Tethered_
 description: A Plugin For Easily Managing Factions
-version: 1.3.7.AWZ
+version: 1.3.7
 main: FactionsPro\FactionMain
-api: [2.0.0, 3.0.0-ALPHA1]
+api: [2.0.0, 3.0.0-ALPHA1, 3.0.0-ALPHA2, 3.0.0-ALPHA3, 3.0.0-ALPHA4]
 commands:
   f:
     description: use /f help for all parameters

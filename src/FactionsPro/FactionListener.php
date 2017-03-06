@@ -30,8 +30,7 @@ class FactionListener implements Listener {
 		
 		$player = $PCE->getPlayer()->getName();
 		//MOTD Check
-		//TODO Use arrays instead of database for faster chatting?
-		
+
 		if($this->plugin->motdWaiting($player)) {
 			if(time() - $this->plugin->getMOTDTime($player) > 30) {
 				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("Timed out. Please use /f desc again."));
@@ -51,7 +50,6 @@ class FactionListener implements Listener {
 			if($this->plugin->factionChatActive[$player]){
 				$msg = $PCE->getMessage();
 				$faction = $this->plugin->getPlayerFaction($player);
-				$db = $this->plugin->db->query("SELECT * FROM master WHERE faction='$faction'");
 				foreach($this->plugin->getServer()->getOnlinePlayers() as $fP){
 					if($this->plugin->getPlayerFaction($fP->getName()) == $faction){
 						if($this->plugin->getServer()->getPlayer($fP->getName())){
@@ -66,7 +64,6 @@ class FactionListener implements Listener {
 			if($this->plugin->allyChatActive[$player]){
 				$msg = $PCE->getMessage();
 				$faction = $this->plugin->getPlayerFaction($player);
-				$db = $this->plugin->db->query("SELECT * FROM master WHERE faction='$faction'");
 				foreach($this->plugin->getServer()->getOnlinePlayers() as $fP){
 					if($this->plugin->areAllies($this->plugin->getPlayerFaction($fP->getName()), $faction)){
 						if($this->plugin->getServer()->getPlayer($fP->getName())){

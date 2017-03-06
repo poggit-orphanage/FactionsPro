@@ -1139,9 +1139,11 @@ class FactionCommands {
                     }
                     ////////////////////////////// CHAT ////////////////////////////////
                     if (strtolower($args[0]) == "chat" or strtolower($args[0]) == "c") {
-                        
-                        $sender->sendMessage($this->plugin->formatMessage("Faction chat disabled", false));
-                        return true;
+
+                        if (!$this->plugin->prefs->get("AllowChat")){
+                            $sender->sendMessage($this->plugin->formatMessage("All Faction chat is disabled", false));
+                            return true;
+                        }
                         
                         if ($this->plugin->isInFaction($player)) {
                             if (isset($this->plugin->factionChatActive[$player])) {
@@ -1159,9 +1161,11 @@ class FactionCommands {
                         }
                     }
                     if (strtolower($args[0]) == "allychat" or strtolower($args[0]) == "ac") {
-                        
-                        $sender->sendMessage($this->plugin->formatMessage("Faction chat disabled", false));
-                        return true;
+
+                        if (!$this->plugin->prefs->get("AllowChat")){
+                            $sender->sendMessage($this->plugin->formatMessage("All Faction chat is disabled", false));
+                            return true;
+                        }
                         
                         if ($this->plugin->isInFaction($player)) {
                             if (isset($this->plugin->allyChatActive[$player])) {

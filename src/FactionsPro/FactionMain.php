@@ -76,7 +76,8 @@ class FactionMain extends PluginBase implements Listener {
             "AllyLimitPerFaction" => 5,
             "TheDefaultPowerEveryFactionStartsWith" => 0,
             "EnableOverClaim" => true,
-            "ClaimWorlds" => []
+            "ClaimWorlds" => [],
+            "AllowChat" => true
         ));
         $this->db = new \SQLite3($this->getDataFolder() . "FactionsPro.db");
         $this->db->exec("CREATE TABLE IF NOT EXISTS master (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, rank TEXT);");
@@ -100,7 +101,7 @@ class FactionMain extends PluginBase implements Listener {
         $stmt = $this->db->prepare("INSERT INTO enemies (faction1, faction2) VALUES (:faction1, :faction2);");
         $stmt->bindValue(":faction1", $faction1);
         $stmt->bindValue(":faction2", $faction2);
-        $result = $stmt->execute();
+        $stmt->execute();
     }
 
     public function areEnemies($faction1, $faction2) {
@@ -130,14 +131,14 @@ class FactionMain extends PluginBase implements Listener {
         $stmt = $this->db->prepare("INSERT OR REPLACE INTO strength (faction, power) VALUES (:faction, :power);");
         $stmt->bindValue(":faction", $faction);
         $stmt->bindValue(":power", $power);
-        $result = $stmt->execute();
+        $stmt->execute();
     }
 
     public function setAllies($faction1, $faction2) {
         $stmt = $this->db->prepare("INSERT INTO allies (faction1, faction2) VALUES (:faction1, :faction2);");
         $stmt->bindValue(":faction1", $faction1);
         $stmt->bindValue(":faction2", $faction2);
-        $result = $stmt->execute();
+        $stmt->execute();
     }
 
     public function areAllies($faction1, $faction2) {
@@ -157,7 +158,7 @@ class FactionMain extends PluginBase implements Listener {
             $i = $i + 1;
         }
         $stmt->bindValue(":count", (int) $i);
-        $result = $stmt->execute();
+        $stmt->execute();
     }
 
     public function getAlliesCount($faction) {
@@ -173,7 +174,7 @@ class FactionMain extends PluginBase implements Listener {
 
     public function deleteAllies($faction1, $faction2) {
         $stmt = $this->db->prepare("DELETE FROM allies WHERE faction1 = '$faction1' AND faction2 = '$faction2';");
-        $result = $stmt->execute();
+        $stmt->execute();
     }
 
     public function getFactionPower($faction) {
@@ -189,7 +190,7 @@ class FactionMain extends PluginBase implements Listener {
         $stmt = $this->db->prepare("INSERT OR REPLACE INTO strength (faction, power) VALUES (:faction, :power);");
         $stmt->bindValue(":faction", $faction);
         $stmt->bindValue(":power", $this->getFactionPower($faction) + $power);
-        $result = $stmt->execute();
+        $stmt->execute();
     }
 
     public function subtractFactionPower($faction, $power) {
@@ -199,7 +200,7 @@ class FactionMain extends PluginBase implements Listener {
         $stmt = $this->db->prepare("INSERT OR REPLACE INTO strength (faction, power) VALUES (:faction, :power);");
         $stmt->bindValue(":faction", $faction);
         $stmt->bindValue(":power", $this->getFactionPower($faction) - $power);
-        $result = $stmt->execute();
+        $stmt->execute();
     }
 
     public function isLeader($player) {
