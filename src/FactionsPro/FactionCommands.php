@@ -63,7 +63,7 @@ class FactionCommands {
                             $sender->sendMessage("You must be in a war to do that");
                             return true;
                         }
-                        if (!(ctype_alnum($args[1]))) {
+                        if (!($this->alphanum($args[1]))) {
                             $sender->sendMessage($this->plugin->formatMessage("You may only use letters and numbers"));
                             return true;
                         }
@@ -126,7 +126,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("Usage: /f create <faction name>"));
                             return true;
                         }
-                        if (!(ctype_alnum($args[1]))) {
+                        if (!($this->alphanum($args[1]))) {
                             $sender->sendMessage($this->plugin->formatMessage("You may only use letters and numbers"));
                             return true;
                         }
@@ -383,7 +383,7 @@ class FactionCommands {
 
                     if (strtolower($args[0]) == 'info') {
                         if (isset($args[1])) {
-                            if (!(ctype_alnum($args[1])) | !($this->plugin->factionExists($args[1]))) {
+                            if (!($this->alphanum($args[1])) | !($this->plugin->factionExists($args[1]))) {
                                 $sender->sendMessage($this->plugin->formatMessage("Faction does not exist"));
                                 $sender->sendMessage($this->plugin->formatMessage("Make sure the name of the selected faction is ABSOLUTELY EXACT."));
                                 return true;
@@ -1187,6 +1187,15 @@ class FactionCommands {
         } else {
             $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("Please run command in game"));
         }
+    }
+
+    public function alphanum($string){
+        if(function_exists('ctype_alnum')){
+            $return = ctype_alnum($string);
+        }else{
+            $return = preg_match('/^[a-z0-9]+$/i', $string) > 0;
+        }
+        return $return;
     }
 
 }
