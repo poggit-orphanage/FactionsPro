@@ -88,8 +88,8 @@ class FactionListener implements Listener {
 			if(($factionDamage->getEntity() instanceof Player) and ($factionDamage->getDamager() instanceof Player)) {
 				$player1 = $factionDamage->getEntity()->getPlayer()->getName();
 				$player2 = $factionDamage->getDamager()->getPlayer()->getName();
-                $f1 = $this->plugin->getPlayerFaction($player1);
-                $f2 = $this->plugin->getPlayerFaction($player2);
+                		$f1 = $this->plugin->getPlayerFaction($player1);
+				$f2 = $this->plugin->getPlayerFaction($player2);
 				if($this->plugin->sameFaction($player1, $player2) == true or $this->plugin->areAllies($f1,$f2)) {
 					$factionDamage->setCancelled(true);
 				}
@@ -97,29 +97,29 @@ class FactionListener implements Listener {
 		}
 	}
 	public function factionBlockBreakProtect(BlockBreakEvent $event) {
-       $x = $event->getBlock()->getX();
-       $z = $event->getBlock()->getZ();
+       		$x = $event->getBlock()->getX();
+      		$z = $event->getBlock()->getZ();
 		if($this->plugin->pointIsInPlot($x, $z)) {
-			if($this->plugin->factionFromPoint($x, $z) == $this->plugin->getFaction($event->getPlayer()) {
-				return true;
+			if($this->plugin->factionFromPoint($x, $z) === $this->plugin->getFaction($event->getPlayer()->getName())) {
+				return;
 			} else {
 				$event->setCancelled(true);
 				$event->getPlayer()->sendMessage($this->plugin->formatMessage("You cannot break blocks here. This is already a property of a faction. Type /f plotinfo for details."));
-				return true;
+				return;
 			}
 		}
 	}
 	
 	public function factionBlockPlaceProtect(BlockPlaceEvent $event) {
-      $x = $event->getBlock()->getX();
-      $z = $event->getBlock()->getZ();
+      		$x = $event->getBlock()->getX();
+     		$z = $event->getBlock()->getZ();
 		if($this->plugin->pointIsInPlot($x, $z)) {
-			if($this->plugin->factionFromPoint($x, $z) == $this->plugin->getFaction($event->getPlayer()) {
-				return true;
+			if($this->plugin->factionFromPoint($x, $z) == $this->plugin->getFaction($event->getPlayer()->getName())) {
+				return;
 			} else {
 				$event->setCancelled(true);
 				$event->getPlayer()->sendMessage($this->plugin->formatMessage("You cannot place blocks here. This is already a property of a faction. Type /f plotinfo for details."));
-				return true;
+				return;
 			}
 		}
 	}
