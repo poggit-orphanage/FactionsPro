@@ -15,4 +15,6 @@ EnableOverClaim: true
 AllyLimitPerFaction: 5
 ClaimWorlds: []
 AllowChat: true
+AllowFactionPvp: false
+AllowAlliedPvp: false
 ...

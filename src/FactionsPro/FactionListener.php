@@ -90,7 +90,7 @@ class FactionListener implements Listener {
 				$player2 = $factionDamage->getDamager()->getPlayer()->getName();
                 		$f1 = $this->plugin->getPlayerFaction($player1);
 				$f2 = $this->plugin->getPlayerFaction($player2);
-				if($this->plugin->sameFaction($player1, $player2) == true or $this->plugin->areAllies($f1,$f2)) {
+				if((!$this->plugin->prefs->get("AllowFactionPvp") && $this->plugin->sameFaction($player1, $player2) == true) or (!$this->plugin->prefs->get("AllowAlliedPvp") && $this->plugin->areAllies($f1,$f2))) {
 					$factionDamage->setCancelled(true);
 				}
 			}
