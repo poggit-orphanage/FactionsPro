@@ -1,0 +1,61 @@
+#################################
+# Config file for FactionsPro;
+# by Kevin Andrews
+#################################
+
+# true / false
+# integrer
+
+# Max faction name length
+MaxFactionNameLength: 15
+
+# Max players per faction
+MaxPlayersPerFaction: 30
+
+# Only leaders and officers can invite?
+OnlyLeadersAndOfficersCanInvite: true
+
+# Officers can claim?
+OfficersCanClaim: false
+
+# Plot size
+PlotSize: 25
+
+# Players needed in a faction before claiming a plot
+PlayersNeededInFactionToClaimAPlot: 5
+
+# Power needed before claiming a plot
+PowerNeededToClaimAPlot: 1000
+
+# Power needed before setting home or updating it
+PowerNeededToSetOrUpdateAHome: 250
+
+# Power gained per player in a faction
+PowerGainedPerPlayerInFaction: 50
+
+# Power gained per killing an enemy
+PowerGainedPerKillingAnEnemy: 10
+
+# Power gained per ally with other factions
+PowerGainedPerAlly: 100
+
+# Power every faction starts with
+TheDefaultPowerEveryFactionStartsWith: 0
+
+# Enable overclaiming plots
+EnableOverClaim: true
+
+# Ally limit per faction
+AllyLimitPerFaction: 5
+
+# Claiming allowed worlds
+ClaimWorlds: []
+
+# Allow faction chat
+AllowChat: true
+
+# Allow faction players PvP
+AllowFactionPvp: false
+
+# Allow allies PvP
+AllowAlliedPvp: false
