@@ -35,7 +35,7 @@ class FactionCommands {
                     $sender->sendMessage($this->plugin->formatMessage("Please use /f help for a list of commands"));
                     return true;
                 }
-                if (count($args == 2)) {
+                if (count($args) == 2) {
 
                     ///////////////////////////////// WAR /////////////////////////////////
 
@@ -177,7 +177,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("Player not online"));
                             return true;
                         }
-                        if ($this->plugin->isInFaction($invited) == true) {
+                        if ($this->plugin->isInFaction($invited->getName()) == true) {
                             $sender->sendMessage($this->plugin->formatMessage("Player is currently in a faction"));
                             return true;
                         }
