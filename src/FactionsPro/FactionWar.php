@@ -15,7 +15,7 @@ class FactionWar extends PluginTask {
 		$this->requester = $requester;
     }
 	
-	public function onRun($currentTick) {
+	public function onRun(int $currentTick) {
 		unset($this->plugin->wars[$this->requester]);
 		$this->plugin->getServer()->getScheduler()->cancelTask($this->getTaskId());
 	}

@@ -95,7 +95,7 @@ class FactionMain extends PluginBase implements Listener {
         $this->db->exec("CREATE TABLE IF NOT EXISTS alliescountlimit(faction TEXT PRIMARY KEY, count INT);");
     }
 
-    public function onCommand(CommandSender $sender, Command $command, $label, array $args) {
+    public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
         $this->fCommand->onCommand($sender, $command, $label, $args);
     }
 
