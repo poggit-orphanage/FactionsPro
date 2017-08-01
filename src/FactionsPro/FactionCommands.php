@@ -1187,6 +1187,7 @@ class FactionCommands {
         } else {
             $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("Please run command in game"));
         }
+        return true;
     }
 
     public function alphanum($string){
