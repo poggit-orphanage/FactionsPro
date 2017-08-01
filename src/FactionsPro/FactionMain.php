@@ -96,7 +96,7 @@ class FactionMain extends PluginBase implements Listener {
     }
 
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
-        $this->fCommand->onCommand($sender, $command, $label, $args);
+        return $this->fCommand->onCommand($sender, $command, $label, $args);
     }
 
     public function setEnemies($faction1, $faction2) {
