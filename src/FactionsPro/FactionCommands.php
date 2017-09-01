@@ -51,13 +51,13 @@ class FactionCommands {
                                     $x = mt_rand(0, $this->plugin->getNumberOfPlayers($fac) - 1);
                                     $tper = $this->plugin->war_players[$f][$x];
                                     $sender->teleport($this->plugin->getServer()->getPlayerByName($tper));
-                                    return;
+                                    return true;
                                 }
                                 if ($f == $fac) {
                                     $x = mt_rand(0, $this->plugin->getNumberOfPlayers($fac) - 1);
                                     $tper = $this->plugin->war_players[$r][$x];
                                     $sender->teleport($this->plugin->getServer()->getPlayer($tper));
-                                    return;
+                                    return true;
                                 }
                             }
                             $sender->sendMessage("You must be in a war to do that");
@@ -449,7 +449,7 @@ class FactionCommands {
                         }
                     }
                 }
-                if (count($args == 1)) {
+                if (count($args) == 1) {
 
                     /////////////////////////////// CLAIM ///////////////////////////////
 
