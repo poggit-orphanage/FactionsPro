@@ -30,12 +30,11 @@ class FactionCommands {
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
         if ($sender instanceof Player) {
             $player = $sender->getPlayer()->getName();
-            if (strtolower($command->getName('f'))) {
+            if (strtolower($command->getName()) === "f") {
                 if (empty($args)) {
                     $sender->sendMessage($this->plugin->formatMessage("Please use /f help for a list of commands"));
                     return true;
                 }
-                if (count($args) == 2) {
 
                     ///////////////////////////////// WAR /////////////////////////////////
 
@@ -177,7 +176,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("Player not online"));
                             return true;
                         }
-                        if ($this->plugin->isInFaction($invited->getName()) == true) {
+                        if ($this->plugin->isInFaction($invited) == true) {
                             $sender->sendMessage($this->plugin->formatMessage("Player is currently in a faction"));
                             return true;
                         }
@@ -379,77 +378,7 @@ class FactionCommands {
                         }
                     }
 
-                    /////////////////////////////// INFO ///////////////////////////////
 
-                    if (strtolower($args[0]) == 'info') {
-                        if (isset($args[1])) {
-                            if (!($this->alphanum($args[1])) | !($this->plugin->factionExists($args[1]))) {
-                                $sender->sendMessage($this->plugin->formatMessage("Faction does not exist"));
-                                $sender->sendMessage($this->plugin->formatMessage("Make sure the name of the selected faction is ABSOLUTELY EXACT."));
-                                return true;
-                            }
-                            $faction = $args[1];
-                            $result = $this->plugin->db->query("SELECT * FROM motd WHERE faction='$faction';");
-                            $array = $result->fetchArray(SQLITE3_ASSOC);
-                            $power = $this->plugin->getFactionPower($faction);
-                            $message = $array["message"];
-                            $leader = $this->plugin->getLeader($faction);
-                            $numPlayers = $this->plugin->getNumberOfPlayers($faction);
-                            $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "-------INFORMATION-------" . TextFormat::RESET);
-                            $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "|[Faction]| : " . TextFormat::GREEN . "$faction" . TextFormat::RESET);
-                            $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "|(Leader)| : " . TextFormat::YELLOW . "$leader" . TextFormat::RESET);
-                            $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "|^Players^| : " . TextFormat::LIGHT_PURPLE . "$numPlayers" . TextFormat::RESET);
-                            $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "|&Strength&| : " . TextFormat::RED . "$power" . " STR" . TextFormat::RESET);
-                            $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "|*Description*| : " . TextFormat::AQUA . TextFormat::UNDERLINE . "$message" . TextFormat::RESET);
-                            $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "-------INFORMATION-------" . TextFormat::RESET);
-                        } else {
-                            if (!$this->plugin->isInFaction($player)) {
-                                $sender->sendMessage($this->plugin->formatMessage("You must be in a faction to use this!"));
-                                return true;
-                            }
-                            $faction = $this->plugin->getPlayerFaction(($sender->getName()));
-                            $result = $this->plugin->db->query("SELECT * FROM motd WHERE faction='$faction';");
-                            $array = $result->fetchArray(SQLITE3_ASSOC);
-                            $power = $this->plugin->getFactionPower($faction);
-                            $message = $array["message"];
-                            $leader = $this->plugin->getLeader($faction);
-                            $numPlayers = $this->plugin->getNumberOfPlayers($faction);
-                            $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "-------INFORMATION-------" . TextFormat::RESET);
-                            $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "|[Faction]| : " . TextFormat::GREEN . "$faction" . TextFormat::RESET);
-                            $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "|(Leader)| : " . TextFormat::YELLOW . "$leader" . TextFormat::RESET);
-                            $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "|^Players^| : " . TextFormat::LIGHT_PURPLE . "$numPlayers" . TextFormat::RESET);
-                            $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "|&Strength&| : " . TextFormat::RED . "$power" . " STR" . TextFormat::RESET);
-                            $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "|*Description*| : " . TextFormat::AQUA . TextFormat::UNDERLINE . "$message" . TextFormat::RESET);
-                            $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "-------INFORMATION-------" . TextFormat::RESET);
-                        }
-                    }
-                    if (strtolower($args[0]) == "help") {
-                        if (!isset($args[1]) || $args[1] == 1) {
-                            $sender->sendMessage(TextFormat::GOLD . "FactionsPro Help Page 1 of 6" . TextFormat::RED . "\n/f about\n/f accept\n/f overclaim [Takeover the plot of the requested faction]\n/f claim\n/f create <name>\n/f del\n/f demote <player>\n/f deny");
-                            return true;
-                        }
-                        if ($args[1] == 2) {
-                            $sender->sendMessage(TextFormat::GOLD . "FactionsPro Help Page 2 of 6" . TextFormat::RED . "\n/f home\n/f help <page>\n/f info\n/f info <faction>\n/f invite <player>\n/f kick <player>\n/f leader <player>\n/f leave");
-                            return true;
-                        }
-                        if ($args[1] == 3) {
-                            $sender->sendMessage(TextFormat::GOLD . "FactionsPro Help Page 3 of 6" . TextFormat::RED . "\n/f sethome\n/f unclaim\n/f unsethome\n/f ourmembers - {Members + Statuses}\n/f ourofficers - {Officers + Statuses}\n/f ourleader - {Leader + Status}\n/f allies - {The allies of your faction");
-                            return true;
-                        }
-                        if ($args[1] == 4) {
-                            $sender->sendMessage(TextFormat::GOLD . "FactionsPro Help Page 4 of 6" . TextFormat::RED . "\n/f desc\n/f promote <player>\n/f allywith <faction>\n/f breakalliancewith <faction>\n\n/f allyok [Accept a request for alliance]\n/f allyno [Deny a request for alliance]\n/f allies <faction> - {The allies of your chosen faction}");
-                            return true;
-                        }
-                        if ($args[1] == 5) {
-                            $sender->sendMessage(TextFormat::GOLD . "FactionsPro Help Page 5 of 6" . TextFormat::RED . "\n/f membersof <faction>\n/f officersof <faction>\n/f leaderof <faction>\n/f say <send message to everyone in your faction>\n/f pf <player>\n/f topfactions");
-                            return true;
-                        } else {
-                            $sender->sendMessage(TextFormat::GOLD . "FactionsPro Help Page 6 of 6" . TextFormat::RED . "\n/f forceunclaim <faction> [Unclaim a faction plot by force - OP]\n\n/f forcedelete <faction> [Delete a faction by force - OP]\n\n/f addstrto <faction> <STR> [Add positive/negative STR to a faction - OP]");
-                            return true;
-                        }
-                    }
-                }
-                if (count($args) == 1) {
 
                     /////////////////////////////// CLAIM ///////////////////////////////
 
@@ -561,7 +490,7 @@ class FactionCommands {
                         }
                         if (!$this->plugin->isInFaction($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("The selected player is not in a faction or doesn't exist."));
-                            $sender->sendMessage($this->plugin->formatMessage("Make sure the name of the selected player is ABSOLUTELY EXACT."));
+                            $sender->sendMessage($this->plugin->formatMessage("Make sure the name of the selected player is spelled EXACTLY."));
                             return true;
                         }
                         $faction = $this->plugin->getPlayerFaction($args[1]);
@@ -1182,7 +1111,78 @@ class FactionCommands {
                             return true;
                         }
                     }
+
+                /////////////////////////////// INFO ///////////////////////////////
+
+                if (strtolower($args[0]) == 'info') {
+                    if (isset($args[1])) {
+                        if (!(ctype_alnum($args[1])) or !($this->plugin->factionExists($args[1]))) {
+                            $sender->sendMessage($this->plugin->formatMessage("Faction does not exist"));
+                            $sender->sendMessage($this->plugin->formatMessage("Make sure the name of the selected faction is ABSOLUTELY EXACT."));
+                            return true;
+                        }
+                        $faction = $args[1];
+                        $result = $this->plugin->db->query("SELECT * FROM motd WHERE faction='$faction';");
+                        $array = $result->fetchArray(SQLITE3_ASSOC);
+                        $power = $this->plugin->getFactionPower($faction);
+                        $message = $array["message"];
+                        $leader = $this->plugin->getLeader($faction);
+                        $numPlayers = $this->plugin->getNumberOfPlayers($faction);
+                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "-------INFORMATION-------" . TextFormat::RESET);
+                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "|[Faction]| : " . TextFormat::GREEN . "$faction" . TextFormat::RESET);
+                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "|(Leader)| : " . TextFormat::YELLOW . "$leader" . TextFormat::RESET);
+                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "|^Players^| : " . TextFormat::LIGHT_PURPLE . "$numPlayers" . TextFormat::RESET);
+                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "|&Strength&| : " . TextFormat::RED . "$power" . " STR" . TextFormat::RESET);
+                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "|*Description*| : " . TextFormat::AQUA . TextFormat::UNDERLINE . "$message" . TextFormat::RESET);
+                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "-------INFORMATION-------" . TextFormat::RESET);
+                    } else {
+                        if (!$this->plugin->isInFaction($player)) {
+                            $sender->sendMessage($this->plugin->formatMessage("You must be in a faction to use this!"));
+                            return true;
+                        }
+                        $faction = $this->plugin->getPlayerFaction(($sender->getName()));
+                        $result = $this->plugin->db->query("SELECT * FROM motd WHERE faction='$faction';");
+                        $array = $result->fetchArray(SQLITE3_ASSOC);
+                        $power = $this->plugin->getFactionPower($faction);
+                        $message = $array["message"];
+                        $leader = $this->plugin->getLeader($faction);
+                        $numPlayers = $this->plugin->getNumberOfPlayers($faction);
+                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "-------INFORMATION-------" . TextFormat::RESET);
+                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "|[Faction]| : " . TextFormat::GREEN . "$faction" . TextFormat::RESET);
+                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "|(Leader)| : " . TextFormat::YELLOW . "$leader" . TextFormat::RESET);
+                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "|^Players^| : " . TextFormat::LIGHT_PURPLE . "$numPlayers" . TextFormat::RESET);
+                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "|&Strength&| : " . TextFormat::RED . "$power" . " STR" . TextFormat::RESET);
+                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "|*Description*| : " . TextFormat::AQUA . TextFormat::UNDERLINE . "$message" . TextFormat::RESET);
+                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "-------INFORMATION-------" . TextFormat::RESET);
+                    }
+                    return true;
                 }
+                if (strtolower($args[0]) == "help") {
+                    if (!isset($args[1]) || $args[1] == 1) {
+                        $sender->sendMessage(TextFormat::GOLD . "FactionsPro Help Page 1 of 6" . TextFormat::RED . "\n/f about\n/f accept\n/f overclaim [Takeover the plot of the requested faction]\n/f claim\n/f create <name>\n/f del\n/f demote <player>\n/f deny");
+                        return true;
+                    }
+                    if ($args[1] == 2) {
+                        $sender->sendMessage(TextFormat::GOLD . "FactionsPro Help Page 2 of 6" . TextFormat::RED . "\n/f home\n/f help <page>\n/f info\n/f info <faction>\n/f invite <player>\n/f kick <player>\n/f leader <player>\n/f leave");
+                        return true;
+                    }
+                    if ($args[1] == 3) {
+                        $sender->sendMessage(TextFormat::GOLD . "FactionsPro Help Page 3 of 6" . TextFormat::RED . "\n/f sethome\n/f unclaim\n/f unsethome\n/f ourmembers - {Members + Statuses}\n/f ourofficers - {Officers + Statuses}\n/f ourleader - {Leader + Status}\n/f allies - {The allies of your faction");
+                        return true;
+                    }
+                    if ($args[1] == 4) {
+                        $sender->sendMessage(TextFormat::GOLD . "FactionsPro Help Page 4 of 6" . TextFormat::RED . "\n/f desc\n/f promote <player>\n/f allywith <faction>\n/f breakalliancewith <faction>\n\n/f allyok [Accept a request for alliance]\n/f allyno [Deny a request for alliance]\n/f allies <faction> - {The allies of your chosen faction}");
+                        return true;
+                    }
+                    if ($args[1] == 5) {
+                        $sender->sendMessage(TextFormat::GOLD . "FactionsPro Help Page 5 of 6" . TextFormat::RED . "\n/f membersof <faction>\n/f officersof <faction>\n/f leaderof <faction>\n/f say <send message to everyone in your faction>\n/f pf <player>\n/f topfactions");
+                        return true;
+                    } else {
+                        $sender->sendMessage(TextFormat::GOLD . "FactionsPro Help Page 6 of 6" . TextFormat::RED . "\n/f forceunclaim <faction> [Unclaim a faction plot by force - OP]\n\n/f forcedelete <faction> [Delete a faction by force - OP]");
+                        return true;
+                    }
+                }
+                return true;
             }
         } else {
             $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("Please run command in game"));
@@ -1198,5 +1198,4 @@ class FactionCommands {
         }
         return $return;
     }
-
 }
