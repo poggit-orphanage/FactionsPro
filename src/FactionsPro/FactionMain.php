@@ -107,7 +107,7 @@ class FactionMain extends PluginBase implements Listener {
     }
 
     public function areEnemies($faction1, $faction2) {
-        $result = $this->db->query("SELECT * FROM enemies WHERE faction1 = '$faction1' AND faction2 = '$faction2';");
+        $result = $this->db->query("SELECT ID FROM enemies WHERE faction1 = '$faction1' AND faction2 = '$faction2';");
         $resultArr = $result->fetchArray(SQLITE3_ASSOC);
         if (empty($resultArr) == false) {
             return true;
@@ -115,13 +115,13 @@ class FactionMain extends PluginBase implements Listener {
     }
 
     public function isInFaction($player) {
-        $result = $this->db->query("SELECT * FROM master WHERE player='$player';");
+        $result = $this->db->query("SELECT player FROM master WHERE player='$player';");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
 
     public function getFaction($player) {
-        $faction = $this->db->query("SELECT * FROM master WHERE player='$player';");
+        $faction = $this->db->query("SELECT faction FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["faction"];
     }
@@ -144,7 +144,7 @@ class FactionMain extends PluginBase implements Listener {
     }
 
     public function areAllies($faction1, $faction2) {
-        $result = $this->db->query("SELECT * FROM allies WHERE faction1 = '$faction1' AND faction2 = '$faction2';");
+        $result = $this->db->query("SELECT ID FROM allies WHERE faction1 = '$faction1' AND faction2 = '$faction2';");
         $resultArr = $result->fetchArray(SQLITE3_ASSOC);
         if (empty($resultArr) == false) {
             return true;
@@ -154,7 +154,7 @@ class FactionMain extends PluginBase implements Listener {
     public function updateAllies($faction) {
         $stmt = $this->db->prepare("INSERT OR REPLACE INTO alliescountlimit(faction, count) VALUES (:faction, :count);");
         $stmt->bindValue(":faction", $faction);
-        $result = $this->db->query("SELECT * FROM allies WHERE faction1='$faction';");
+        $result = $this->db->query("SELECT ID FROM allies WHERE faction1='$faction';");
         $i = 0;
         while ($resultArr = $result->fetchArray(SQLITE3_ASSOC)) {
             $i = $i + 1;
@@ -165,7 +165,7 @@ class FactionMain extends PluginBase implements Listener {
 
     public function getAlliesCount($faction) {
 
-        $result = $this->db->query("SELECT * FROM alliescountlimit WHERE faction = '$faction';");
+        $result = $this->db->query("SELECT count FROM alliescountlimit WHERE faction = '$faction';");
         $resultArr = $result->fetchArray(SQLITE3_ASSOC);
         return (int) $resultArr["count"];
     }
@@ -180,7 +180,7 @@ class FactionMain extends PluginBase implements Listener {
     }
 
     public function getFactionPower($faction) {
-        $result = $this->db->query("SELECT * FROM strength WHERE faction = '$faction';");
+        $result = $this->db->query("SELECT power FROM strength WHERE faction = '$faction';");
         $resultArr = $result->fetchArray(SQLITE3_ASSOC);
         return (int) $resultArr["power"];
     }
@@ -206,19 +206,19 @@ class FactionMain extends PluginBase implements Listener {
     }
 
     public function isLeader($player) {
-        $faction = $this->db->query("SELECT * FROM master WHERE player='$player';");
+        $faction = $this->db->query("SELECT rank FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["rank"] == "Leader";
     }
 
     public function isOfficer($player) {
-        $faction = $this->db->query("SELECT * FROM master WHERE player='$player';");
+        $faction = $this->db->query("SELECT rank FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["rank"] == "Officer";
     }
 
     public function isMember($player) {
-        $faction = $this->db->query("SELECT * FROM master WHERE player='$player';");
+        $faction = $this->db->query("SELECT rank FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["rank"] == "Member";
     }
@@ -231,7 +231,7 @@ class FactionMain extends PluginBase implements Listener {
             $rankname = $rank;
         }
         $team = "";
-        $result = $this->db->query("SELECT * FROM master WHERE faction='$faction' AND rank='$rank';");
+        $result = $this->db->query("SELECT player FROM master WHERE faction='$faction' AND rank='$rank';");
         $row = array();
         $i = 0;
 
@@ -252,7 +252,7 @@ class FactionMain extends PluginBase implements Listener {
     public function getAllAllies($s, $faction) {
 
         $team = "";
-        $result = $this->db->query("SELECT * FROM allies WHERE faction1='$faction';");
+        $result = $this->db->query("SELECT faction2 FROM allies WHERE faction1='$faction';");
         $row = array();
         $i = 0;
         while ($resultArr = $result->fetchArray(SQLITE3_ASSOC)) {
@@ -282,33 +282,33 @@ class FactionMain extends PluginBase implements Listener {
     }
 
     public function getPlayerFaction($player) {
-        $faction = $this->db->query("SELECT * FROM master WHERE player='$player';");
+        $faction = $this->db->query("SELECT faction FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["faction"];
     }
 
     public function getLeader($faction) {
-        $leader = $this->db->query("SELECT * FROM master WHERE faction='$faction' AND rank='Leader';");
+        $leader = $this->db->query("SELECT player FROM master WHERE faction='$faction' AND rank='Leader';");
         $leaderArray = $leader->fetchArray(SQLITE3_ASSOC);
         return $leaderArray['player'];
     }
 
     public function factionExists($faction) {
-        $result = $this->db->query("SELECT * FROM master WHERE faction='$faction';");
+        $result = $this->db->query("SELECT player FROM master WHERE faction='$faction';");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
 
     public function sameFaction($player1, $player2) {
-        $faction = $this->db->query("SELECT * FROM master WHERE player='$player1';");
+        $faction = $this->db->query("SELECT faction FROM master WHERE player='$player1';");
         $player1Faction = $faction->fetchArray(SQLITE3_ASSOC);
-        $faction = $this->db->query("SELECT * FROM master WHERE player='$player2';");
+        $faction = $this->db->query("SELECT faction FROM master WHERE player='$player2';");
         $player2Faction = $faction->fetchArray(SQLITE3_ASSOC);
         return $player1Faction["faction"] == $player2Faction["faction"];
     }
 
     public function getNumberOfPlayers($faction) {
-        $query = $this->db->query("SELECT COUNT(*) as count FROM master WHERE faction='$faction';");
+        $query = $this->db->query("SELECT COUNT(player) as count FROM master WHERE faction='$faction';");
         $number = $query->fetchArray();
         return $number['count'];
     }
@@ -364,13 +364,13 @@ class FactionMain extends PluginBase implements Listener {
     public function isInPlot($player) {
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
-        $result = $this->db->query("SELECT * FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
+        $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
 
     public function factionFromPoint($x, $z) {
-        $result = $this->db->query("SELECT * FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
+        $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return $array["faction"];
     }
@@ -383,7 +383,7 @@ class FactionMain extends PluginBase implements Listener {
     }
 
     public function pointIsInPlot($x, $z) {
-        $result = $this->db->query("SELECT * FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
+        $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return !empty($array);
     }
@@ -401,13 +401,13 @@ class FactionMain extends PluginBase implements Listener {
     }
 
     public function motdWaiting($player) {
-        $stmt = $this->db->query("SELECT * FROM motdrcv WHERE player='$player';");
+        $stmt = $this->db->query("SELECT player FROM motdrcv WHERE player='$player';");
         $array = $stmt->fetchArray(SQLITE3_ASSOC);
         return !empty($array);
     }
 
     public function getMOTDTime($player) {
-        $stmt = $this->db->query("SELECT * FROM motdrcv WHERE player='$player';");
+        $stmt = $this->db->query("SELECT timestamp FROM motdrcv WHERE player='$player';");
         $array = $stmt->fetchArray(SQLITE3_ASSOC);
         return $array['timestamp'];
     }
