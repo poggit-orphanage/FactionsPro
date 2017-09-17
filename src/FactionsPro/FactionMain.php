@@ -40,6 +40,9 @@ class FactionMain extends PluginBase implements Listener {
     public $wars = [];
     public $war_players = [];
     public $antispam;
+    public $purechat;
+    public $factionChatActive = [];
+    public $allyChatActive = [];
 
     public function onEnable() {
 
@@ -55,8 +58,12 @@ class FactionMain extends PluginBase implements Listener {
         $this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
 
         $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
-        if (!$this->antispam) {
-            $this->getLogger()->info("Unable to find AntiSpamPro");
+        if ($this->antispam) {
+            $this->getLogger()->info("AntiSpamPro Integration Enabled");
+        }
+        $this->purechat = $this->getServer()->getPluginManager()->getPlugin("PureChat");
+        if ($this->purechat) {
+            $this->getLogger()->info("PureChat Integration Enabled");
         }
 
         $this->fCommand = new FactionCommands($this);
@@ -421,15 +428,24 @@ class FactionMain extends PluginBase implements Listener {
         $this->db->query("DELETE FROM motdrcv WHERE player='$player';");
     }
 
-    public function updateTag($player) {
-        $p = $this->getServer()->getPlayer($player);
-        $f = $this->getPlayerFaction($player);
-        $n = $this->getNumberOfPlayers($f);
-        if (!$this->isInFaction($player)) {
-            $p->setNameTag(TextFormat::ITALIC . TextFormat::YELLOW . "<$player>");
+    public function updateTag($playername) {
+        $p = $this->getServer()->getPlayer($playername);
+        $f = $this->getPlayerFaction($playername);
+        if (!$this->isInFaction($playername)) {
+            if(isset($this->purechat)){
+                $levelName = $this->purechat->getConfig()->get("enable-multiworld-chat") ? $p->getLevel()->getName() : null;
+                $nameTag = $this->purechat->getNametag($p, $levelName);
+                $p->setNameTag($nameTag);
+            }else{
+                $p->setNameTag(TextFormat::ITALIC . TextFormat::YELLOW . "<$playername>");
+            }
+        }elseif(isset($this->purechat)) {
+            $levelName = $this->purechat->getConfig()->get("enable-multiworld-chat") ? $p->getLevel()->getName() : null;
+            $nameTag = $this->purechat->getNametag($p, $levelName);
+            $p->setNameTag($nameTag);
         } else {
             $p->setNameTag(TextFormat::ITALIC . TextFormat::GOLD . "<$f> " .
-                    TextFormat::ITALIC . TextFormat::YELLOW . "<$player>");
+                TextFormat::ITALIC . TextFormat::YELLOW . "<$playername>");
         }
     }
 
