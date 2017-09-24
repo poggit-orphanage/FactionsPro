@@ -618,7 +618,7 @@ class FactionCommands {
                             $this->plugin->updateTag($sender->getName());
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("Invite has timed out"));
-                            $this->plugin->db->query("DELETE * FROM confirm WHERE player='$playerName';");
+                            $this->plugin->db->query("DELETE FROM confirm WHERE player='$playerName';");
                         }
                     }
 
@@ -640,7 +640,7 @@ class FactionCommands {
                             $this->plugin->getServer()->getPlayerExact($array["invitedby"])->sendMessage($this->plugin->formatMessage("$playerName declined the invitation"));
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("Invite has timed out"));
-                            $this->plugin->db->query("DELETE * FROM confirm WHERE player='$lowercaseName';");
+                            $this->plugin->db->query("DELETE FROM confirm WHERE player='$lowercaseName';");
                         }
                     }
 
@@ -1024,7 +1024,7 @@ class FactionCommands {
                             $this->plugin->getServer()->getPlayerExact($array["requestedby"])->sendMessage($this->plugin->formatMessage("$playerName from $sender_fac has accepted the alliance!", true));
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("Request has timed out"));
-                            $this->plugin->db->query("DELETE * FROM alliance WHERE player='$lowercaseName';");
+                            $this->plugin->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
                         }
                     }
                     if (strtolower($args[0]) == "allyno") {
@@ -1053,7 +1053,7 @@ class FactionCommands {
                             $this->plugin->getServer()->getPlayerExact($array["requestedby"])->sendMessage($this->plugin->formatMessage("$playerName from $sender_fac has declined the alliance!"));
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("Request has timed out"));
-                            $this->plugin->db->query("DELETE * FROM alliance WHERE player='$lowercaseName';");
+                            $this->plugin->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
                         }
                     }
 
