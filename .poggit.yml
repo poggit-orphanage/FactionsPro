@@ -1,5 +1,5 @@
 ---
-branches: master
+branches: patch-1
 projects:
   FactionsPro:
     path: ""
