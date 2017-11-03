@@ -20,17 +20,12 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
 use pocketmine\event\Listener;
-use pocketmine\event\block\BlockBreakEvent;
-use pocketmine\event\player\PlayerChatEvent;
+use pocketmine\level\Level;
 use pocketmine\Player;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\utils\TextFormat;
-use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\utils\Config;
-use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\block\Snow;
 use pocketmine\math\Vector3;
-use pocketmine\level\Position;
 
 class FactionMain extends PluginBase implements Listener {
 
@@ -58,12 +53,12 @@ class FactionMain extends PluginBase implements Listener {
         $this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
 
         $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
-        if ($this->antispam) {
-            $this->getLogger()->info("AntiSpamPro Integration Enabled");
+        if (!$this->antispam) {
+            $this->getLogger()->info("Add AntiSpamPro to ban rude Faction names");
         }
         $this->purechat = $this->getServer()->getPluginManager()->getPlugin("PureChat");
-        if ($this->purechat) {
-            $this->getLogger()->info("PureChat Integration Enabled");
+        if (!$this->purechat) {
+            $this->getLogger()->info("Add PureChat to display Faction ranks in chat");
         }
 
         $this->fCommand = new FactionCommands($this);
@@ -94,7 +89,7 @@ class FactionMain extends PluginBase implements Listener {
         $this->db->exec("CREATE TABLE IF NOT EXISTS alliance (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, requestedby TEXT, timestamp INT);");
         $this->db->exec("CREATE TABLE IF NOT EXISTS motdrcv (player TEXT PRIMARY KEY, timestamp INT);");
         $this->db->exec("CREATE TABLE IF NOT EXISTS motd (faction TEXT PRIMARY KEY, message TEXT);");
-        $this->db->exec("CREATE TABLE IF NOT EXISTS plots(faction TEXT PRIMARY KEY, x1 INT, z1 INT, x2 INT, z2 INT);");
+        $this->db->exec("CREATE TABLE IF NOT EXISTS plots(faction TEXT PRIMARY KEY, x1 INT, z1 INT, x2 INT, z2 INT, world TEXT);");
         $this->db->exec("CREATE TABLE IF NOT EXISTS home(faction TEXT PRIMARY KEY, x INT, y INT, z INT, world TEXT);");
         $this->db->exec("CREATE TABLE IF NOT EXISTS strength(faction TEXT PRIMARY KEY, power INT);");
         $this->db->exec("CREATE TABLE IF NOT EXISTS allies(ID INT PRIMARY KEY,faction1 TEXT, faction2 TEXT);");
@@ -332,20 +327,21 @@ class FactionMain extends PluginBase implements Listener {
         return (strpos(strtolower($bannedNames), strtolower($name)) > 0 || $isbanned);
     }
 
-    public function newPlot($faction, $x1, $z1, $x2, $z2) {
-        $stmt = $this->db->prepare("INSERT OR REPLACE INTO plots (faction, x1, z1, x2, z2) VALUES (:faction, :x1, :z1, :x2, :z2);");
+    public function newPlot($faction, $x1, $z1, $x2, $z2, string $level) {
+        $stmt = $this->db->prepare("INSERT OR REPLACE INTO plots (faction, x1, z1, x2, z2, world) VALUES (:faction, :x1, :z1, :x2, :z2, :world);");
         $stmt->bindValue(":faction", $faction);
         $stmt->bindValue(":x1", $x1);
         $stmt->bindValue(":z1", $z1);
         $stmt->bindValue(":x2", $x2);
         $stmt->bindValue(":z2", $z2);
-        $result = $stmt->execute();
+        $stmt->bindValue(":world", $level);
+        $stmt->execute();
     }
 
-    public function drawPlot($sender, $faction, $x, $y, $z, $level, $size) {
+    public function drawPlot($sender, $faction, $x, $y, $z, Level $level, $size) {
         $arm = ($size - 1) / 2;
         $block = new Snow();
-        if ($this->cornerIsInPlot($x + $arm, $z + $arm, $x - $arm, $z - $arm)) {
+        if ($this->cornerIsInPlot($x + $arm, $z + $arm, $x - $arm, $z - $arm, $level->getName())) {
             $claimedBy = $this->factionFromPoint($x, $z);
             $power_claimedBy = $this->getFactionPower($claimedBy);
             $power_sender = $this->getFactionPower($faction);
@@ -364,39 +360,41 @@ class FactionMain extends PluginBase implements Listener {
         }
         $level->setBlock(new Vector3($x + $arm, $y, $z + $arm), $block);
         $level->setBlock(new Vector3($x - $arm, $y, $z - $arm), $block);
-        $this->newPlot($faction, $x + $arm, $z + $arm, $x - $arm, $z - $arm);
+        $this->newPlot($faction, $x + $arm, $z + $arm, $x - $arm, $z - $arm, $level->getName());
         return true;
     }
 
-    public function isInPlot($player) {
+    public function isInPlot(Player $player) {
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
-        $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
+        $level = $player->getLevel()->getName();
+        $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2 AND world = $level;");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
 
-    public function factionFromPoint($x, $z) {
-        $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
+    public function factionFromPoint($x, $z, string $level) {
+        $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2 AND world = $level;");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return $array["faction"];
     }
 
-    public function inOwnPlot($player) {
+    public function inOwnPlot(Player $player) {
         $playerName = $player->getName();
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
-        return $this->getPlayerFaction($playerName) == $this->factionFromPoint($x, $z);
+        $level = $player->getLevel()->getName();
+        return $this->getPlayerFaction($playerName) == $this->factionFromPoint($x, $z, $level);
     }
 
-    public function pointIsInPlot($x, $z) {
-        $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
+    public function pointIsInPlot($x, $z, string $level) {
+        $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2 AND world = $level;");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return !empty($array);
     }
 
-    public function cornerIsInPlot($x1, $z1, $x2, $z2) {
-        return($this->pointIsInPlot($x1, $z1) || $this->pointIsInPlot($x1, $z2) || $this->pointIsInPlot($x2, $z1) || $this->pointIsInPlot($x2, $z2));
+    public function cornerIsInPlot($x1, $z1, $x2, $z2, string $level) {
+        return($this->pointIsInPlot($x1, $z1, $level) || $this->pointIsInPlot($x1, $z2, $level) || $this->pointIsInPlot($x2, $z1, $level) || $this->pointIsInPlot($x2, $z2, $level));
     }
 
     public function formatMessage($string, $confirm = false) {
