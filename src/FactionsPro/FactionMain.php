@@ -22,6 +22,7 @@ use pocketmine\command\Command;
 use pocketmine\event\Listener;
 use pocketmine\level\Level;
 use pocketmine\Player;
+use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 use pocketmine\utils\Config;
 use pocketmine\block\Snow;
@@ -95,6 +96,12 @@ class FactionMain extends PluginBase implements Listener {
         $this->db->exec("CREATE TABLE IF NOT EXISTS allies(ID INT PRIMARY KEY,faction1 TEXT, faction2 TEXT);");
         $this->db->exec("CREATE TABLE IF NOT EXISTS enemies(ID INT PRIMARY KEY,faction1 TEXT, faction2 TEXT);");
         $this->db->exec("CREATE TABLE IF NOT EXISTS alliescountlimit(faction TEXT PRIMARY KEY, count INT);");
+
+        try{
+            $this->db->exec("ALTER TABLE plots ADD COLUMN world TEXT default null");
+            Server::getInstance()->getLogger()->info(TextFormat::GREEN . "FactionPro: Added 'world' column to plots");
+        }catch(\ErrorException $ex){
+        }
     }
 
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
@@ -342,7 +349,7 @@ class FactionMain extends PluginBase implements Listener {
         $arm = ($size - 1) / 2;
         $block = new Snow();
         if ($this->cornerIsInPlot($x + $arm, $z + $arm, $x - $arm, $z - $arm, $level->getName())) {
-            $claimedBy = $this->factionFromPoint($x, $z);
+            $claimedBy = $this->factionFromPoint($x, $z, $level->getName());
             $power_claimedBy = $this->getFactionPower($claimedBy);
             $power_sender = $this->getFactionPower($faction);
 
@@ -368,13 +375,13 @@ class FactionMain extends PluginBase implements Listener {
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
         $level = $player->getLevel()->getName();
-        $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2 AND world = $level;");
+        $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2 AND world = '$level';");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
 
     public function factionFromPoint($x, $z, string $level) {
-        $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2 AND world = $level;");
+        $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2 AND world = '$level';");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return $array["faction"];
     }
@@ -388,7 +395,7 @@ class FactionMain extends PluginBase implements Listener {
     }
 
     public function pointIsInPlot($x, $z, string $level) {
-        $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2 AND world = $level;");
+        $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2 AND world = '$level';");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return !empty($array);
     }

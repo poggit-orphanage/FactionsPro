@@ -428,7 +428,7 @@ class FactionCommands {
                             return true;
                         }
 
-                        $fac = $this->plugin->factionFromPoint($x, $z);
+                        $fac = $this->plugin->factionFromPoint($x, $z, $sender->getPlayer()->getLevel()->getName());
                         $power = $this->plugin->getFactionPower($fac);
                         $sender->sendMessage($this->plugin->formatMessage("This plot is claimed by $fac with $power STR"));
                     }
@@ -517,7 +517,7 @@ class FactionCommands {
                         $z = floor($sender->getZ());
                         if ($this->plugin->prefs->get("EnableOverClaim")) {
                             if ($this->plugin->isInPlot($sender)) {
-                                $faction_victim = $this->plugin->factionFromPoint($x, $z);
+                                $faction_victim = $this->plugin->factionFromPoint($x, $z, $sender->getPlayer()->getLevel()->getName());
                                 $faction_victim_power = $this->plugin->getFactionPower($faction_victim);
                                 $faction_ours = $this->plugin->getPlayerFaction($playerName);
                                 $faction_ours_power = $this->plugin->getFactionPower($faction_ours);

@@ -108,7 +108,7 @@ class FactionListener implements Listener {
 	public function factionBlockPlaceProtect(BlockPlaceEvent $event) {
       		$x = $event->getBlock()->getX();
      		$z = $event->getBlock()->getZ();
-		if($this->plugin->pointIsInPlot($x, $z)) {
+		if($this->plugin->pointIsInPlot($x, $z, $event->getBlock()->getLevel()->getName())) {
 			if($this->plugin->factionFromPoint($x, $z) == $this->plugin->getFaction($event->getPlayer()->getName())) {
 				return;
 			} else {
