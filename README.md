@@ -1,7 +1,7 @@
 ### General
 #### FactionsPro
+[![Poggit Release](https://poggit.pmmp.io/shield.approved/FactionsPro)](https://poggit.pmmp.io/p/FactionsPro)
 
-https://poggit.pmmp.io/shield.approved/FactionsPro
 
 A fully featured Factions plugin for PMMP PocketMine-MP
 
