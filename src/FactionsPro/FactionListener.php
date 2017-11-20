@@ -92,12 +92,13 @@ class FactionListener implements Listener {
 		}
 	}
 	public function factionBlockBreakProtect(BlockBreakEvent $event) {
-       		$x = $event->getBlock()->getX();
-      		$z = $event->getBlock()->getZ();
-		if($this->plugin->pointIsInPlot($x, $z)) {
-			if($this->plugin->factionFromPoint($x, $z) === $this->plugin->getFaction($event->getPlayer()->getName())) {
+		$x = $event->getBlock()->getX();
+		$z = $event->getBlock()->getZ();
+		$level = $event->getBlock()->getLevel()->getName();
+		if($this->plugin->pointIsInPlot($x, $z, $level)){
+			if($this->plugin->factionFromPoint($x, $z) === $this->plugin->getFaction($event->getPlayer()->getName())){
 				return;
-			} else {
+			}else{
 				$event->setCancelled(true);
 				$event->getPlayer()->sendMessage($this->plugin->formatMessage("You cannot break blocks here. This is already a property of a faction. Type /f plotinfo for details."));
 				return;
