@@ -794,42 +794,7 @@ class FactionCommands {
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $args[1], "Leader");
                     }
-                    if (strtolower($args[0] == "say")) {
-                        if (true) {
-                            $sender->sendMessage($this->plugin->formatMessage("/f say is disabled"));
-                            return true;
-                        }
-                        if (!($this->plugin->isInFaction($playerName))) {
-
-                            $sender->sendMessage($this->plugin->formatMessage("You must be in a faction to send faction messages"));
-                            return true;
-                        }
-                        $r = count($args);
-                        $row = array();
-                        $rank = "";
-                        $f = $this->plugin->getPlayerFaction($playerName);
-
-                        if ($this->plugin->isOfficer($playerName)) {
-                            $rank = "*";
-                        } else if ($this->plugin->isLeader($playerName)) {
-                            $rank = "**";
-                        }
-                        $message = "-> ";
-                        for ($i = 0; $i < $r - 1; $i = $i + 1) {
-                            $message = $message . $args[$i + 1] . " ";
-                        }
-                        $result = $this->plugin->db->query("SELECT * FROM master WHERE faction='$f';");
-                        for ($i = 0; $resultArr = $result->fetchArray(SQLITE3_ASSOC); $i = $i + 1) {
-                            $row[$i]['player'] = $resultArr['player'];
-                            $p = $this->plugin->getServer()->getPlayerExact($row[$i]['player']);
-                            if ($p instanceof Player) {
-                                $p->sendMessage(TextFormat::ITALIC . TextFormat::RED . "<FM>" . TextFormat::AQUA . " <$rank$f> " . TextFormat::GREEN . "<$playerName> " . ": " . TextFormat::RESET);
-                                $p->sendMessage(TextFormat::ITALIC . TextFormat::DARK_AQUA . $message . TextFormat::RESET);
-                            }
-                        }
-                    }
-
-
+               
                     ////////////////////////////// ALLY SYSTEM ////////////////////////////////
                     if (strtolower($args[0] == "enemywith")) {
                         if (!isset($args[1])) {
@@ -1109,6 +1074,40 @@ class FactionCommands {
                             return true;
                         }
                     }
+		     if (strtolower($args[0] == "say")) {
+			if (!$this->plugin->prefs->get("AllowChat")) {
+			    $sender->sendMessage($this->plugin->formatMessage("/f say is disabled"));
+			    return true;
+			}
+			if (!($this->plugin->isInFaction($playerName))) {
+
+			    $sender->sendMessage($this->plugin->formatMessage("You must be in a faction to send faction messages"));
+			    return true;
+			}
+			$r = count($args);
+			$row = array();
+			$rank = "";
+			$f = $this->plugin->getPlayerFaction($playerName);
+
+			if ($this->plugin->isOfficer($playerName)) {
+			    $rank = "*";
+			} else if ($this->plugin->isLeader($playerName)) {
+			    $rank = "**";
+			}
+			$message = "-> ";
+			for ($i = 0; $i < $r - 1; $i = $i + 1) {
+			    $message = $message . $args[$i + 1] . " ";
+			}
+			$result = $this->plugin->db->query("SELECT * FROM master WHERE faction='$f';");
+			for ($i = 0; $resultArr = $result->fetchArray(SQLITE3_ASSOC); $i = $i + 1) {
+			    $row[$i]['player'] = $resultArr['player'];
+			    $p = $this->plugin->getServer()->getPlayerExact($row[$i]['player']);
+			    if ($p instanceof Player) {
+				$p->sendMessage(TextFormat::ITALIC . TextFormat::RED . "<FM>" . TextFormat::AQUA . " <$rank$f> " . TextFormat::GREEN . "<$playerName> " . ": " . TextFormat::RESET);
+				$p->sendMessage(TextFormat::ITALIC . TextFormat::DARK_AQUA . $message . TextFormat::RESET);
+			    }
+			}
+		    }
 
                 /////////////////////////////// INFO ///////////////////////////////
 
