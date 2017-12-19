@@ -1,5 +1,4 @@
 <?php
-
 namespace FactionsPro;
 
 use pocketmine\event\Listener;
@@ -24,7 +23,6 @@ class FactionListener implements Listener {
 		
 		$player = $PCE->getPlayer()->getName();
 		//MOTD Check
-
 		if($this->plugin->motdWaiting($player)) {
 			if(time() - $this->plugin->getMOTDTime($player) > 30) {
 				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("Timed out. Please use /f desc again."));
@@ -91,12 +89,13 @@ class FactionListener implements Listener {
 		}
 	}
 	public function factionBlockBreakProtect(BlockBreakEvent $event) {
-       		$x = $event->getBlock()->getX();
-      		$z = $event->getBlock()->getZ();
-		if($this->plugin->pointIsInPlot($x, $z)) {
-			if($this->plugin->factionFromPoint($x, $z) === $this->plugin->getFaction($event->getPlayer()->getName())) {
+		$x = $event->getBlock()->getX();
+		$z = $event->getBlock()->getZ();
+		$level = $event->getBlock()->getLevel()->getName();
+		if($this->plugin->pointIsInPlot($x, $z, $level)){
+			if($this->plugin->factionFromPoint($x, $z, $level) === $this->plugin->getFaction($event->getPlayer()->getName())){
 				return;
-			} else {
+			}else{
 				$event->setCancelled(true);
 				$event->getPlayer()->sendMessage($this->plugin->formatMessage("You cannot break blocks here. This is already a property of a faction. Type /f plotinfo for details."));
 				return;
@@ -107,9 +106,9 @@ class FactionListener implements Listener {
 	public function factionBlockPlaceProtect(BlockPlaceEvent $event) {
       		$x = $event->getBlock()->getX();
      		$z = $event->getBlock()->getZ();
-		$level = $event->getBlock()->getLevel()->getName();
- +		if($this->plugin->pointIsInPlot($x, $z, $level)) {
- +			if($this->plugin->factionFromPoint($x, $z, $level) == $this->plugin->getFaction($event->getPlayer()->getName())) {
+     		$level = $event->getBlock()->getLevel()->getName();
+		if($this->plugin->pointIsInPlot($x, $z, $level)) {
+			if($this->plugin->factionFromPoint($x, $z, $level) == $this->plugin->getFaction($event->getPlayer()->getName())) {
 				return;
 			} else {
 				$event->setCancelled(true);
