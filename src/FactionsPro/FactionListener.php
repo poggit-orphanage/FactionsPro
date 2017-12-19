@@ -25,7 +25,7 @@ class FactionListener implements Listener {
 		//MOTD Check
 		if($this->plugin->motdWaiting($player)) {
 			if(time() - $this->plugin->getMOTDTime($player) > 30) {
-				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("Timed out. Please use /f desc again."));
+				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("§cTimed out. §2Please use /f desc again."));
 				$this->plugin->db->query("DELETE FROM motdrcv WHERE player='$player';");
 				$PCE->setCancelled(true);
 				return true;
@@ -34,7 +34,7 @@ class FactionListener implements Listener {
 				$faction = $this->plugin->getPlayerFaction($player);
 				$this->plugin->setMOTD($faction, $player, $motd);
 				$PCE->setCancelled(true);
-				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("Successfully updated the faction description. Type /f info.", true));
+				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("§bSuccessfully updated the faction description. Type /f info.", true));
 			}
 			return true;
 		}
