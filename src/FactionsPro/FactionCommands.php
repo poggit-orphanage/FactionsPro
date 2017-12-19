@@ -2,21 +2,11 @@
 
 namespace FactionsPro;
 
-use pocketmine\plugin\PluginBase;
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
-use pocketmine\event\Listener;
-use pocketmine\event\block\BlockBreakEvent;
-use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\Player;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\Server;
 use pocketmine\utils\TextFormat;
-use pocketmine\scheduler\PluginTask;
-use pocketmine\event\player\PlayerJoinEvent;
-use pocketmine\utils\Config;
-use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\math\Vector3;
-use pocketmine\level\level;
 use pocketmine\level\Position;
 
 class FactionCommands {
@@ -696,11 +686,12 @@ class FactionCommands {
                             return true;
                         }
                         $factionName = $this->plugin->getPlayerFaction($sender->getName());
-                        $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO home (faction, x, y, z) VALUES (:faction, :x, :y, :z);");
+                        $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO home (faction, x, y, z, world) VALUES (:faction, :x, :y, :z, :world);");
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":x", $sender->getX());
                         $stmt->bindValue(":y", $sender->getY());
                         $stmt->bindValue(":z", $sender->getZ());
+                        $stmt->bindValue(":world", $sender->getLevel()->getName());
                         $result = $stmt->execute();
                         $sender->sendMessage($this->plugin->formatMessage("§aHome set succesfully. §bNow, you can use: §3/f home", true));
                     }
@@ -732,7 +723,7 @@ class FactionCommands {
                         $result = $this->plugin->db->query("SELECT * FROM home WHERE faction = '$faction';");
                         $array = $result->fetchArray(SQLITE3_ASSOC);
                         if (!empty($array)) {
-                            $sender->getPlayer()->teleport(new Position($array['x'], $array['y'], $array['z'], $this->plugin->getServer()->getLevelByName("Factions")));
+                            $sender->getPlayer()->teleport(new Position($array['x'], $array['y'], $array['z'], Server::getInstance()->getLevelByName($array['world'])));
                             $sender->sendMessage($this->plugin->formatMessage("§aTeleported to your faction home", true));
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("§cHome is not set"));
