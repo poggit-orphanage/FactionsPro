@@ -382,7 +382,8 @@ class FactionMain extends PluginBase implements Listener {
         $playerName = $player->getName();
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
-        return $this->getPlayerFaction($playerName) == $this->factionFromPoint($x, $z);
+        $level = $player->getLevel()->getName();
+ +      return $this->getPlayerFaction($playerName) == $this->factionFromPoint($x, $z, $level);
     }
 
     public function pointIsInPlot($x, $z, string $level) {
