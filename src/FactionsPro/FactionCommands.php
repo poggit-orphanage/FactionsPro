@@ -161,7 +161,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("Faction is full, please kick players to make room"));
                             return true;
                         }
-                        $invited = $this->plugin->getServer()->getPlayerExact($args[1]);
+                        $invited = $this->plugin->getServer()->getPlayer($args[1]);
                         if (!($invited instanceof Player)) {
                             $sender->sendMessage($this->plugin->formatMessage("Player not online"));
                             return true;
