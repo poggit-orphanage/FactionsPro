@@ -239,13 +239,13 @@ class FactionMain extends PluginBase implements Listener {
         $result = $this->db->query("SELECT faction FROM strength ORDER BY power DESC LIMIT 10;");
         $row = array();
         $i = 0;
-        $s->sendMessage($this->formatMessage("§6Top 10 BEST Factions", true));
+        $s->sendMessage($this->formatMessage("§3_____§2[&5&lTop 10 BEST Factions§r§2]§3_____", true));
         while ($resultArr = $result->fetchArray(SQLITE3_ASSOC)) {
             $j = $i + 1;
             $cf = $resultArr['faction'];
             $pf = $this->getFactionPower($cf);
             $df = $this->getNumberOfPlayers($cf);
-            $s->sendMessage(TextFormat::ITALIC . TextFormat::GOLD . "§b$j -> " . TextFormat::GREEN . "§a$cf" . TextFormat::GOLD . " §bwith " . TextFormat::RED . "§a$pf STR" . TextFormat::GOLD . " §band " . TextFormat::LIGHT_PURPLE . "§a$df PLAYERS" . TextFormat::RESET);
+            $s->sendMessage(TextFormat::ITALIC . TextFormat::GOLD . "§6§l$j -> " . TextFormat::GREEN . "§d$cf" . TextFormat::GOLD . " §b| " . TextFormat::RED . "§e$pf STR" . TextFormat::GOLD . " §b| " . TextFormat::LIGHT_PURPLE . "§a$df/30" . TextFormat::RESET);
             $i = $i + 1;
         }
     }
