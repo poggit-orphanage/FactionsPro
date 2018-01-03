@@ -228,7 +228,7 @@ class FactionMain extends PluginBase implements Listener {
         $i = 0;
         while ($resultArr = $result->fetchArray(SQLITE3_ASSOC)) {
             $row[$i]['faction2'] = $resultArr['faction2'];
-            $team .= TextFormat::ITALIC . TextFormat::RED . §a$row[$i]['faction2'] . TextFormat::RESET . TextFormat::WHITE . "§b|" . TextFormat::RESET;
+            $team .= TextFormat::ITALIC . TextFormat::GREEN . $row[$i]['faction2'] . TextFormat::RESET . TextFormat::WHITE . "§2,§a " . TextFormat::RESET;
             $i = $i + 1;
         }
         $s->sendMessage($this->formatMessage("§3_____§2[§5§lAllies of §d*$faction*§r§2]§3_____", true));
