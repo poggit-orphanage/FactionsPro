@@ -1171,7 +1171,7 @@ class FactionCommands {
                         $sender->sendMessage(TextFormat::GOLD . "§6Void§bFactions§cPE §dHelp Page 6 of 7" . TextFormat::RED . "§1\n/f forceunclaim <faction> [Unclaim a faction plot by force - OP]\n\n/f forcedelete <faction> [Delete a faction by force - OP]");
                         return true;
                     } else {
-                        $sender->sendMessage(TextFormat::GOLD . "§6Void§bFactions§cPE §dHelp page 7 of 7" . TextFormat::RED . "§2\n/f enemy <faction>\n/f info\n/f allychat\n/f chat\n/f map\n/f war <faction>\n/f allies");
+                        $sender->sendMessage(TextFormat::GOLD . "§6Void§bFactions§cPE §dHelp page 7 of 7" . TextFormat::RED . "§2\n/f enemy <faction>\n/f info\n/f allychat\n/f chat\n/f map\n/f war <faction>");
                         return true;
                     }
                 }
