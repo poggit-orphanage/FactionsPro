@@ -239,7 +239,7 @@ class FactionMain extends PluginBase implements Listener {
         $result = $this->db->query("SELECT faction FROM strength ORDER BY power DESC LIMIT 10;");
         $row = array();
         $i = 0;
-        $s->sendMessage($this->formatMessage("§3_____§2[&5&lTop 10 BEST Factions§r§2]§3_____", true));
+        $s->sendMessage($this->formatMessage("§3_____§2[§5§lTop 10 BEST Factions§r§2]§3_____", true));
         while ($resultArr = $result->fetchArray(SQLITE3_ASSOC)) {
             $j = $i + 1;
             $cf = $resultArr['faction'];
