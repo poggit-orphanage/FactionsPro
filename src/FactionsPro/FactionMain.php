@@ -231,7 +231,7 @@ class FactionMain extends PluginBase implements Listener {
             $team .= TextFormat::ITALIC . TextFormat::RED . $row[$i]['faction2'] . TextFormat::RESET . TextFormat::WHITE . "||" . TextFormat::RESET;
             $i = $i + 1;
         }
-        $s->sendMessage($this->formatMessage("§3Allies of *$faction* ~", true));
+        $s->sendMessage($this->formatMessage("§3_____§2[§5§lAllies of §d*$faction*§r§2]§3_____", true));
         $s->sendMessage($team);
     }
     public function sendListOfTop10FactionsTo($s) {
@@ -245,7 +245,7 @@ class FactionMain extends PluginBase implements Listener {
             $cf = $resultArr['faction'];
             $pf = $this->getFactionPower($cf);
             $df = $this->getNumberOfPlayers($cf);
-            $s->sendMessage(TextFormat::ITALIC . TextFormat::GOLD . "§6§l$j -> " . TextFormat::GREEN . "§r§d$cf" . TextFormat::GOLD . " §b| " . TextFormat::RED . "§e$pf STR" . TextFormat::GOLD . " §b| " . TextFormat::LIGHT_PURPLE . "§a$df/30" . TextFormat::RESET);
+            $s->sendMessage(TextFormat::ITALIC . TextFormat::GOLD . "§6§l$j -> " . TextFormat::GREEN . "§r§d$cf" . TextFormat::GOLD . " §b| " . TextFormat::RED . "§e$pf STR" . TextFormat::GOLD . " §b| " . TextFormat::LIGHT_PURPLE . "§a$df/50" . TextFormat::RESET);
             $i = $i + 1;
         }
     }
@@ -304,9 +304,9 @@ class FactionMain extends PluginBase implements Listener {
             $power_sender = $this->getFactionPower($faction);
             if ($this->prefs->get("EnableOverClaim")) {
                 if ($power_sender < $power_claimedBy) {
-                    $sender->sendMessage($this->formatMessage("§dThis area is aleady claimed by §5$claimedBy §dwith §5$power_claimedBy STR. §dYour faction has §5$power_sender power. §dYou don't have enough power to overclaim this plot."));
+                    $sender->sendMessage($this->formatMessage("§dYou don't have enough power to overclaim this plot."));
                 } else {
-                    $sender->sendMessage($this->formatMessage("§aThis area is aleady claimed by §2$claimedBy §awith §2$power_claimedBy STR. §aYour faction has §2$power_sender §apower. §bType /f overclaim to overclaim this plot if you want."));
+                    $sender->sendMessage($this->formatMessage("§aYou have enough STR power to overclaim this plot! §bNow, Type /f overclaim to overclaim this plot if you want."));
                 }
                 return false;
             } else {
