@@ -723,10 +723,19 @@ class FactionCommands {
                         $result = $this->plugin->db->query("SELECT * FROM home WHERE faction = '$faction';");
                         $array = $result->fetchArray(SQLITE3_ASSOC);
                         if (!empty($array)) {
-                            $sender->getPlayer()->teleport(new Position($array['x'], $array['y'], $array['z'], Server::getInstance()->getLevelByName($array['world'])));
-                            $sender->sendMessage($this->plugin->formatMessage("§aTeleported to your faction home", true));
+                        	if ($array['world'] === null || $array['world'] === ""){
+								$sender->sendMessage($this->plugin->formatMessage("Home is missing world name, please delete and make it again"));
+								return true;
+							}
+							if(Server::getInstance()->loadLevel($array['world']) === false){
+								$sender->sendMessage($this->plugin->formatMessage("The world '" . $array['world'] .  "'' could not be found"));
+								return true;
+							}
+							$level = Server::getInstance()->getLevelByName($array['world']);
+                            $sender->getPlayer()->teleport(new Position($array['x'], $array['y'], $array['z'], $level));
+                            $sender->sendMessage($this->plugin->formatMessage("Teleported home", true));
                         } else {
-                            $sender->sendMessage($this->plugin->formatMessage("§cHome is not set"));
+                            $sender->sendMessage($this->plugin->formatMessage("Home is not set"));
                         }
                     }
 
