@@ -733,9 +733,9 @@ class FactionCommands {
 							}
 							$level = Server::getInstance()->getLevelByName($array['world']);
                             $sender->getPlayer()->teleport(new Position($array['x'], $array['y'], $array['z'], $level));
-                            $sender->sendMessage($this->plugin->formatMessage("Teleported home", true));
+                            $sender->sendMessage($this->plugin->formatMessage("§bTeleported to your faction home", true));
                         } else {
-                            $sender->sendMessage($this->plugin->formatMessage("Home is not set"));
+                            $sender->sendMessage($this->plugin->formatMessage("§cHome is currently not set Set it by using /f sethome"));
                         }
                     }
 
@@ -747,9 +747,9 @@ class FactionCommands {
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $this->plugin->getPlayerFaction($playerName), "Member");
                     }
-                    if (strtolower($args[0] == "membersof")) {
+                    if (strtolower($args[0] == "listmembers")) {
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f membersof <faction>"));
+                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f listmembers <faction>"));
                             return true;
                         }
                         if (!$this->plugin->factionExists($args[1])) {
@@ -765,9 +765,9 @@ class FactionCommands {
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $this->plugin->getPlayerFaction($playerName), "Officer");
                     }
-                    if (strtolower($args[0] == "officersof")) {
+                    if (strtolower($args[0] == "listofficers")) {
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f officersof <faction>"));
+                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f listofficers <faction>"));
                             return true;
                         }
                         if (!$this->plugin->factionExists($args[1])) {
@@ -783,9 +783,9 @@ class FactionCommands {
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $this->plugin->getPlayerFaction($playerName), "Leader");
                     }
-                    if (strtolower($args[0] == "leaderof")) {
+                    if (strtolower($args[0] == "listleader")) {
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f leaderof <faction>"));
+                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f listleader <faction>"));
                             return true;
                         }
                         if (!$this->plugin->factionExists($args[1])) {
@@ -1160,7 +1160,7 @@ class FactionCommands {
                         $sender->sendMessage(TextFormat::RED . "\n§b/f home §3- Teleports to your faction home.\n§b/f help §3- Gives Factions help commands.\n§b/f info §3-Shows faction information.\n§b/f info <faction> §3- shows another faction's information.\n§b/f invite <player> §3- Invites a player to your faction.\n§b/f kick <player> §3- Kicks a player from your faction.\n§b/f leader <player> §3- Transfers leadership of the faction.\n§b/f leave §3- Leaves a faction.");
                         $sender->sendMessage(TextFormat::RED . "\n§c/f sethome §4- Set Faction home.\n§c/f unclaim §4- Unclaims a plot / land.\n§c/f unsethome §4- Deletes a faction home.\n§c/f ourmembers §4- {Members + Statuses}\n/f ourofficers - {Officers + Statuses}\n§c/f ourleader §4- {Leader + Status}\n§c/f allies - §4{The allies of your faction");
                         $sender->sendMessage(TextFormat::RED . "\n§9/f desc - §1Make a description of your faction.\n§9/f promote <player> §1- Promote a player.\n§9/f ally <faction> §1- Ally a faction.\n§9/f unally <faction> §1- Un ally a faction.\n§9/f allyok §1- [Accept a request for alliance]\n§9/f allyno §1- [Deny a request for alliance]\n§9/f allies <faction> §1- {The allies of your chosen faction}");
-                        $sender->sendMessage(TextFormat::RED . "\n§d/f membersof <faction> §5- Shows a list of members in a faction.\n§d/f officersof <faction> §5- Shows a list of officers in a faction.\n§d/f leaderof <faction> §5- Shows who the leader of a faction is.\n§d/f say - §5<send message to everyone in your faction>\n§d/f pf <player> §5- Shows what faction a player is in.\n§d/f top §5- Shows the top 10 BEST factions on the server.");
+                        $sender->sendMessage(TextFormat::RED . "\n§d/f listmembers <faction> §5- Shows a list of members in a faction.\n§d/f listofficers <faction> §5- Shows a list of officers in a faction.\n§d/f listleader <faction> §5- Shows who the leader of a faction is.\n§d/f say - §5<send message to everyone in your faction>\n§d/f pf <player> §5- Shows what faction a player is in.\n§d/f top §5- Shows the top 10 BEST factions on the server.");
                         $sender->sendMessage(TextFormat::RED . "\n§e/f forceunclaim <faction> §6- [Unclaim a faction plot by force - OP]\n§e/f forcedelete <faction> §6- [Delete a faction by force - OP]");
 			$sender->sendMessage(TextFormat::RED . "\n§7/f enemy <faction> §8- Enemy with a faction.\n§7/f war §8- Request a faction war.");
 			return true;
