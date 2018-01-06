@@ -517,7 +517,7 @@ class FactionCommands {
                         $z = floor($sender->getZ());
                         if ($this->plugin->prefs->get("EnableOverClaim")) {
                             if ($this->plugin->isInPlot($sender)) {
-                                $faction_victim = $this->plugin->factionFromPoint($x, $z);
+                                $faction_victim = $this->plugin->factionFromPoint($x, $z, $sender->getPlayer()->getLevel()->getName());
                                 $faction_victim_power = $this->plugin->getFactionPower($faction_victim);
                                 $faction_ours = $this->plugin->getPlayerFaction($playerName);
                                 $faction_ours_power = $this->plugin->getFactionPower($faction_ours);
@@ -1156,33 +1156,13 @@ class FactionCommands {
                     return true;
                 }
                 if (strtolower($args[0]) == "help") {
-                    if (!isset($args[1]) || $args[1] == 1) {
-                        $sender->sendMessage(TextFormat::GOLD . "§6Void§bFactions§cPE §dHelp Page 1 of 7" . TextFormat::RED . "§a\n/f about\n/f accept\n/f overclaim [Takeover the plot of the requested faction]\n/f claim\n/f create <name>\n/f del\n/f demote <player>\n/f deny");
-                        return true;
-                    }
-                    if ($args[1] == 2) {
-                        $sender->sendMessage(TextFormat::GOLD . "§6Void§bFactions§cPE §dHelp Page 2 of 7" . TextFormat::RED . "§b\n/f home\n/f help <page>\n/f info\n/f info <faction>\n/f invite <player>\n/f kick <player>\n/f leader <player>\n/f leave");
-                        return true;
-                    }
-                    if ($args[1] == 3) {
-                        $sender->sendMessage(TextFormat::GOLD . "§6Void§cFactions§cPE §dHelp Page 3 of 7" . TextFormat::RED . "§c\n/f sethome\n/f unclaim\n/f unsethome\n/f ourmembers - {Members + Statuses}\n/f ourofficers - {Officers + Statuses}\n/f ourleader - {Leader + Status}\n/f allies - {The allies of your faction");
-                        return true;
-                    }
-                    if ($args[1] == 4) {
-                        $sender->sendMessage(TextFormat::GOLD . "§6Void§bFactions§cPE §dHelp Page 4 of 7" . TextFormat::RED . "§d\n/f desc\n/f promote <player>\n/f ally <faction>\n/f unally <faction>\n\n/f allyok [Accept a request for alliance]\n/f allyno [Deny a request for alliance]\n/f allies <faction> - {The allies of your chosen faction}");
-                        return true;
-                    }
-                    if ($args[1] == 5) {
-                        $sender->sendMessage(TextFormat::GOLD . "§6Void§bFactions§cPE §dHelp Page 5 of 7" . TextFormat::RED . "§e\n/f membersof <faction>\n/f officersof <faction>\n/f leaderof <faction>\n/f say <send message to everyone in your faction>\n/f pf <player>\n/f top");
-                        return true;
-                    }
-                    if ($args[1] == 6) {
-                        $sender->sendMessage(TextFormat::GOLD . "§6Void§bFactions§cPE §dHelp Page 6 of 7" . TextFormat::RED . "§1\n/f forceunclaim <faction> [Unclaim a faction plot by force - OP]\n\n/f forcedelete <faction> [Delete a faction by force - OP]");
-                        return true;
-                    } else {
-                        $sender->sendMessage(TextFormat::GOLD . "§6Void§bFactions§cPE §dHelp page 7 of 7" . TextFormat::RED . "§2\n/f enemy <faction>\n/f info\n/f allychat\n/f chat\n/f map\n/f war <faction>");
-                        return true;
-                    }
+                        $sender->sendMessage(TextFormat::RED . "\n§a/f about §2- See the plugin version.\n§a/f accept §2- Accept a faction invitation.\n§a/f overclaim §2- [Takeover the plot of the requested faction]\n§a/f claim §2- Claim a plot / land.\n§a/f create <name> -§2 Create a faction.\n§a/f del §2- Disband a faction.\n§a/f demote <player> §2- Demotes a player in your faction\n§a/f deny -§2Denies a Faction invitation.");
+                        $sender->sendMessage(TextFormat::RED . "\n§a/f home §2- Teleports to your faction home.\n§a/f help §2- Gives Factions help commands.\n§a/f info §2- Shows faction information.\n§a/f info <faction> §2- shows another faction's information.\n§a/f invite <player> §2- Invites a player to your faction.\n§a/f kick <player> §2- Kicks a player from your faction.\n§a/f leader <player> §2- Transfers leadership of the faction.\n§a/f leave §2- Leaves a faction.");
+                        $sender->sendMessage(TextFormat::RED . "\n/f sethome\n/f unclaim\n/f unsethome\n/f ourmembers - {Members + Statuses}\n/f ourofficers - {Officers + Statuses}\n/f ourleader - {Leader + Status}\n/f allies - {The allies of your faction");
+                        $sender->sendMessage(TextFormat::RED . "\n/f desc\n/f promote <player>\n/f allywith <faction>\n/f breakalliancewith <faction>\n\n/f allyok [Accept a request for alliance]\n/f allyno [Deny a request for alliance]\n/f allies <faction> - {The allies of your chosen faction}");
+                        $sender->sendMessage(TextFormat::RED . "\n/f membersof <faction>\n/f officersof <faction>\n/f leaderof <faction>\n/f say <send message to everyone in your faction>\n/f pf <player>\n/f topfactions");
+                        $sender->sendMessage(TextFormat::RED . "\n/f forceunclaim <faction> [Unclaim a faction plot by force - OP]\n\n/f forcedelete <faction> [Delete a faction by force - OP]");
+			return true;
                 }
                 return true;
             }
