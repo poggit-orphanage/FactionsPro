@@ -428,9 +428,9 @@ class FactionCommands {
                             return true;
                         }
 
-                        $fac = $this->plugin->factionFromPoint($x, $z);
+                        $fac = $this->plugin->factionFromPoint($x, $z, $sender->getPlayer()->getLevel()->getName());
                         $power = $this->plugin->getFactionPower($fac);
-                        $sender->sendMessage($this->plugin->formatMessage("§dThis plot is claimed by §5$fac §dwith §5$power §dSTR"));
+                        $sender->sendMessage($this->plugin->formatMessage("§aThis plot is claimed by §2$fac §awith §2$power §aSTR"));
                     }
                     if (strtolower($args[0]) == 'top') {
                         $this->plugin->sendListOfTop10FactionsTo($sender);
