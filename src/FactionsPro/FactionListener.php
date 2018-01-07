@@ -1,4 +1,5 @@
 <?php
+
 namespace FactionsPro;
 
 use pocketmine\event\Listener;
