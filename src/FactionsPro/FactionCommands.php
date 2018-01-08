@@ -152,7 +152,7 @@ class FactionCommands {
 
                     /////////////////////////////// INVITE ///////////////////////////////
 
-                    if ($args[0] == "invite") {
+                    if ($args[0] == "invite") or strtolower($args[0]) == "inv") {
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f invite <player>"));
                             return true;
@@ -487,7 +487,7 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("§3-$args[1] §bis in the faction: §3$faction-", true));
                     }
 
-                    if (strtolower($args[0]) == 'overclaim') {
+                    if (strtolower($args[0]) == 'overclaim') or strtolower($args[0]) == "oc") {
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction."));
                             return true;
@@ -550,7 +550,7 @@ class FactionCommands {
 
                     /////////////////////////////// UNCLAIM ///////////////////////////////
 
-                    if (strtolower($args[0]) == "unclaim") {
+                    if (strtolower($args[0]) == "unclaim") or strtolower($args[0]) == "unc"){
                         if (!$this->plugin->isInFaction($sender->getName())) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction"));
                             return true;
@@ -566,7 +566,7 @@ class FactionCommands {
 
                     /////////////////////////////// DESCRIPTION ///////////////////////////////
 
-                    if (strtolower($args[0]) == "desc") {
+                    if (strtolower($args[0]) == "desc") or strtolower($args[0]) == "description") {
                         if ($this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to use this!"));
                             return true;
@@ -584,7 +584,7 @@ class FactionCommands {
 
                     /////////////////////////////// ACCEPT ///////////////////////////////
 
-                    if (strtolower($args[0]) == "accept") {
+                    if (strtolower($args[0]) == "accept") or strtolower($args[0]) == "yes") {
                         $lowercaseName = strtolower($playerName);
                         $result = $this->plugin->db->query("SELECT * FROM confirm WHERE player='$lowercaseName';");
                         $array = $result->fetchArray(SQLITE3_ASSOC);
@@ -614,7 +614,7 @@ class FactionCommands {
 
                     /////////////////////////////// DENY ///////////////////////////////
 
-                    if (strtolower($args[0]) == "deny") {
+                    if (strtolower($args[0]) == "deny") or strtolower($args[0]) == "no") {
                         $lowercaseName = strtolower($playerName);
                         $result = $this->plugin->db->query("SELECT * FROM confirm WHERE player='$lowercaseName';");
                         $array = $result->fetchArray(SQLITE3_ASSOC);
@@ -636,7 +636,7 @@ class FactionCommands {
 
                     /////////////////////////////// DELETE ///////////////////////////////
 
-                    if (strtolower($args[0]) == "del") {
+                    if (strtolower($args[0]) == "del") or strtolower($args[0]) == "delete") {
                         if ($this->plugin->isInFaction($playerName) == true) {
                             if ($this->plugin->isLeader($playerName)) {
                                 $faction = $this->plugin->getPlayerFaction($playerName);
@@ -659,7 +659,7 @@ class FactionCommands {
 
                     /////////////////////////////// LEAVE ///////////////////////////////
 
-                    if (strtolower($args[0] == "leave")) {
+                    if (strtolower($args[0] == "leave")) or strtolower($args[0]) == "quit") {
                         if ($this->plugin->isLeader($playerName) == false) {
                             $remove = $sender->getPlayer()->getNameTag();
                             $faction = $this->plugin->getPlayerFaction($playerName);
@@ -676,7 +676,7 @@ class FactionCommands {
 
                     /////////////////////////////// SETHOME ///////////////////////////////
 
-                    if (strtolower($args[0] == "sethome")) {
+                    if (strtolower($args[0] == "sethome")) or strtolower($args[0]) == "seth") {
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to do this"));
                             return true;
@@ -698,7 +698,7 @@ class FactionCommands {
 
                     /////////////////////////////// UNSETHOME ///////////////////////////////
 
-                    if (strtolower($args[0] == "unsethome")) {
+                    if (strtolower($args[0] == "unsethome")) or strtolower($args[0]) == "unseth") {
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to do this"));
                             return true;
@@ -714,7 +714,7 @@ class FactionCommands {
 
                     /////////////////////////////// HOME ///////////////////////////////
 
-                    if (strtolower($args[0] == "home")) {
+                    if (strtolower($args[0] == "home")) or strtolower($args[0]) == "h") {
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to do this"));
                             return true;
@@ -740,14 +740,14 @@ class FactionCommands {
                     }
 
                     /////////////////////////////// MEMBERS/OFFICERS/LEADER AND THEIR STATUSES ///////////////////////////////
-                    if (strtolower($args[0] == "ourmembers")) {
+                    if (strtolower($args[0] == "ourmembers")) or strtolower($args[0]) == "ourm"){
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to do this"));
                             return true;
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $this->plugin->getPlayerFaction($playerName), "Member");
                     }
-                    if (strtolower($args[0] == "listmembers")) {
+                    if (strtolower($args[0] == "listmembers")) or strtolower($args[0]) == "listm") {
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f listmembers <faction>"));
                             return true;
@@ -758,14 +758,14 @@ class FactionCommands {
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $args[1], "Member");
                     }
-                    if (strtolower($args[0] == "ourofficers")) {
+                    if (strtolower($args[0] == "ourofficers")) or strtolower($args[0]) == "ouroff") {
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to do this"));
                             return true;
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $this->plugin->getPlayerFaction($playerName), "Officer");
                     }
-                    if (strtolower($args[0] == "listofficers")) {
+                    if (strtolower($args[0] == "listofficers")) or strtolower($args[0]) == "listoff") {
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f listofficers <faction>"));
                             return true;
@@ -776,14 +776,14 @@ class FactionCommands {
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $args[1], "Officer");
                     }
-                    if (strtolower($args[0] == "ourleader")) {
+                    if (strtolower($args[0] == "ourleader")) or strtolower($args[0]) == "ourl") {
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to do this"));
                             return true;
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $this->plugin->getPlayerFaction($playerName), "Leader");
                     }
-                    if (strtolower($args[0] == "listleader")) {
+                    if (strtolower($args[0] == "listleader")) or strtolower($args[0]) == "listl") {
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f listleader <faction>"));
                             return true;
@@ -794,7 +794,7 @@ class FactionCommands {
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $args[1], "Leader");
                     }
-                    if (strtolower($args[0] == "say")) {
+                    if (strtolower($args[0] == "say")) or strtolower($args[0]) == "broadcast") {
                         if (true) {
                             $sender->sendMessage($this->plugin->formatMessage("§c/f say is disabled"));
                             return true;
@@ -957,7 +957,7 @@ class FactionCommands {
                             $leader->sendMessage($this->plugin->formatMessage("§2The leader of §5$fac §2broke the alliance with your faction §5$args[1]", false));
                         }
                     }
-                    if (strtolower($args[0] == "forceunclaim")) {
+                    if (strtolower($args[0] == "forceunclaim")) or strtolower($args[0]) == "forceunc"){
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f forceunclaim <faction>"));
                             return true;
@@ -992,7 +992,7 @@ class FactionCommands {
                             $this->plugin->getAllAllies($sender, $args[1]);
                         }
                     }
-                    if (strtolower($args[0] == "allyok")) {
+                    if (strtolower($args[0] == "allyok")) or strtolower($args[0]) == "allyaccept") {
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to do this"));
                             return true;
@@ -1027,7 +1027,7 @@ class FactionCommands {
                             $this->plugin->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
                         }
                     }
-                    if (strtolower($args[0]) == "allyno") {
+                    if (strtolower($args[0]) == "allyno") or strtolower($args[0]) == "allydeny") {
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to do this"));
                             return true;
@@ -1060,7 +1060,7 @@ class FactionCommands {
 
                     /////////////////////////////// ABOUT ///////////////////////////////
 
-                    if (strtolower($args[0] == 'about')) {
+                    if (strtolower($args[0] == 'about')) or strtolower($args[0]) == "ab") {
                         $sender->sendMessage(TextFormat::GREEN . "[ORIGINAL] FactionsPro v1.3.2 by " . TextFormat::BOLD . "Tethered_");
                         $sender->sendMessage(TextFormat::GOLD . "[MODDED] This version by §6Void§bFactions§cPE and " . TextFormat::BOLD . "Awzaw");
                     }
