@@ -1064,18 +1064,18 @@ class FactionCommands {
                         $sender->sendMessage(TextFormat::GREEN . "[ORIGINAL] FactionsPro v1.3.2 by " . TextFormat::BOLD . "Tethered_");
                         $sender->sendMessage(TextFormat::GOLD . "[MODDED] This version by §6Void§bFactions§cPE and " . TextFormat::BOLD . "Awzaw");
                     }
-                    ////////////////////////////// CHAT ////////////////////////////////
+                     ////////////////////////////// CHAT ////////////////////////////////
+		    
                     if (strtolower($args[0]) == "chat" or strtolower($args[0]) == "c") {
-
                         if (!$this->plugin->prefs->get("AllowChat")){
-                            $sender->sendMessage($this->plugin->formatMessage("§cAll Faction chat is disabled", false));
+                            $sender->sendMessage($this->plugin->formatMessage("All Faction chat is disabled", false));
                             return true;
                         }
                         
                         if ($this->plugin->isInFaction($playerName)) {
                             if (isset($this->plugin->factionChatActive[$playerName])) {
                                 unset($this->plugin->factionChatActive[$playerName]);
-                                $sender->sendMessage($this->plugin->formatMessage("§cFaction chat disabled", false));
+                                $sender->sendMessage($this->plugin->formatMessage("Faction chat disabled", false));
                                 return true;
                             } else {
                                 $this->plugin->factionChatActive[$playerName] = 1;
@@ -1083,21 +1083,20 @@ class FactionCommands {
                                 return true;
                             }
                         } else {
-                            $sender->sendMessage($this->plugin->formatMessage("§cYou are not in a faction"));
+                            $sender->sendMessage($this->plugin->formatMessage("You are not in a faction"));
                             return true;
                         }
                     }
                     if (strtolower($args[0]) == "allychat" or strtolower($args[0]) == "ac") {
-
                         if (!$this->plugin->prefs->get("AllowChat")){
-                            $sender->sendMessage($this->plugin->formatMessage("§cAll Faction chat is disabled", false));
+                            $sender->sendMessage($this->plugin->formatMessage("All Faction chat is disabled", false));
                             return true;
                         }
                         
                         if ($this->plugin->isInFaction($playerName)) {
                             if (isset($this->plugin->allyChatActive[$playerName])) {
                                 unset($this->plugin->allyChatActive[$playerName]);
-                                $sender->sendMessage($this->plugin->formatMessage("§aAlly chat disabled", false));
+                                $sender->sendMessage($this->plugin->formatMessage("Ally chat disabled", false));
                                 return true;
                             } else {
                                 $this->plugin->allyChatActive[$playerName] = 1;
@@ -1105,10 +1104,42 @@ class FactionCommands {
                                 return true;
                             }
                         } else {
-                            $sender->sendMessage($this->plugin->formatMessage("§cYou are not in a faction"));
+                            $sender->sendMessage($this->plugin->formatMessage("You are not in a faction"));
                             return true;
                         }
                     }
+		     if (strtolower($args[0] == "say")) {
+			if (!$this->plugin->prefs->get("AllowChat")) {
+			    $sender->sendMessage($this->plugin->formatMessage("/f say is disabled"));
+			    return true;
+			}
+			if (!($this->plugin->isInFaction($playerName))) {
+			    $sender->sendMessage($this->plugin->formatMessage("You must be in a faction to send faction messages"));
+			    return true;
+			}
+			$r = count($args);
+			$row = array();
+			$rank = "";
+			$f = $this->plugin->getPlayerFaction($playerName);
+			if ($this->plugin->isOfficer($playerName)) {
+			    $rank = "*";
+			} else if ($this->plugin->isLeader($playerName)) {
+			    $rank = "**";
+			}
+			$message = "-> ";
+			for ($i = 0; $i < $r - 1; $i = $i + 1) {
+			    $message = $message . $args[$i + 1] . " ";
+			}
+			$result = $this->plugin->db->query("SELECT * FROM master WHERE faction='$f';");
+			for ($i = 0; $resultArr = $result->fetchArray(SQLITE3_ASSOC); $i = $i + 1) {
+			    $row[$i]['player'] = $resultArr['player'];
+			    $p = $this->plugin->getServer()->getPlayerExact($row[$i]['player']);
+			    if ($p instanceof Player) {
+				$p->sendMessage(TextFormat::ITALIC . TextFormat::RED . "<FM>" . TextFormat::AQUA . " <$rank$f> " . TextFormat::GREEN . "<$playerName> " . ": " . TextFormat::RESET);
+				$p->sendMessage(TextFormat::ITALIC . TextFormat::DARK_AQUA . $message . TextFormat::RESET);
+			    }
+			}
+		    }
 
                 /////////////////////////////// INFO ///////////////////////////////
 
