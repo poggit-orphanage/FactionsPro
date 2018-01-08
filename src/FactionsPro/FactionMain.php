@@ -1,19 +1,7 @@
 <?php
 
 namespace FactionsPro;
-/*
- * 
- * v1.3.0 To Do List
- * [X] Separate into Command, Listener, and Main files
- * [X] Implement commands (plot claim, plot del)
- * [X] Get plots to work
- * [X] Add plot to config
- * [X] Add faction description /f desc <faction>
- * [X] Only leaders can edit motd, only members can check
- * [X] More beautiful looking (and working) config
- * 
- * 
- */
+
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
@@ -25,7 +13,9 @@ use pocketmine\utils\TextFormat;
 use pocketmine\utils\Config;
 use pocketmine\block\Snow;
 use pocketmine\math\Vector3;
+
 class FactionMain extends PluginBase implements Listener {
+    
     public $db;
     public $prefs;
     public $war_req = [];
