@@ -1,5 +1,4 @@
 <?php
-
 namespace FactionsPro;
 
 use pocketmine\event\Listener;
@@ -12,7 +11,6 @@ use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\player\PlayerDeathEvent;
-
 class FactionListener implements Listener {
 	
 	public $plugin;
