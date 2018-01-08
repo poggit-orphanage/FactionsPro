@@ -1064,7 +1064,7 @@ class FactionCommands {
                         $sender->sendMessage(TextFormat::GREEN . "[ORIGINAL] FactionsPro v1.3.2 by " . TextFormat::BOLD . "Tethered_");
                         $sender->sendMessage(TextFormat::GOLD . "[MODDED] This version by §6Void§bFactions§cPE and " . TextFormat::BOLD . "Awzaw");
                     }
-                   ////////////////////////////// CHAT ////////////////////////////////
+                    ////////////////////////////// CHAT ////////////////////////////////
 		    
                     if (strtolower($args[0]) == "chat" or strtolower($args[0]) == "c") {
                         if (!$this->plugin->prefs->get("AllowChat")){
