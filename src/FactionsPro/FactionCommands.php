@@ -1072,7 +1072,21 @@ class FactionCommands {
                     if (strtolower($args[0] == 'about')) {
                         $sender->sendMessage(TextFormat::GREEN . "[ORIGINAL] FactionsPro v1.3.2 by " . TextFormat::BOLD . "Tethered_");
                         $sender->sendMessage(TextFormat::GOLD . "[MODDED] This version by §6Void§bFactions§cPE and " . TextFormat::BOLD . "Awzaw");
-                    }
+			    
+			    }
+		    }
+}
+		 /////////////////////////////// MAP, map by Primus (no compass) ////////////////////////////////
+		// Coupon for compass: G1wEmEde0mp455
+		if(strtolower($args[0] == "map")) {
+		        $map = $this->getMap($sender, self::MAP_WIDTH, self::MAP_HEIGHT, $sender->getYaw(), $this->plugin->prefs->get("PlotSize"));
+		        foreach($map as $line) {
+		                $sender->sendMessage($line);
+		        }
+		        return true;
+					
+	            }
+	    
                     ////////////////////////////// CHAT ////////////////////////////////
 		    
                     if (strtolower($args[0]) == "chat" or strtolower($args[0]) == "c") {
@@ -1220,5 +1234,75 @@ class FactionCommands {
             $return = preg_match('/^[a-z0-9]+$/i', $string) > 0;
         }
         return $return;
-    }
+        }
+}
+
+public function getMap(Player $observer, int $width, int $height, int $inDegrees, int $size = 16) { // No compass
+		$to = (int)sqrt($size);
+		$centerPs = new Vector3($observer->x >> $to, 0, $observer->z >> $to);
+		$map = [];
+		$centerFaction = $this->plugin->factionFromPoint($observer->getFloorX(), $observer->getFloorZ());
+		$centerFaction = $centerFaction ? $centerFaction : "Wilderness";
+		$head = TextFormat::GREEN . " (" . $centerPs->getX() . "," . $centerPs->getZ() . ") " . $centerFaction . " " . TextFormat::WHITE;
+		$head = TextFormat::GOLD . str_repeat("_", (($width - strlen($head)) / 2)) . ".[" . $head . TextFormat::GOLD . "]." . str_repeat("_", (($width - strlen($head)) / 2));
+		$map[] = $head;
+		$halfWidth = $width / 2;
+		$halfHeight = $height / 2;
+		$width = $halfWidth * 2 + 1;
+		$height = $halfHeight * 2 + 1;
+		$topLeftPs = new Vector3($centerPs->x + -$halfWidth, 0, $centerPs->z + -$halfHeight);
+		// Get the compass
+		//$asciiCompass = ASCIICompass::getASCIICompass($inDegrees, TextFormat::RED, TextFormat::GOLD);
+		// Make room for the list of names
+		$height--;
+		/** @var string[] $fList */
+		$fList = array();
+		$chrIdx = 0;
+		$overflown = false;
+		$chars = self::MAP_KEY_CHARS;
+		// For each row
+		for ($dz = 0; $dz < $height; $dz++) {
+			// Draw and add that row
+			$row = "";
+			for ($dx = 0; $dx < $width; $dx++) {
+				if ($dx == $halfWidth && $dz == $halfHeight) {
+					$row .= (self::MAP_KEY_SEPARATOR);
+					continue;
+				}
+				if (!$overflown && $chrIdx >= strlen(self::MAP_KEY_CHARS)) $overflown = true;
+				$herePs = $topLeftPs->add($dx, 0, $dz);
+				$hereFaction = $this->plugin->factionFromPoint($herePs->x << $to, $herePs->z << $to);
+				$contains = in_array($hereFaction, $fList, true);
+				if ($hereFaction === NULL) {
+					$row .= self::MAP_KEY_WILDERNESS;
+				} elseif (!$contains && $overflown) {
+					$row .= self::MAP_KEY_OVERFLOW;
+				} else {
+					if (!$contains) $fList[$chars{$chrIdx++}] = $hereFaction;
+					$fchar = array_search($hereFaction, $fList);
+					$row .= $this->getColorForTo($observer, $hereFaction) . $fchar;
+				}
+			}
+			$line = $row; // ... ---------------
+			// Add the compass
+			//if ($dz == 0) $line = $asciiCompass[0] . "" . substr($row, 3 * strlen(Constants::MAP_KEY_SEPARATOR));
+			//if ($dz == 1) $line = $asciiCompass[1] . "" . substr($row, 3 * strlen(Constants::MAP_KEY_SEPARATOR));
+			//if ($dz == 2) $line = $asciiCompass[2] . "" . substr($row, 3 * strlen(Constants::MAP_KEY_SEPARATOR));
+			$map[] = $line;
+		}
+		$fRow = "";
+		foreach ($fList as $char => $faction) {
+			$fRow .= $this->getColorForTo($observer, $faction) . $char . ": " . $faction . " ";
+		}
+		if ($overflown) $fRow .= self::MAP_OVERFLOW_MESSAGE;
+		$fRow = trim($fRow);
+		$map[] = $fRow;
+		return $map;
+	}
+	public function getColorForTo(Player $player, $faction) {
+		if($this->plugin->getPlayerFaction($player->getName()) === $faction) {
+			return TextFormat::GREEN;
+		}
+		return TextFormat::LIGHT_PURPLE;
+	}
 }
