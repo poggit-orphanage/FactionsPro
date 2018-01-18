@@ -160,7 +160,7 @@ class FactionCommands {
 			            "%PLAYER%",
 		                    "%FACTION%",
 				    "§"
-    	                        ], [
+    	                            ], [
 				    $sender->getName(),
 				    $factionName
 			        ], $this->plugin->prefs->get("FactionCreationBroadcastMessage")));
