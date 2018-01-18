@@ -737,6 +737,7 @@ class FactionCommands {
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $args[1], "Leader");
                     }
+			    
                     ////////////////////////////// ALLY SYSTEM ////////////////////////////////
                     if (strtolower($args[0] == "enemy")) {
                         if (!isset($args[1])) {
