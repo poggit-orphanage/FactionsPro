@@ -11,6 +11,16 @@ use pocketmine\level\Position;
 
 class FactionCommands {
 
+// ASCII Map
+	CONST MAP_WIDTH = 48;
+	CONST MAP_HEIGHT = 8;
+	CONST MAP_HEIGHT_FULL = 17;
+	CONST MAP_KEY_CHARS = "\\/#?ç¬£$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZÄÖÜÆØÅ1234567890abcdeghjmnopqrsuvwxyÿzäöüæøåâêîûô";
+	CONST MAP_KEY_WILDERNESS = TextFormat::GRAY . "-";
+	CONST MAP_KEY_SEPARATOR = TextFormat::AQUA . "+";
+	CONST MAP_KEY_OVERFLOW = TextFormat::WHITE . "-" . TextFormat::WHITE; # ::MAGIC?
+	CONST MAP_OVERFLOW_MESSAGE = self::MAP_KEY_OVERFLOW . ": Too Many Factions (>" . 107 . ") on this Map.";
+
     public $plugin;
 
     public function __construct(FactionMain $pg) {
@@ -1218,26 +1228,13 @@ class FactionCommands {
                         $sender->sendMessage(TextFormat::RED . "\n§e/f forceunclaim <faction> §6- [Unclaim a faction plot by force - OP]\n§e/f forcedelete <faction> §6- [Delete a faction by force - OP]");
 			$sender->sendMessage(TextFormat::RED . "\n§7/f enemy <faction> §8- Enemy with a faction.\n§7/f war §8- Request a faction war.");
 			return true;
-                }
-                return true;
-            }
-        } else {
-            $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("Please run this command in game"));
-        }
-        return true;
-    }
+                        
+		   } else {
+			$this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("Please run command in game"));
+		}
+	}
 
-    public function alphanum($string){
-        if(function_exists('ctype_alnum')){
-            $return = ctype_alnum($string);
-        }else{
-            $return = preg_match('/^[a-z0-9]+$/i', $string) > 0;
-        }
-        return $return;
-        }
-}
-
-public function getMap(Player $observer, int $width, int $height, int $inDegrees, int $size = 16) { // No compass
+	public function getMap(Player $observer, int $width, int $height, int $inDegrees, int $size = 16) { // No compass
 		$to = (int)sqrt($size);
 		$centerPs = new Vector3($observer->x >> $to, 0, $observer->z >> $to);
 		$map = [];
