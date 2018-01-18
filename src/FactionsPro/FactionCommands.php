@@ -1200,8 +1200,8 @@ class FactionCommands {
 			$this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("Please run command in game"));
 		}
 	        return true;
-            }
         }
+	
 	public function getMap(Player $observer, int $width, int $height, int $inDegrees, int $size = 16) { // No compass
 		$to = (int)sqrt($size);
 		$centerPs = new Vector3($observer->x >> $to, 0, $observer->z >> $to);
