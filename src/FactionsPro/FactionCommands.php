@@ -158,8 +158,9 @@ class FactionCommands {
 			   if($this->plugin->prefs->get("BroadcastFactionCreation")){
 		                $sender->getServer()->broadcastMessage(str_replace([
 			            "%PLAYER%",
-		                    "%FACTION%"
-				    ], [
+		                    "%FACTION%",
+				    "§"
+    	                        ], [
 				    $sender->getName(),
 				    $factionName
 			        ], $this->plugin->prefs->get("FactionCreationBroadcastMessage")));
