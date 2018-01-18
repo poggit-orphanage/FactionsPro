@@ -1055,7 +1055,7 @@ class FactionCommands {
 }
 		 /////////////////////////////// MAP, map by Primus (no compass) ////////////////////////////////
 		// Coupon for compass: G1wEmEde0mp455
-		if(strtolower($args[0] == "map")) {
+		if(strtolower($args[0] == 'map')) {
 		        $map = $this->getMap($sender, self::MAP_WIDTH, self::MAP_HEIGHT, $sender->getYaw(), $this->plugin->prefs->get("PlotSize"));
 		        foreach($map as $line) {
 		                $sender->sendMessage($line);
@@ -1108,7 +1108,7 @@ class FactionCommands {
                             return true;
                         }
                     }
-		     if (strtolower($args[0] == "say")) {
+		     if (strtolower($args[0] == 'say')) {
 			if (!$this->plugin->prefs->get("AllowChat")) {
 			    $sender->sendMessage($this->plugin->formatMessage("/f say is disabled"));
 			    return true;
