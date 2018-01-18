@@ -135,6 +135,14 @@ class FactionCommands {
                             $this->plugin->updateAllies($factionName);
                             $this->plugin->setFactionPower($factionName, $this->plugin->prefs->get("TheDefaultPowerEveryFactionStartsWith"));
                             $this->plugin->updateTag($sender->getName());
+			   if($this->plugin->prefs->get("BroadcastFactionCreation")){
+		                $sender->getServer()->broadcastMessage(str_replace([
+			            "%PLAYER%",
+		                    "%FACTION%"
+				    ], [
+				    $sender->getName(),
+				    $factionName
+			        ], $this->plugin->prefs->get("FactionCreationBroadcastMessage")));
                             $sender->sendMessage($this->plugin->formatMessage("§aThe Faction named §2$factionName §ahas been created", true));
                             return true;
                         }
@@ -728,38 +736,6 @@ class FactionCommands {
                             return true;
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $args[1], "Leader");
-                    }
-                    if (strtolower($args[0] == "say")) {
-                        if (true) {
-                            $sender->sendMessage($this->plugin->formatMessage("§c/f say is disabled"));
-                            return true;
-                        }
-                        if (!($this->plugin->isInFaction($playerName))) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to send faction messages"));
-                            return true;
-                        }
-                        $r = count($args);
-                        $row = array();
-                        $rank = "";
-                        $f = $this->plugin->getPlayerFaction($playerName);
-                        if ($this->plugin->isOfficer($playerName)) {
-                            $rank = "*";
-                        } else if ($this->plugin->isLeader($playerName)) {
-                            $rank = "**";
-                        }
-                        $message = "-> ";
-                        for ($i = 0; $i < $r - 1; $i = $i + 1) {
-                            $message = $message . $args[$i + 1] . " ";
-                        }
-                        $result = $this->plugin->db->query("SELECT * FROM master WHERE faction='$f';");
-                        for ($i = 0; $resultArr = $result->fetchArray(SQLITE3_ASSOC); $i = $i + 1) {
-                            $row[$i]['player'] = $resultArr['player'];
-                            $p = $this->plugin->getServer()->getPlayer($row[$i]['player']);
-                            if ($p instanceof Player) {
-                                $p->sendMessage(TextFormat::ITALIC . TextFormat::RED . "<FM>" . TextFormat::AQUA . " <$rank$f> " . TextFormat::GREEN . "<$playerName> " . ": " . TextFormat::RESET);
-                                $p->sendMessage(TextFormat::ITALIC . TextFormat::DARK_AQUA . $message . TextFormat::RESET);
-                            }
-                        }
                     }
                     ////////////////////////////// ALLY SYSTEM ////////////////////////////////
                     if (strtolower($args[0] == "enemy")) {
