@@ -17,4 +17,5 @@ ClaimWorlds: []
 AllowChat: true
 AllowFactionPvp: false
 AllowAlliedPvp: false
+BroadcastFactionCreation: §aThe player named: §2%PLAYER% §ahas created a §bfaction §anamed §2%FACTION%
 ...
