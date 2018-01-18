@@ -1,32 +1,16 @@
 <?php
-
 namespace FactionsPro;
-
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
 use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 use pocketmine\level\Position;
-
 class FactionCommands {
-
-// ASCII Map
-	CONST MAP_WIDTH = 48;
-	CONST MAP_HEIGHT = 8;
-	CONST MAP_HEIGHT_FULL = 17;
-	CONST MAP_KEY_CHARS = "\\/#?ç¬£$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZÄÖÜÆØÅ1234567890abcdeghjmnopqrsuvwxyÿzäöüæøåâêîûô";
-	CONST MAP_KEY_WILDERNESS = TextFormat::GRAY . "-";
-	CONST MAP_KEY_SEPARATOR = TextFormat::AQUA . "+";
-	CONST MAP_KEY_OVERFLOW = TextFormat::WHITE . "-" . TextFormat::WHITE; # ::MAGIC?
-	CONST MAP_OVERFLOW_MESSAGE = self::MAP_KEY_OVERFLOW . ": Too Many Factions (>" . 107 . ") on this Map.";
-
     public $plugin;
-
     public function __construct(FactionMain $pg) {
         $this->plugin = $pg;
     }
-
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
         if ($sender instanceof Player) {
             $playerName = $sender->getPlayer()->getName();
@@ -35,9 +19,7 @@ class FactionCommands {
                     $sender->sendMessage($this->plugin->formatMessage("§bPlease use §3/f help §6for a list of commands"));
                     return true;
                 }
-
                     ///////////////////////////////// WAR /////////////////////////////////
-
                     if ($args[0] == "war") {
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("§5Please use: §d/f war <faction name:tp>"));
@@ -117,9 +99,7 @@ class FactionCommands {
                             return true;
                         }
                     }
-
                     /////////////////////////////// CREATE ///////////////////////////////
-
                     if ($args[0] == "create") {
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f create <faction name>"));
@@ -159,9 +139,7 @@ class FactionCommands {
                             return true;
                         }
                     }
-
                     /////////////////////////////// INVITE ///////////////////////////////
-
                     if ($args[0] == "invite") {
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f invite <player>"));
@@ -187,15 +165,12 @@ class FactionCommands {
                             }
                         }
                         if ($invited->getName() == $playerName) {
-
                             $sender->sendMessage($this->plugin->formatMessage("§cYou can't invite yourself to your own faction"));
                             return true;
                         }
-
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $invitedName = $invited->getName();
                         $rank = "Member";
-
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO confirm (player, faction, invitedby, timestamp) VALUES (:player, :faction, :invitedby, :timestamp);");
                         $stmt->bindValue(":player", $invitedName);
                         $stmt->bindValue(":faction", $factionName);
@@ -205,9 +180,7 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("§2$invitedName §ahas been invited succesfully", true));
                         $invited->sendMessage($this->plugin->formatMessage("§bYou have been invited to §3$factionName. §bType §3'/f accept' or '/f deny' §binto chat to accept or deny!", true));
                     }
-
                     /////////////////////////////// LEADER ///////////////////////////////
-
                     if ($args[0] == "leader") {
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f leader <player>"));
@@ -230,33 +203,26 @@ class FactionCommands {
                             return true;
                         }
                         if ($args[1] == $sender->getName()) {
-
                             $sender->sendMessage($this->plugin->formatMessage("§cYou can't transfer the leadership to yourself"));
                             return true;
                         }
                         $factionName = $this->plugin->getPlayerFaction($playerName);
-
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
                         $stmt->bindValue(":player", $playerName);
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":rank", "Member");
                         $result = $stmt->execute();
-
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
                         $stmt->bindValue(":player", $args[1]);
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":rank", "Leader");
                         $result = $stmt->execute();
-
-
                         $sender->sendMessage($this->plugin->formatMessage("§2You are no longer leader", true));
                         $this->plugin->getServer()->getPlayer($args[1])->sendMessage($this->plugin->formatMessage("§aYou are now leader \nof $factionName!", true));
                         $this->plugin->updateTag($sender->getName());
                         $this->plugin->updateTag($this->plugin->getServer()->getPlayerExact($args[1])->getName());
                     }
-
                     /////////////////////////////// PROMOTE ///////////////////////////////
-
                     if ($args[0] == "promote") {
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f promote <player>"));
@@ -278,7 +244,6 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou can't promote yourself"));
                             return true;
                         }
-
                         if ($this->plugin->isOfficer($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("§cPlayer is already Officer"));
                             return true;
@@ -291,16 +256,13 @@ class FactionCommands {
                         $result = $stmt->execute();
                         $promotee = $this->plugin->getServer()->getPlayer($args[1]);
                         $sender->sendMessage($this->plugin->formatMessage("§2$args[1] §ahas been promoted to Officer", true));
-
                         if ($promotee instanceof Player) {
                             $promotee->sendMessage($this->plugin->formatMessage("§aYou were promoted to officer of §2$factionName!", true));
                             $this->plugin->updateTag($this->plugin->getServer()->getPlayerExact($args[1])->getName());
                             return true;
                         }
                     }
-
                     /////////////////////////////// DEMOTE ///////////////////////////////
-
                     if ($args[0] == "demote") {
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f demote <player>"));
@@ -318,7 +280,6 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§cThe player named: §4$playerName §cis not in this faction"));
                             return true;
                         }
-
                         if ($args[1] == $sender->getName()) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou can't demote yourself"));
                             return true;
@@ -341,9 +302,7 @@ class FactionCommands {
                             return true;
                         }
                     }
-
                     /////////////////////////////// KICK ///////////////////////////////
-
                     if ($args[0] == "kick") {
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f kick <player>"));
@@ -370,18 +329,13 @@ class FactionCommands {
                         $this->plugin->db->query("DELETE FROM master WHERE player='$args[1]';");
                         $sender->sendMessage($this->plugin->formatMessage("§aYou successfully kicked §2$args[1]", true));
                         $this->plugin->subtractFactionPower($factionName, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
-
                         if ($kicked instanceof Player) {
                             $kicked->sendMessage($this->plugin->formatMessage("§2You have been kicked from \n §5$factionName", true));
                             $this->plugin->updateTag($this->plugin->getServer()->getPlayerExact($args[1])->getName());
                             return true;
                         }
                     }
-
-
-
                     /////////////////////////////// CLAIM ///////////////////////////////
-
                     if (strtolower($args[0]) == 'claim') {
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction."));
@@ -395,14 +349,12 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou can only claim in Faction Worlds: " . implode(" ", $this->plugin->prefs->get("ClaimWorlds"))));
                             return true;
                         }
-
                         if ($this->plugin->inOwnPlot($sender)) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYour faction has already claimed this area."));
                             return true;
                         }
                         $faction = $this->plugin->getPlayerFaction($sender->getPlayer()->getName());
                         if ($this->plugin->getNumberOfPlayers($faction) < $this->plugin->prefs->get("PlayersNeededInFactionToClaimAPlot")) {
-
                             $needed_players = $this->plugin->prefs->get("PlayersNeededInFactionToClaimAPlot") -
                                     $this->plugin->getNumberOfPlayers($faction);
                             $sender->sendMessage($this->plugin->formatMessage("§cYou need §4$needed_players §cmore players in your faction to claim a faction plot"));
@@ -415,15 +367,12 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§4$needed_power §cSTR is required but your faction has only §4$faction_power §cSTR."));
                             return true;
                         }
-
                         $x = floor($sender->getX());
                         $y = floor($sender->getY());
                         $z = floor($sender->getZ());
                         if ($this->plugin->drawPlot($sender, $faction, $x, $y, $z, $sender->getPlayer()->getLevel(), $this->plugin->prefs->get("PlotSize")) == false) {
-
                             return true;
                         }
-
                         $sender->sendMessage($this->plugin->formatMessage("Getting your coordinates...", true));
                         $plot_size = $this->plugin->prefs->get("PlotSize");
                         $faction_power = $this->plugin->getFactionPower($faction);
@@ -437,7 +386,6 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§5This plot is not claimed by anyone. §dYou can claim it by typing §5/f claim", true));
                             return true;
                         }
-
                         $fac = $this->plugin->factionFromPoint($x, $z, $sender->getPlayer()->getLevel()->getName());
                         $power = $this->plugin->getFactionPower($fac);
                         $sender->sendMessage($this->plugin->formatMessage("§aThis plot is claimed by §2$fac §awith §2$power §aSTR"));
@@ -496,7 +444,6 @@ class FactionCommands {
                         $faction = $this->plugin->getPlayerFaction($args[1]);
                         $sender->sendMessage($this->plugin->formatMessage("§3-$args[1] §bis in the faction: §3$faction-", true));
                     }
-
                     if (strtolower($args[0]) == 'overclaim') {
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction."));
@@ -508,7 +455,6 @@ class FactionCommands {
                         }
                         $faction = $this->plugin->getPlayerFaction($playerName);
                         if ($this->plugin->getNumberOfPlayers($faction) < $this->plugin->prefs->get("PlayersNeededInFactionToClaimAPlot")) {
-
                             $needed_players = $this->plugin->prefs->get("PlayersNeededInFactionToClaimAPlot") -
                                     $this->plugin->getNumberOfPlayers($faction);
                             $sender->sendMessage($this->plugin->formatMessage("§cYou need §4$needed_players §cmore players in your faction to overclaim a faction plot"));
@@ -556,10 +502,7 @@ class FactionCommands {
                             return true;
                         }
                     }
-
-
                     /////////////////////////////// UNCLAIM ///////////////////////////////
-
                     if (strtolower($args[0]) == "unclaim") {
                         if (!$this->plugin->isInFaction($sender->getName())) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction"));
@@ -573,9 +516,7 @@ class FactionCommands {
                         $this->plugin->db->query("DELETE FROM plots WHERE faction='$faction';");
                         $sender->sendMessage($this->plugin->formatMessage("§2Your land has been unclaimed", true));
                     }
-
                     /////////////////////////////// DESCRIPTION ///////////////////////////////
-
                     if (strtolower($args[0]) == "desc") {
                         if ($this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to use this!"));
@@ -591,9 +532,7 @@ class FactionCommands {
                         $stmt->bindValue(":timestamp", time());
                         $result = $stmt->execute();
                     }
-
                     /////////////////////////////// ACCEPT ///////////////////////////////
-
                     if (strtolower($args[0]) == "accept") {
                         $lowercaseName = strtolower($playerName);
                         $result = $this->plugin->db->query("SELECT * FROM confirm WHERE player='$lowercaseName';");
@@ -621,9 +560,7 @@ class FactionCommands {
                             $this->plugin->db->query("DELETE FROM confirm WHERE player='$playerName';");
                         }
                     }
-
                     /////////////////////////////// DENY ///////////////////////////////
-
                     if (strtolower($args[0]) == "deny") {
                         $lowercaseName = strtolower($playerName);
                         $result = $this->plugin->db->query("SELECT * FROM confirm WHERE player='$lowercaseName';");
@@ -643,9 +580,7 @@ class FactionCommands {
                             $this->plugin->db->query("DELETE FROM confirm WHERE player='$lowercaseName';");
                         }
                     }
-
                     /////////////////////////////// DELETE ///////////////////////////////
-
                     if (strtolower($args[0]) == "del") {
                         if ($this->plugin->isInFaction($playerName) == true) {
                             if ($this->plugin->isLeader($playerName)) {
@@ -666,9 +601,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou are not in a faction!"));
                         }
                     }
-
                     /////////////////////////////// LEAVE ///////////////////////////////
-
                     if (strtolower($args[0] == "leave")) {
                         if ($this->plugin->isLeader($playerName) == false) {
                             $remove = $sender->getPlayer()->getNameTag();
@@ -676,16 +609,13 @@ class FactionCommands {
                             $name = $sender->getName();
                             $this->plugin->db->query("DELETE FROM master WHERE player='$name';");
                             $sender->sendMessage($this->plugin->formatMessage("§2You successfully left §5$faction", true));
-
                             $this->plugin->subtractFactionPower($faction, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
                             $this->plugin->updateTag($sender->getName());
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must delete the faction or give\nleadership to someone else first"));
                         }
                     }
-
                     /////////////////////////////// SETHOME ///////////////////////////////
-
                     if (strtolower($args[0] == "sethome")) {
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to do this"));
@@ -705,9 +635,7 @@ class FactionCommands {
                         $result = $stmt->execute();
                         $sender->sendMessage($this->plugin->formatMessage("§aHome set succesfully. §bNow, you can use: §3/f home", true));
                     }
-
                     /////////////////////////////// UNSETHOME ///////////////////////////////
-
                     if (strtolower($args[0] == "unsethome")) {
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to do this"));
@@ -721,9 +649,7 @@ class FactionCommands {
                         $this->plugin->db->query("DELETE FROM home WHERE faction = '$faction';");
                         $sender->sendMessage($this->plugin->formatMessage("§aHome unset succesfully. §3/f home §bwas removed from your faction.", true));
                     }
-
                     /////////////////////////////// HOME ///////////////////////////////
-
                     if (strtolower($args[0] == "home")) {
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to do this"));
@@ -748,7 +674,6 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§cHome is currently not set Set it by using /f sethome"));
                         }
                     }
-
                     /////////////////////////////// MEMBERS/OFFICERS/LEADER AND THEIR STATUSES ///////////////////////////////
                     if (strtolower($args[0] == "ourmembers")) {
                         if (!$this->plugin->isInFaction($playerName)) {
@@ -804,7 +729,38 @@ class FactionCommands {
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $args[1], "Leader");
                     }
-                   
+                    if (strtolower($args[0] == "say")) {
+                        if (true) {
+                            $sender->sendMessage($this->plugin->formatMessage("§c/f say is disabled"));
+                            return true;
+                        }
+                        if (!($this->plugin->isInFaction($playerName))) {
+                            $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to send faction messages"));
+                            return true;
+                        }
+                        $r = count($args);
+                        $row = array();
+                        $rank = "";
+                        $f = $this->plugin->getPlayerFaction($playerName);
+                        if ($this->plugin->isOfficer($playerName)) {
+                            $rank = "*";
+                        } else if ($this->plugin->isLeader($playerName)) {
+                            $rank = "**";
+                        }
+                        $message = "-> ";
+                        for ($i = 0; $i < $r - 1; $i = $i + 1) {
+                            $message = $message . $args[$i + 1] . " ";
+                        }
+                        $result = $this->plugin->db->query("SELECT * FROM master WHERE faction='$f';");
+                        for ($i = 0; $resultArr = $result->fetchArray(SQLITE3_ASSOC); $i = $i + 1) {
+                            $row[$i]['player'] = $resultArr['player'];
+                            $p = $this->plugin->getServer()->getPlayer($row[$i]['player']);
+                            if ($p instanceof Player) {
+                                $p->sendMessage(TextFormat::ITALIC . TextFormat::RED . "<FM>" . TextFormat::AQUA . " <$rank$f> " . TextFormat::GREEN . "<$playerName> " . ": " . TextFormat::RESET);
+                                $p->sendMessage(TextFormat::ITALIC . TextFormat::DARK_AQUA . $message . TextFormat::RESET);
+                            }
+                        }
+                    }
                     ////////////////////////////// ALLY SYSTEM ////////////////////////////////
                     if (strtolower($args[0] == "enemy")) {
                         if (!isset($args[1])) {
@@ -833,7 +789,6 @@ class FactionCommands {
                         }
                         $fac = $this->plugin->getPlayerFaction($playerName);
                         $leader = $this->plugin->getServer()->getPlayer($this->plugin->getLeader($args[1]));
-
                         if (!($leader instanceof Player)) {
                             $sender->sendMessage($this->plugin->formatMessage("§cThe leader of the requested faction is offline"));
                             return true;
@@ -871,7 +826,6 @@ class FactionCommands {
                         $leader = $this->plugin->getServer()->getPlayerExact($this->plugin->getLeader($args[1]));
                         $this->plugin->updateAllies($fac);
                         $this->plugin->updateAllies($args[1]);
-
                         if (!($leader instanceof Player)) {
                             $sender->sendMessage($this->plugin->formatMessage("§cThe leader of the requested faction is offline"));
                             return true;
@@ -918,7 +872,6 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§cYour faction can not break alliance with itself"));
                             return true;
                         }
-
                         $fac = $this->plugin->getPlayerFaction($playerName);
                         $leader = $this->plugin->getServer()->getPlayer($this->plugin->getLeader($args[1]));
                         $this->plugin->deleteAllies($fac, $args[1]);
@@ -948,14 +901,12 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("§aSuccessfully unclaimed the unwanted plot of §2$args[1]"));
                         $this->plugin->db->query("DELETE FROM plots WHERE faction='$args[1]';");
                     }
-
                     if (strtolower($args[0] == "allies")) {
                         if (!isset($args[1])) {
                             if (!$this->plugin->isInFaction($playerName)) {
                                 $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to do this"));
                                 return true;
                             }
-
                             $this->plugin->updateAllies($this->plugin->getPlayerFaction($playerName));
                             $this->plugin->getAllAllies($sender, $this->plugin->getPlayerFaction($playerName));
                         } else {
@@ -1031,28 +982,11 @@ class FactionCommands {
                             $this->plugin->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
                         }
                     }
-
-
                     /////////////////////////////// ABOUT ///////////////////////////////
-
                     if (strtolower($args[0] == 'about')) {
                         $sender->sendMessage(TextFormat::GREEN . "[ORIGINAL] FactionsPro v1.3.2 by " . TextFormat::BOLD . "Tethered_");
                         $sender->sendMessage(TextFormat::GOLD . "[MODDED] This version by §6Void§bFactions§cPE and " . TextFormat::BOLD . "Awzaw");
-			    
-			    }
-		    }
-}
-		 /////////////////////////////// MAP, map by Primus (no compass) ////////////////////////////////
-		// Coupon for compass: G1wEmEde0mp455
-		if(strtolower($args[0] == "map")) {
-		        $map = $this->getMap($sender, self::MAP_WIDTH, self::MAP_HEIGHT, $sender->getYaw(), $this->plugin->prefs->get("PlotSize"));
-		        foreach($map as $line) {
-		                $sender->sendMessage($line);
-		        }
-		        return true;
-					
-	            }
-	    
+                    }
                     ////////////////////////////// CHAT ////////////////////////////////
 		    
                     if (strtolower($args[0]) == "chat" or strtolower($args[0]) == "c") {
@@ -1097,7 +1031,7 @@ class FactionCommands {
                             return true;
                         }
                     }
-		     if (strtolower($args[0] == 'say')) {
+		     if (strtolower($args[0] == "say")) {
 			if (!$this->plugin->prefs->get("AllowChat")) {
 			    $sender->sendMessage($this->plugin->formatMessage("/f say is disabled"));
 			    return true;
@@ -1129,9 +1063,7 @@ class FactionCommands {
 			    }
 			}
 		    }
-
                 /////////////////////////////// INFO ///////////////////////////////
-
                 if (strtolower($args[0]) == 'info') {
                     if (isset($args[1])) {
                         if (!(ctype_alnum($args[1])) or !($this->plugin->factionExists($args[1]))) {
@@ -1184,79 +1116,20 @@ class FactionCommands {
                         $sender->sendMessage(TextFormat::RED . "\n§e/f forceunclaim <faction> §6- [Unclaim a faction plot by force - OP]\n§e/f forcedelete <faction> §6- [Delete a faction by force - OP]");
 			$sender->sendMessage(TextFormat::RED . "\n§7/f enemy <faction> §8- Enemy with a faction.\n§7/f war §8- Request a faction war.");
 			return true;
-                        
-	        } else {
-			$this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("Please run command in game"));
-		}
-	        return true;
+                }
+                return true;
+            }
+        } else {
+            $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("Please run this command in game"));
         }
-	
-	public function getMap(Player $observer, int $width, int $height, int $inDegrees, int $size = 16) { // No compass
-		$to = (int)sqrt($size);
-		$centerPs = new Vector3($observer->x >> $to, 0, $observer->z >> $to);
-		$map = [];
-		$centerFaction = $this->plugin->factionFromPoint($observer->getFloorX(), $observer->getFloorZ());
-		$centerFaction = $centerFaction ? $centerFaction : "Wilderness";
-		$head = TextFormat::GREEN . " (" . $centerPs->getX() . "," . $centerPs->getZ() . ") " . $centerFaction . " " . TextFormat::WHITE;
-		$head = TextFormat::GOLD . str_repeat("_", (($width - strlen($head)) / 2)) . ".[" . $head . TextFormat::GOLD . "]." . str_repeat("_", (($width - strlen($head)) / 2));
-		$map[] = $head;
-		$halfWidth = $width / 2;
-		$halfHeight = $height / 2;
-		$width = $halfWidth * 2 + 1;
-		$height = $halfHeight * 2 + 1;
-		$topLeftPs = new Vector3($centerPs->x + -$halfWidth, 0, $centerPs->z + -$halfHeight);
-		// Get the compass
-		//$asciiCompass = ASCIICompass::getASCIICompass($inDegrees, TextFormat::RED, TextFormat::GOLD);
-		// Make room for the list of names
-		$height--;
-		/** @var string[] $fList */
-		$fList = array();
-		$chrIdx = 0;
-		$overflown = false;
-		$chars = self::MAP_KEY_CHARS;
-		// For each row
-		for ($dz = 0; $dz < $height; $dz++) {
-			// Draw and add that row
-			$row = "";
-			for ($dx = 0; $dx < $width; $dx++) {
-				if ($dx == $halfWidth && $dz == $halfHeight) {
-					$row .= (self::MAP_KEY_SEPARATOR);
-					continue;
-				}
-				if (!$overflown && $chrIdx >= strlen(self::MAP_KEY_CHARS)) $overflown = true;
-				$herePs = $topLeftPs->add($dx, 0, $dz);
-				$hereFaction = $this->plugin->factionFromPoint($herePs->x << $to, $herePs->z << $to);
-				$contains = in_array($hereFaction, $fList, true);
-				if ($hereFaction === NULL) {
-					$row .= self::MAP_KEY_WILDERNESS;
-				} elseif (!$contains && $overflown) {
-					$row .= self::MAP_KEY_OVERFLOW;
-				} else {
-					if (!$contains) $fList[$chars{$chrIdx++}] = $hereFaction;
-					$fchar = array_search($hereFaction, $fList);
-					$row .= $this->getColorForTo($observer, $hereFaction) . $fchar;
-				}
-			}
-			$line = $row; // ... ---------------
-			// Add the compass
-			//if ($dz == 0) $line = $asciiCompass[0] . "" . substr($row, 3 * strlen(Constants::MAP_KEY_SEPARATOR));
-			//if ($dz == 1) $line = $asciiCompass[1] . "" . substr($row, 3 * strlen(Constants::MAP_KEY_SEPARATOR));
-			//if ($dz == 2) $line = $asciiCompass[2] . "" . substr($row, 3 * strlen(Constants::MAP_KEY_SEPARATOR));
-			$map[] = $line;
-		}
-		$fRow = "";
-		foreach ($fList as $char => $faction) {
-			$fRow .= $this->getColorForTo($observer, $faction) . $char . ": " . $faction . " ";
-		}
-		if ($overflown) $fRow .= self::MAP_OVERFLOW_MESSAGE;
-		$fRow = trim($fRow);
-		$map[] = $fRow;
-		return $map;
-	}
-	public function getColorForTo(Player $player, $faction) {
-		if($this->plugin->getPlayerFaction($player->getName()) === $faction) {
-			return TextFormat::GREEN;
-		}
-		return TextFormat::LIGHT_PURPLE;
-	}
+        return true;
+    }
+    public function alphanum($string){
+        if(function_exists('ctype_alnum')){
+            $return = ctype_alnum($string);
+        }else{
+            $return = preg_match('/^[a-z0-9]+$/i', $string) > 0;
+        }
+        return $return;
+    }
 }
