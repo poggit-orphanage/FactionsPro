@@ -159,7 +159,8 @@ class FactionCommands {
 		                $sender->getServer()->broadcastMessage(str_replace([
 			            "%PLAYER%",
 		                    "%FACTION%",
-				    "§"
+				    "§",
+				    "&"
     	                            ], [
 				    $sender->getName(),
 				    $factionName
