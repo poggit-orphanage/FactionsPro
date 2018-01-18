@@ -1055,7 +1055,7 @@ class FactionCommands {
 }
 		 /////////////////////////////// MAP, map by Primus (no compass) ////////////////////////////////
 		// Coupon for compass: G1wEmEde0mp455
-		if(strtolower($args[0] == 'map')) {
+		if(strtolower($args[0] == "map")) {
 		        $map = $this->getMap($sender, self::MAP_WIDTH, self::MAP_HEIGHT, $sender->getYaw(), $this->plugin->prefs->get("PlotSize"));
 		        foreach($map as $line) {
 		                $sender->sendMessage($line);
@@ -1196,7 +1196,7 @@ class FactionCommands {
 			$sender->sendMessage(TextFormat::RED . "\n§7/f enemy <faction> §8- Enemy with a faction.\n§7/f war §8- Request a faction war.");
 			return true;
                         
-		   } else {
+	        } else {
 			$this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("Please run command in game"));
 		}
 	}
