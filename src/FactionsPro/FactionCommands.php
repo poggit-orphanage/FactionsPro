@@ -733,34 +733,39 @@ class FactionCommands {
                         $this->plugin->getPlayersInFactionByRank($sender, $args[1], "Leader");
                     }
                     if (strtolower($args[0] == "say")) {
-                        if (true) {
-                            $sender->sendMessage($this->plugin->formatMessage("§c/f say is disabled"));
-                            return true;
-                        }
-                        if (!($this->plugin->isInFaction($playerName))) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to send faction messages"));
-                            return true;
-                        }
-                        $r = count($args);
-                        $row = array();
-                        $rank = "";
-                        $f = $this->plugin->getPlayerFaction($playerName);
-                        if ($this->plugin->isOfficer($playerName)) {
-                            $rank = "*";
-                        } else if ($this->plugin->isLeader($playerName)) {
-                            $rank = "**";
-                        }
-                        $message = "-> ";
-                        for ($i = 0; $i < $r - 1; $i = $i + 1) {
-                            $message = $message . $args[$i + 1] . " ";
-                        }
-                        $result = $this->plugin->db->query("SELECT * FROM master WHERE faction='$f';");
-                        for ($i = 0; $resultArr = $result->fetchArray(SQLITE3_ASSOC); $i = $i + 1) {
-                            $row[$i]['player'] = $resultArr['player'];
-                            $p = $this->plugin->getServer()->getPlayer($row[$i]['player']);
-                            if ($p instanceof Player) {
-                                $p->sendMessage(TextFormat::ITALIC . TextFormat::RED . "<FM>" . TextFormat::AQUA . " <$rank$f> " . TextFormat::GREEN . "<$playerName> " . ": " . TextFormat::RESET);
-                                $p->sendMessage(TextFormat::ITALIC . TextFormat::DARK_AQUA . $message . TextFormat::RESET);
+1078	+  			if (!$this->plugin->prefs->get("AllowChat")) {
+1079	+  			    $sender->sendMessage($this->plugin->formatMessage("/f say is disabled"));
+1080	+  			    return true;
+1081	+  			}
+1082	+  			if (!($this->plugin->isInFaction($playerName))) {
+1083	+ 
+1084	+  			    $sender->sendMessage($this->plugin->formatMessage("You must be in a faction to send faction messages"));
+1085	+  			    return true;
+1086	+  			}
+1087	+  			$r = count($args);
+1088	+  			$row = array();
+1089	+  			$rank = "";
+1090	+  			$f = $this->plugin->getPlayerFaction($playerName);
+1091	+ 
+1092	+  			if ($this->plugin->isOfficer($playerName)) {
+1093	+  			    $rank = "*";
+1094	+  			} else if ($this->plugin->isLeader($playerName)) {
+1095	+  			    $rank = "**";
+1096	+  			}
+1097	+  			$message = "-> ";
+1098	+  			for ($i = 0; $i < $r - 1; $i = $i + 1) {
+1099	+  			    $message = $message . $args[$i + 1] . " ";
+1100	+  			}
+1101	+  			$result = $this->plugin->db->query("SELECT * FROM master WHERE faction='$f';");
+1102	+  			for ($i = 0; $resultArr = $result->fetchArray(SQLITE3_ASSOC); $i = $i + 1) {
+1103	+  			    $row[$i]['player'] = $resultArr['player'];
+1104	+  			    $p = $this->plugin->getServer()->getPlayerExact($row[$i]['player']);
+1105	+  			    if ($p instanceof Player) {
+1106	+  				$p->sendMessage(TextFormat::ITALIC . TextFormat::RED . "<FM>" . TextFormat::AQUA . " <$rank$f> " . TextFormat::GREEN . "<$playerName> " . ": " . TextFormat::RESET);
+1107	+  				$p->sendMessage(TextFormat::ITALIC . TextFormat::DARK_AQUA . $message . TextFormat::RESET);
+1108	+  			    }
+1109	+  			}
+1110	+  		    }
                             }
                         }
                     }
