@@ -1,11 +1,14 @@
 <?php
+
 namespace FactionsPro;
+
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
 use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 use pocketmine\level\Position;
+
 class FactionCommands {
     public $plugin;
     public function __construct(FactionMain $pg) {
@@ -258,7 +261,7 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("§2$args[1] §ahas been promoted to Officer", true));
                         if ($promotee instanceof Player) {
                             $promotee->sendMessage($this->plugin->formatMessage("§aYou were promoted to officer of §2$factionName!", true));
-                            $this->plugin->updateTag($this->plugin->getServer()->getPlayerExact($args[1])->getName());
+                            $this->plugin->updateTag($this->plugin->getServer()->getPlayer($args[1])->getName());
                             return true;
                         }
                     }
@@ -298,7 +301,7 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("§5$args[1] §2has been demoted to Member", true));
                         if ($demotee instanceof Player) {
                             $demotee->sendMessage($this->plugin->formatMessage("§2You were demoted to member of §5$factionName!", true));
-                            $this->plugin->updateTag($this->plugin->getServer()->getPlayerExact($args[1])->getName());
+                            $this->plugin->updateTag($this->plugin->getServer()->getPlayer($args[1])->getName());
                             return true;
                         }
                     }
@@ -331,7 +334,7 @@ class FactionCommands {
                         $this->plugin->subtractFactionPower($factionName, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
                         if ($kicked instanceof Player) {
                             $kicked->sendMessage($this->plugin->formatMessage("§2You have been kicked from \n §5$factionName", true));
-                            $this->plugin->updateTag($this->plugin->getServer()->getPlayerExact($args[1])->getName());
+                            $this->plugin->updateTag($this->plugin->getServer()->getPlayer($args[1])->getName());
                             return true;
                         }
                     }
@@ -526,7 +529,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be leader to use this"));
                             return true;
                         }
-                        $sender->sendMessage($this->plugin->formatMessage("Type your message in chat. It will not be visible to other players", true));
+                        $sender->sendMessage($this->plugin->formatMessage("§bType your message in chat. It will not be visible to other players", true));
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO motdrcv (player, timestamp) VALUES (:player, :timestamp);");
                         $stmt->bindValue(":player", $sender->getName());
                         $stmt->bindValue(":timestamp", time());
@@ -553,7 +556,7 @@ class FactionCommands {
                             $this->plugin->db->query("DELETE FROM confirm WHERE player='$lowercaseName';");
                             $sender->sendMessage($this->plugin->formatMessage("§aYou successfully joined §2$faction", true));
                             $this->plugin->addFactionPower($faction, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
-                            $this->plugin->getServer()->getPlayerExact($array["invitedby"])->sendMessage($this->plugin->formatMessage("§2$playerName §ajoined the faction", true));
+                            $this->plugin->getServer()->getPlayer($array["invitedby"])->sendMessage($this->plugin->formatMessage("§2$playerName §ajoined the faction", true));
                             $this->plugin->updateTag($sender->getName());
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("§cInvite has timed out"));
@@ -823,7 +826,7 @@ class FactionCommands {
                             return true;
                         }
                         $fac = $this->plugin->getPlayerFaction($playerName);
-                        $leader = $this->plugin->getServer()->getPlayerExact($this->plugin->getLeader($args[1]));
+                        $leader = $this->plugin->getServer()->getPlayer($this->plugin->getLeader($args[1]));
                         $this->plugin->updateAllies($fac);
                         $this->plugin->updateAllies($args[1]);
                         if (!($leader instanceof Player)) {
@@ -976,7 +979,7 @@ class FactionCommands {
                             $sender_fac = $this->plugin->getPlayerFaction($playerName);
                             $this->plugin->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
                             $sender->sendMessage($this->plugin->formatMessage("§aYour faction has successfully declined the alliance request.", true));
-                            $this->plugin->getServer()->getPlayerExact($array["requestedby"])->sendMessage($this->plugin->formatMessage("§2$playerName §afrom §2$sender_fac §ahas declined the alliance!"));
+                            $this->plugin->getServer()->getPlayer($array["requestedby"])->sendMessage($this->plugin->formatMessage("§2$playerName §afrom §2$sender_fac §ahas declined the alliance!"));
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("§cRequest has timed out"));
                             $this->plugin->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
