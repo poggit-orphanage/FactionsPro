@@ -36,9 +36,8 @@ class FactionListener implements Listener {
 				$faction = $this->plugin->getPlayerFaction($player);
 				$this->plugin->setMOTD($faction, $player, $motd);
 				$PCE->setCancelled(true);
-				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("Successfully updated the faction description. Type /f info.", true));
+				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("§dSuccessfully updated the faction description. Type §5/f info.", true));
 			}
-			return true;
 		}
 		if(isset($this->plugin->factionChatActive[$player])){
 			if($this->plugin->factionChatActive[$player]){
@@ -95,12 +94,12 @@ class FactionListener implements Listener {
 		$z = $event->getBlock()->getZ();
 		$level = $event->getBlock()->getLevel()->getName();
 		if($this->plugin->pointIsInPlot($x, $z, $level)){
-			if($this->plugin->factionFromPoint($x, $z, $level) === $this->plugin->getFaction($event->getPlayer()->getName())){
-				return;
+			if($this->plugin->factionFromPoint($x, $z, $level) == $this->plugin->getFaction($event->getPlayer()->getName())){
+				return true;
 			}else{
 				$event->setCancelled(true);
-				$event->getPlayer()->sendMessage($this->plugin->formatMessage("You cannot break blocks here. This is already a property of a faction. Type /f plotinfo for details."));
-				return;
+				$event->getPlayer()->sendMessage($this->plugin->formatMessage("§6You cannot break blocks here. This is already a property of a faction. Type §2/f plotinfo §6for details."));
+				return true;
 			}
 		}
 	}
@@ -111,11 +110,11 @@ class FactionListener implements Listener {
      		$level = $event->getBlock()->getLevel()->getName();
 		if($this->plugin->pointIsInPlot($x, $z, $level)) {
 			if($this->plugin->factionFromPoint($x, $z, $level) == $this->plugin->getFaction($event->getPlayer()->getName())) {
-				return;
+				return true;
 			} else {
 				$event->setCancelled(true);
-				$event->getPlayer()->sendMessage($this->plugin->formatMessage("You cannot place blocks here. This is already a property of a faction. Type /f plotinfo for details."));
-				return;
+				$event->getPlayer()->sendMessage($this->plugin->formatMessage("§6You cannot place blocks here. This is already a property of a faction. Type §2/f plotinfo for details."));
+				return true;
 			}
 		}
 	}
