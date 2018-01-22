@@ -758,7 +758,7 @@ class FactionCommands {
               	$result = $this->plugin->db->query("SELECT * FROM master WHERE faction='$f';");
          			for ($i = 0; $resultArr = $result->fetchArray(SQLITE3_ASSOC); $i = $i + 1) {
           			    $row[$i]['player'] = $resultArr['player'];
-         			    $p = $this->plugin->getServer()->getPlayerExact($row[$i]['player']);
+         			    $p = $this->plugin->getServer()->getPlayer($row[$i]['player']);
          			    if ($p instanceof Player) {
          				$p->sendMessage(TextFormat::ITALIC . TextFormat::RED . "<FM>" . TextFormat::AQUA . " <$rank$f> " . TextFormat::GREEN . "<$playerName> " . ": " . TextFormat::RESET);
          				$p->sendMessage(TextFormat::ITALIC . TextFormat::DARK_AQUA . $message . TextFormat::RESET);
