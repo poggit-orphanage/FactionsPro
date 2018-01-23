@@ -385,10 +385,10 @@ class FactionCommands {
                         $z = floor($sender->getZ());
                         if ($this->plugin->drawPlot($sender, $faction, $x, $y, $z, $sender->getPlayer()->getLevel(), $this->plugin->prefs->get("PlotSize")) == false) {
                         }
-                        $sender->sendMessage($this->plugin->formatMessage("Getting your coordinates...", true));
+                        $sender->sendMessage($this->plugin->formatMessage("§dGetting your coordinates...", true));
                         $plot_size = $this->plugin->prefs->get("PlotSize");
                         $faction_power = $this->plugin->getFactionPower($faction);
-                        $sender->sendMessage($this->plugin->formatMessage("Your land has been claimed.", true));
+                        $sender->sendMessage($this->plugin->formatMessage("§bYour land has been claimed.", true));
                     }
                     if (strtolower($args[0]) == 'plotinfo') {
                         $x = floor($sender->getX());
@@ -396,10 +396,11 @@ class FactionCommands {
                         $z = floor($sender->getZ());
                         if (!$this->plugin->isInPlot($sender)) {
                             $sender->sendMessage($this->plugin->formatMessage("§5This plot is not claimed by anyone. §dYou can claim it by typing §5/f claim", true));
-                        }
+			} else {
                         $fac = $this->plugin->factionFromPoint($x, $z, $sender->getPlayer()->getLevel()->getName());
                         $power = $this->plugin->getFactionPower($fac);
                         $sender->sendMessage($this->plugin->formatMessage("§aThis plot is claimed by §2$fac §awith §2$power §aSTR"));
+			return true;
                     }
                     if (strtolower($args[0]) == 'top') {
                         $this->plugin->sendListOfTop10FactionsTo($sender);
@@ -772,7 +773,7 @@ class FactionCommands {
           			    $row[$i]['player'] = $resultArr['player'];
          			    $p = $this->plugin->getServer()->getPlayer($row[$i]['player']);
          			    if ($p instanceof Player) {
-         				$p->sendMessage(TextFormat::ITALIC . TextFormat::RED . "§a§lFACTION BROADCAST §r§a->" . TextFormat::AQUA . " §b$rank$f - " . TextFormat::GREEN . "$playerName " . "§d> " . TextFormat::RESET);
+         				$p->sendMessage(TextFormat::ITALIC . TextFormat::RED . "§a§lFACTION BROADCAST §r§a-" . TextFormat::AQUA . " §b$rank$f - " . TextFormat::GREEN . "$playerName " . "§d> " . TextFormat::RESET);
          				$p->sendMessage(TextFormat::ITALIC . TextFormat::DARK_PURPLE . $message . TextFormat::RESET);
                             }
                         }
@@ -1006,13 +1007,13 @@ class FactionCommands {
 		    
                     if (strtolower($args[0]) == "chat" or strtolower($args[0]) == "c") {
                         if (!$this->plugin->prefs->get("AllowChat")){
-                            $sender->sendMessage($this->plugin->formatMessage("All Faction chat is disabled", false));
+                            $sender->sendMessage($this->plugin->formatMessage("§6All Faction chat is disabled", false));
                         }
                         
                         if ($this->plugin->isInFaction($playerName)) {
                             if (isset($this->plugin->factionChatActive[$playerName])) {
                                 unset($this->plugin->factionChatActive[$playerName]);
-                                $sender->sendMessage($this->plugin->formatMessage("Faction chat disabled", true));
+                                $sender->sendMessage($this->plugin->formatMessage("§6Faction chat disabled", true));
                             } else {
                                 $this->plugin->factionChatActive[$playerName] = 1;
                                 $sender->sendMessage($this->plugin->formatMessage("§aFaction chat enabled", true));
