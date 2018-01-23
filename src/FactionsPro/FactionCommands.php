@@ -614,6 +614,7 @@ class FactionCommands {
 				    $sender->getName(),
 				    $factionName
 			        ], $this->plugin->prefs->get("FactionDisbandBroadcastMessage")));
+				}
                             } else {
                                 $sender->sendMessage($this->plugin->formatMessage("§cYou are not leader!"));
 				return true;
