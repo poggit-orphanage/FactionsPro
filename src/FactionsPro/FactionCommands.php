@@ -772,8 +772,8 @@ class FactionCommands {
           			    $row[$i]['player'] = $resultArr['player'];
          			    $p = $this->plugin->getServer()->getPlayer($row[$i]['player']);
          			    if ($p instanceof Player) {
-         				$p->sendMessage(TextFormat::ITALIC . TextFormat::RED . "§a§lFACTION BROADCAST §r§a-" . TextFormat::AQUA . " §bFaction Rank: §3$rank$f -" . TextFormat::GREEN . "§cPlayer: $playerName " . "§d> " . TextFormat::RESET);
-         				$p->sendMessage(TextFormat::ITALIC . TextFormat::DARK_AQUA . $message . TextFormat::RESET);
+         				$p->sendMessage(TextFormat::ITALIC . TextFormat::RED . "§a§lFACTION BROADCAST §r§a->" . TextFormat::AQUA . " §b$rank$f - " . TextFormat::GREEN . "$playerName " . "§d> " . TextFormat::RESET);
+         				$p->sendMessage(TextFormat::ITALIC . TextFormat::DARK_PURPLE . $message . TextFormat::RESET);
                             }
                         }
                     }
