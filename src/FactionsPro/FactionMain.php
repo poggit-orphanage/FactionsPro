@@ -60,7 +60,9 @@ class FactionMain extends PluginBase implements Listener {
             "ClaimWorlds" => [],
             "AllowChat" => true,
             "AllowFactionPvp" => false,
-            "AllowAlliedPvp" => false
+            "AllowAlliedPvp" => false,
+            "BroadcastFactionCreation" => true,
+            "FactionCreationBroadcast" => The player named: §2%PLAYER% §ahas created a faction §anamed §2%FACTION%
         ));
         $this->db = new \SQLite3($this->getDataFolder() . "FactionsPro.db");
         $this->db->exec("CREATE TABLE IF NOT EXISTS master (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, rank TEXT);");
