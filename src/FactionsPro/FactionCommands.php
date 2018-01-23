@@ -146,9 +146,12 @@ class FactionCommands {
 				    $sender->getName(),
 				    $factionName
 			        ], $this->plugin->prefs->get("FactionCreationBroadcastMessage")));
+			   }
                             $sender->sendMessage($this->plugin->formatMessage("§aThe Faction named §2$factionName §ahas been created", true));
+                            return true;
                         }
                     }
+
                     /////////////////////////////// INVITE ///////////////////////////////
                     if ($args[0] == "invite") {
                         if (!isset($args[1])) {
@@ -1099,6 +1102,7 @@ class FactionCommands {
         }
         return true;
     }
+
     public function alphanum($string){
         if(function_exists('ctype_alnum')){
             $return = ctype_alnum($string);
