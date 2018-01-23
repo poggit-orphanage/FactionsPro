@@ -606,6 +606,14 @@ class FactionCommands {
                                 $this->plugin->db->query("DELETE FROM home WHERE faction='$faction';");
                                 $sender->sendMessage($this->plugin->formatMessage("§2The Faction named: §5$faction §2has been successfully disbanded and the faction plot was unclaimed", true));
                                 $this->plugin->updateTag($sender->getName());
+				if($this->plugin->prefs->get("BroadcastFactionDisband")){
+		                $sender->getServer()->broadcastMessage(str_replace([
+			            "%PLAYER%",
+		                    "%FACTION%"
+				    ], [
+				    $sender->getName(),
+				    $factionName
+			        ], $this->plugin->prefs->get("FactionDisbandBroadcastMessage")));
                             } else {
                                 $sender->sendMessage($this->plugin->formatMessage("§cYou are not leader!"));
 				return true;
