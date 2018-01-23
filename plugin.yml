@@ -3,11 +3,11 @@ author: Tethered_, edited by VMPE Development Team
 description: A Factions plugin.
 version: 1.3.11-6
 main: FactionsPro\FactionMain
-api: [3.0.0-ALPHA9, 3.0.0-ALPHA10]
+api: [3.0.0-ALPHA10]
 softdepend: ["PureChat", "AntiSpamPro"]
 commands:
   f:
-    description: use /f help for all parameters
+    description: Faction commands.
     permission: f.command
 permissions:
   f.command:
