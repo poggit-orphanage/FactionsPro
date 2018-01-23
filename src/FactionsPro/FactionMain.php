@@ -62,7 +62,9 @@ class FactionMain extends PluginBase implements Listener {
             "AllowFactionPvp" => false,
             "AllowAlliedPvp" => false,
             "BroadcastFactionCreation" => true,
-            "FactionCreationBroadcast" => 1
+            "FactionCreationBroadcast" => "%PLAYER% created a faction named %FACTION%",
+            "BroadcastFactionDisband" => true,
+            "FactionDisbandBroadcast" => "The Faction named %FACTION% was disbaned by %PLAYER%"
         ));
         $this->db = new \SQLite3($this->getDataFolder() . "FactionsPro.db");
         $this->db->exec("CREATE TABLE IF NOT EXISTS master (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, rank TEXT);");
