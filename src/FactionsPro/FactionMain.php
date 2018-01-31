@@ -7,7 +7,7 @@ use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\player\{PlayerJoinEvent, PlayerChatEvent};
 use pocketmine\Player;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
-use pocketmine\utils\{TextFormat as TF, Config};
+use pocketmine\utils\TextFormat;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\block\Snow;
 use pocketmine\math\Vector3;
