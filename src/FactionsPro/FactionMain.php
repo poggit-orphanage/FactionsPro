@@ -49,7 +49,7 @@ class FactionMain extends PluginBase implements Listener {
             "MaxPlayersPerFaction" => 30,
             "OnlyLeadersAndOfficersCanInvite" => true,
             "OfficersCanClaim" => false,
-            "PlotSize" => 25,
+            "PlotSize" => 26,
             "PlayersNeededInFactionToClaimAPlot" => 5,
             "PowerNeededToClaimAPlot" => 1000,
             "PowerNeededToSetOrUpdateAHome" => 250,
