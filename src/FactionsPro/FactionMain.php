@@ -429,7 +429,7 @@ class FactionMain extends PluginBase implements Listener {
             $j = $i + 1;
             $cf = $resultArr['faction'];
             $pf = $resultArr["cash"];
-            $s->sendMessage(TF::BOLD.TF::AQUA.$j.". ".TF::RESET.TF::WHITE.$cf.TF::AQUA.TF::BOLD." - ".TF::LIGHT_PURPLE."$".$pf);
+            $s->sendMessage(TF::BOLD.TF::AQUA.$j.". ".TextFormat::RESET.TextFormat::WHITE.$cf.TF::AQUA.TextFormat::BOLD." - ".TextFormat::LIGHT_PURPLE."$".$pf);
             $i = $i + 1;
         } 
     }
