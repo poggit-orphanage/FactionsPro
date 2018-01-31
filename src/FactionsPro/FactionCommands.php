@@ -137,7 +137,6 @@ class FactionCommands {
                             $result = $stmt->execute();
                             $this->plugin->updateAllies($factionName);
                             $this->plugin->setFactionPower($factionName, $this->plugin->prefs->get("TheDefaultPowerEveryFactionStartsWith"));
-                            $this->plugin->updateTag($sender->getName());
                             if($this->plugin->prefs->get("BroadcastFactionCreation")){
 		                $sender->getServer()->broadcastMessage(str_replace([
 			            "%PLAYER%",
