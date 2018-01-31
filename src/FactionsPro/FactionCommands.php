@@ -233,7 +233,7 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("§2You are no longer leader", true));
                         $this->plugin->getServer()->getPlayer($args[1])->sendMessage($this->plugin->formatMessage("§aYou are now leader \nof $factionName!", true));
                         $this->plugin->updateTag($sender->getName());
-                        $this->plugin->updateTag($this->plugin->getServer()->getPlayerExact($args[1])->getName());
+                        $this->plugin->updateTag($this->plugin->getServer()->getPlayer($args[1])->getName());
                     }
                     /////////////////////////////// PROMOTE ///////////////////////////////
                     if ($args[0] == "promote") {
@@ -271,7 +271,6 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("§2$args[1] §ahas been promoted to Officer", true));
                         if ($promotee instanceof Player) {
                             $promotee->sendMessage($this->plugin->formatMessage("§aYou were promoted to officer of §2$factionName!", true));
-                            $this->plugin->updateTag($this->plugin->getServer()->getPlayer($args[1])->getName());
                             return true;
                         }
                     }
@@ -311,7 +310,6 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("§5$args[1] §2has been demoted to Member", true));
                         if ($demotee instanceof Player) {
                             $demotee->sendMessage($this->plugin->formatMessage("§2You were demoted to member of §5$factionName!", true));
-                            $this->plugin->updateTag($this->plugin->getServer()->getPlayer($args[1])->getName());
                             return true;
                         }
                     }
@@ -344,7 +342,6 @@ class FactionCommands {
                         $this->plugin->subtractFactionPower($factionName, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
                         if ($kicked instanceof Player) {
                             $kicked->sendMessage($this->plugin->formatMessage("§2You have been kicked from \n §5$factionName", true));
-                            $this->plugin->updateTag($this->plugin->getServer()->getPlayer($args[1])->getName());
                             return true;
                         }
                     }
@@ -574,7 +571,6 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§aYou successfully joined §2$faction", true));
                             $this->plugin->addFactionPower($faction, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
                             $this->plugin->getServer()->getPlayer($array["invitedby"])->sendMessage($this->plugin->formatMessage("§2$playerName §ajoined the faction", true));
-                            $this->plugin->updateTag($sender->getName());
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("§cInvite has timed out"));
                             $this->plugin->db->query("DELETE FROM confirm WHERE player='$playerName';");
@@ -613,7 +609,6 @@ class FactionCommands {
                                 $this->plugin->db->query("DELETE FROM motd WHERE faction='$faction';");
                                 $this->plugin->db->query("DELETE FROM home WHERE faction='$faction';");
                                 $sender->sendMessage($this->plugin->formatMessage("§2The Faction named: §5$faction §2has been successfully disbanded and the faction plot was unclaimed", true));
-                                $this->plugin->updateTag($sender->getName());
 				if($this->plugin->prefs->get("BroadcastFactionDisband")){
 		                $sender->getServer()->broadcastMessage(str_replace([
 			            "%PLAYER%",
@@ -635,13 +630,11 @@ class FactionCommands {
                     /////////////////////////////// LEAVE ///////////////////////////////
                     if (strtolower($args[0] == "leave")) {
                         if ($this->plugin->isLeader($playerName) == false) {
-                            $remove = $sender->getPlayer()->getNameTag();
                             $faction = $this->plugin->getPlayerFaction($playerName);
                             $name = $sender->getName();
                             $this->plugin->db->query("DELETE FROM master WHERE player='$name';");
                             $sender->sendMessage($this->plugin->formatMessage("§2You successfully left §5$faction", true));
                             $this->plugin->subtractFactionPower($faction, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
-                            $this->plugin->updateTag($sender->getName());
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must delete the faction or give\nleadership to someone else first"));
 			    return true;
@@ -696,7 +689,7 @@ class FactionCommands {
 								return true;
 							}
 							if(Server::getInstance()->loadLevel($array['world']) === false){
-								$sender->sendMessage($this->plugin->formatMessage("The world '" . $array['world'] .  "'' could not be found"));
+								$sender->sendMessage($this->plugin->formatMessage("§cThe world §3'" . $array['world'] .  "'' §ccould not be found"));
 								return true;
 							}
 							$level = Server::getInstance()->getLevelByName($array['world']);
@@ -1067,68 +1060,66 @@ class FactionCommands {
 						}
 						$faction = $this->plugin->getPlayerFaction($playerName);
 						$balance = $this->plugin->getBalance($faction);
-						$sender->sendMessage($this->plugin->formatMessage("Faction balance: " . TextFormat::GOLD . "$".$balance));
+						$sender->sendMessage($this->plugin->formatMessage("§6Faction balance: " . TextFormat::GREEN . "$".$balance));
 						return true;
 					}
 					if(strtolower($args[0]) === "withdraw" or strtolower($args[0]) === "wd"){
-							$sender->sendMessage($this->plugin->formatMessage("This action currently is not available", true));
+							$sender->sendMessage($this->plugin->formatMessage("§cThis action currently is not available", true));
 							return true;
-							/*
                         if(($e = $this->plugin->getEconomy()) == null){
 						}
 						if(!isset($args[1])){
-							$sender->sendMessage($this->plugin->formatMessage("Usage: /f withdraw <amount>"));
+							$sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f withdraw <amount>"));
 							return true;
 						}
 						if(!is_numeric($args[1])){
-							$sender->sendMessage($this->plugin->formatMessage("Amount must be numeric value", false));
+							$sender->sendMessage($this->plugin->formatMessage("§cAmount must be numeric value", false));
 							return true;
 						}
 						if(!$this->plugin->isInFaction($playerName)){
-							$sender->sendMessage($this->plugin->formatMessage("You must be in faction to check balance!", false));
+							$sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to check balance!", false));
 							return true;
 						}
 						if(!$this->plugin->isLeader($playerName)){
-							$sender->sendMessage($this->plugin->formatMessage("Only leader can withdraw from faction bank account!", false));
+							$sender->sendMessage($this->plugin->formatMessage("§cOnly leader can withdraw from faction bank account!", false));
 							return true;
 						}
 						$faction = $this->plugin->getPlayerFaction($sender->getName());
 						if( (($fM = $this->plugin->getBalance($faction)) - ($args[1]) ) < 0 ){
-							$sender->sendMessage($this->plugin->formatMessage("Your faction doesn't have enough money!", false));
+							$sender->sendMessage($this->plugin->formatMessage("§cYour faction doesn't have enough money!", false));
 							return true;
 						}
 						$this->plugin->takeFromBalance($faction, $args[1]);
 						$e->addMoney($sender, $args[1], false, "faction bank account");
-						$sender->sendMessage($this->plugin->formatMessage("$".$args[1]." granted from faction", true));
+						$sender->sendMessage($this->plugin->formatMessage("§a$".$args[1]." §dgranted from faction", true));
 						return true;
-							*/
 					}
 					if(strtolower($args[0]) === "donate"){
-							$sender->sendMessage($this->plugin->formatMessage("This action currently is not available", true));
+							$sender->sendMessage($this->plugin->formatMessage("§cThis action currently is not available", true));
 							return true;
-                        /*if(($e = $this->plugin->getEconomy()) === null){
+                        if(($e = $this->plugin->getEconomy()) === null){
 						}
 						if(!isset($args[1])){
-							$sender->sendMessage($this->plugin->formatMessage("Usage: /f donate <amount>"));
+							$sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f donate <amount>"));
 							return true;
 						}
 						if(!is_numeric($args[1])){
-							$sender->sendMessage($this->plugin->formatMessage("Amount must be numeric value", false));
+							$sender->sendMessage($this->plugin->formatMessage("§cAmount must be numeric value", false));
 							return true;
 						}
 						if(!$this->plugin->isInFaction($playerName)){
-							$sender->sendMessage($this->plugin->formatMessage("You must be in faction to donate", false));
+							$sender->sendMessage($this->plugin->formatMessage("§cYou must be in faction to donate", false));
 							return true;
 						}
 						if( ( ($e->myMoney($sender)) - ($args[1]) ) < 0 ){
-							$sender->sendMessage($this->plugin->formatMessage("You dont have enough money!", false));
+							$sender->sendMessage($this->plugin->formatMessage("§cYou dont have enough money!", false));
 							return true;
 						}
 						$faction = $this->plugin->getPlayerFaction($sender->getName());
 						if($e->reduceMoney($sender, $args[1], false, "faction bank account") === \onebone\economyapi\EconomyAPI::RET_SUCCESS){
 							$this->plugin->addToBalance($faction, $args[1]);
-							$sender->sendMessage($this->plugin->formatMessage("$".$args[1]." donated to your faction"));
-						}*/
+							$sender->sendMessage($this->plugin->formatMessage("§a$".$args[1]." §ddonated to your faction"));
+						}
 					}
 
                 /////////////////////////////// INFO ///////////////////////////////
