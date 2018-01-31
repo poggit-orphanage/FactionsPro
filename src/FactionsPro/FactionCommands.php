@@ -148,6 +148,7 @@ class FactionCommands {
 			        ], $this->plugin->prefs->get("FactionCreationBroadcastMessage")));
 			   }
                             $sender->sendMessage($this->plugin->formatMessage("§aThe Faction named §2$factionName §ahas been created", true));
+			    var_dump($this->plugin->db->query("SELECT * FROM balance;")->fetchArray(SQLITE3_ASSOC));
                             return true;
                         }
                     }
@@ -544,6 +545,17 @@ class FactionCommands {
                         $stmt->bindValue(":timestamp", time());
                         $result = $stmt->execute();
                     }
+		    /////////////////////////////// TOP, also by @PrimusLV //////////////////////////
+					if(strtolower($args[0]) === "top"){
+						if(isset($args[1]) && $args[1] === "money"){
+                            $this->plugin->sendListOfTop10RichestFactionsTo($sender);
+						}else{
+                            $this->plugin->sendListOfTop10FactionsTo($sender);
+							//$this->plugin->sendListOfTop10RichestFactionsTo($sender);
+						}
+						return true;
+					}
+		    
                     /////////////////////////////// ACCEPT ///////////////////////////////
                     if (strtolower($args[0]) == "accept") {
                         $lowercaseName = strtolower($playerName);
@@ -1051,6 +1063,77 @@ class FactionCommands {
                             return true;
                         }
                     }
+		////////////////////////////// BALANCE, by primus ;) ///////////////////////////////////////
+					if(strtolower($args[0]) === "bal" or strtolower($args[0]) === "balance"){
+						if(!$this->plugin->isInFaction($player)){
+							$sender->sendMessage($this->plugin->formatMessage("You must be in faction to check balance!", false));
+							return true;
+						}
+						$faction = $this->plugin->getPlayerFaction($player);
+						$balance = $this->plugin->getBalance($faction);
+						$sender->sendMessage($this->plugin->formatMessage("Faction balance: " . TF::GOLD . "$".$balance));
+						return true;
+					}
+					if(strtolower($args[0]) === "withdraw" or strtolower($args[0]) === "wd"){
+							$sender->sendMessage($this->plugin->formatMessage("This action currently is not available", true));
+							return true;
+							/*
+                        if(($e = $this->plugin->getEconomy()) == null){
+						}
+						if(!isset($args[1])){
+							$sender->sendMessage($this->plugin->formatMessage("Usage: /f withdraw <amount>"));
+							return true;
+						}
+						if(!is_numeric($args[1])){
+							$sender->sendMessage($this->plugin->formatMessage("Amount must be numeric value", false));
+							return true;
+						}
+						if(!$this->plugin->isInFaction($player)){
+							$sender->sendMessage($this->plugin->formatMessage("You must be in faction to check balance!", false));
+							return true;
+						}
+						if(!$this->plugin->isLeader($player)){
+							$sender->sendMessage($this->plugin->formatMessage("Only leader can withdraw from faction bank account!", false));
+							return true;
+						}
+						$faction = $this->plugin->getPlayerFaction($sender->getName());
+						if( (($fM = $this->plugin->getBalance($faction)) - ($args[1]) ) < 0 ){
+							$sender->sendMessage($this->plugin->formatMessage("Your faction doesn't have enough money!", false));
+							return true;
+						}
+						$this->plugin->takeFromBalance($faction, $args[1]);
+						$e->addMoney($sender, $args[1], false, "faction bank account");
+						$sender->sendMessage($this->plugin->formatMessage("$".$args[1]." granted from faction", true));
+						return true;
+							*/
+					}
+					if(strtolower($args[0]) === "donate"){
+							$sender->sendMessage($this->plugin->formatMessage("This action currently is not available", true));
+							return true;
+                        /*if(($e = $this->plugin->getEconomy()) === null){
+						}
+						if(!isset($args[1])){
+							$sender->sendMessage($this->plugin->formatMessage("Usage: /f donate <amount>"));
+							return true;
+						}
+						if(!is_numeric($args[1])){
+							$sender->sendMessage($this->plugin->formatMessage("Amount must be numeric value", false));
+							return true;
+						}
+						if(!$this->plugin->isInFaction($player)){
+							$sender->sendMessage($this->plugin->formatMessage("You must be in faction to donate", false));
+							return true;
+						}
+						if( ( ($e->myMoney($sender)) - ($args[1]) ) < 0 ){
+							$sender->sendMessage($this->plugin->formatMessage("You dont have enough money!", false));
+							return true;
+						}
+						$faction = $this->plugin->getPlayerFaction($sender->getName());
+						if($e->reduceMoney($sender, $args[1], false, "faction bank account") === \onebone\economyapi\EconomyAPI::RET_SUCCESS){
+							$this->plugin->addToBalance($faction, $args[1]);
+							$sender->sendMessage($this->plugin->formatMessage("$".$args[1]." donated to your faction"));
+						}*/
+					}
 
                 /////////////////////////////// INFO ///////////////////////////////
                 if (strtolower($args[0]) == 'info') {
