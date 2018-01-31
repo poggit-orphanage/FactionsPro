@@ -1,18 +1,18 @@
 <?php
-
 namespace FactionsPro;
-
 use pocketmine\plugin\PluginBase;
-use pocketmine\command\CommandSender;
-use pocketmine\command\Command;
+use pocketmine\command\{Command, CommandSender};
 use pocketmine\event\Listener;
-use pocketmine\level\Level;
+use pocketmine\event\block\BlockBreakEvent;
+use pocketmine\event\player\{PlayerJoinEvent, PlayerChatEvent};
 use pocketmine\Player;
-use pocketmine\Server;
-use pocketmine\utils\TextFormat;
-use pocketmine\utils\Config;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\utils\{TextFormat as TF, Config};
+use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\block\Snow;
 use pocketmine\math\Vector3;
+use pocketmine\level\Position;
+use pocketmine\entity\{Skeleton, Pig, Chicken, Zombie, Creeper, Cow, Spider, Blaze, Ghast};
 
 class FactionMain extends PluginBase implements Listener {
     
@@ -25,6 +25,7 @@ class FactionMain extends PluginBase implements Listener {
     public $purechat;
     public $factionChatActive = [];
     public $allyChatActive = [];
+    private $prefix = "§l§f[§bFactions§f] §r";
     public function onEnable() {
         @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
@@ -64,8 +65,31 @@ class FactionMain extends PluginBase implements Listener {
             "BroadcastFactionCreation" => true,
             "FactionCreationBroadcast" => "%PLAYER% created a faction named %FACTION%",
             "BroadcastFactionDisband" => true,
-            "FactionDisbandBroadcast" => "The Faction named %FACTION% was disbaned by %PLAYER%"
-        ));
+            "FactionDisbandBroadcast" => "The Faction named %FACTION% was disbaned by %PLAYER%",
+            "defaultFactionBalance" => 0,
+                "prefix" => "§l§f[§bFactions§f] §r",
+                "spawnerPrices" => [
+                	"skeleton" => 500,
+                	"pig" => 200,
+                	"chicken" => 100,
+                	"iron golem" => 5000,
+                	"zombie" => 800,
+                	"creeper" => 4000,
+                	"cow" => 700,
+                	"spider" => 500,
+                	"magma" => 10000,
+                	"ghast" => 10000,
+                	"blaze" => 15000,
+					"empty" => 100
+                ],
+		));
+		$this->prefix = $this->prefs->get("prefix", $this->prefix);
+		if(sqrt($size = $this->prefs->get("PlotSize")) % 2 !== 0){
+			$this->getLogger()->notice("Square Root Of Plot Size ($size) Must Not Be An Odd Number! (Currently: ".(sqrt($size = $this->prefs->get("PlotSize"))).")");
+			$this->getLogger()->notice("Available Sizes: 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024");
+			$this->getLogger()->notice("Plot Size Set To 16");
+			$this->prefs->set("PlotSize", 16);
+		}
         $this->db = new \SQLite3($this->getDataFolder() . "FactionsPro.db");
         $this->db->exec("CREATE TABLE IF NOT EXISTS master (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, rank TEXT);");
         $this->db->exec("CREATE TABLE IF NOT EXISTS confirm (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, invitedby TEXT, timestamp INT);");
@@ -78,6 +102,8 @@ class FactionMain extends PluginBase implements Listener {
         $this->db->exec("CREATE TABLE IF NOT EXISTS allies(ID INT PRIMARY KEY,faction1 TEXT, faction2 TEXT);");
         $this->db->exec("CREATE TABLE IF NOT EXISTS enemies(ID INT PRIMARY KEY,faction1 TEXT, faction2 TEXT);");
         $this->db->exec("CREATE TABLE IF NOT EXISTS alliescountlimit(faction TEXT PRIMARY KEY, count INT);");
+        
+        $this->db->exec("CREATE TABLE IF NOT EXISTS balance(faction TEXT PRIMARY KEY, cash INT)");
         try{
             $this->db->exec("ALTER TABLE plots ADD COLUMN world TEXT default null");
             Server::getInstance()->getLogger()->info(TextFormat::GREEN . "FactionPro: Added 'world' column to plots");
@@ -93,6 +119,7 @@ class FactionMain extends PluginBase implements Listener {
         $stmt->bindValue(":faction2", $faction2);
         $stmt->execute();
     }
+    
     public function areEnemies($faction1, $faction2) {
         $result = $this->db->query("SELECT ID FROM enemies WHERE faction1 = '$faction1' AND faction2 = '$faction2';");
         $resultArr = $result->fetchArray(SQLITE3_ASSOC);
@@ -100,16 +127,19 @@ class FactionMain extends PluginBase implements Listener {
             return true;
         }
     }
+    
     public function isInFaction($player) {
         $result = $this->db->query("SELECT player FROM master WHERE player='$player';");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
+    
     public function getFaction($player) {
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["faction"];
     }
+    
     public function setFactionPower($faction, $power) {
         if ($power < 0) {
             $power = 0;
@@ -365,26 +395,55 @@ class FactionMain extends PluginBase implements Listener {
         $result = $stmt->execute();
         $this->db->query("DELETE FROM motdrcv WHERE player='$player';");
     }
-    public function updateTag($playername) {
-        $p = $this->getServer()->getPlayer($playername);
-        $f = $this->getPlayerFaction($playername);
-        if (!$this->isInFaction($playername)) {
-            if(isset($this->purechat)){
-                $levelName = $this->purechat->getConfig()->get("enable-multiworld-chat") ? $p->getLevel()->getName() : null;
-                $nameTag = $this->purechat->getNametag($p, $levelName);
-                $p->setNameTag($nameTag);
-            }else{
-                $p->setNameTag(TextFormat::ITALIC . TextFormat::YELLOW . "<$playername>");
-            }
-        }elseif(isset($this->purechat)) {
-            $levelName = $this->purechat->getConfig()->get("enable-multiworld-chat") ? $p->getLevel()->getName() : null;
-            $nameTag = $this->purechat->getNametag($p, $levelName);
-            $p->setNameTag($nameTag);
-        } else {
-            $p->setNameTag(TextFormat::ITALIC . TextFormat::GOLD . "<$f> " .
-                TextFormat::ITALIC . TextFormat::YELLOW . "<$playername>");
-        }
+    
+    public function getBalance($faction){
+		$stmt = $this->db->query("SELECT * FROM balance WHERE `faction` LIKE '$faction';");
+		$array = $stmt->fetchArray(SQLITE3_ASSOC);
+		if(!$array){
+			$this->setBalance($faction, $this->prefs->get("defaultFactionBalance", 0));
+			$this->getBalance($faction);
+		}
+		return $array["cash"];
+	}
+	public function setBalance($faction, int $money){
+		$stmt = $this->db->prepare("INSERT OR REPLACE INTO balance (faction, cash) VALUES (:faction, :cash);");
+		$stmt->bindValue(":faction", $faction);
+		$stmt->bindValue(":cash", $money);
+		return $stmt->execute();
+	}
+	public function addToBalance($faction, int $money){
+		if($money < 0) return false;
+		return $this->setBalance($faction, $this->getBalance($faction) + $money);
+	}
+	public function takeFromBalance($faction, int $money){
+		if($money < 0) return false;
+		return $this->setBalance($faction, $this->getBalance($faction) - $money);
+	}
+	public function sendListOfTop10RichestFactionsTo(Player $s){
+        $result = $this->db->query("SELECT * FROM balance ORDER BY cash DESC LIMIT 10;");
+        $i = 0;
+        $s->sendMessage(TF::BOLD.TF::AQUA."Top 10 Richest Factions".TF::RESET);
+        while($resultArr = $result->fetchArray(SQLITE3_ASSOC)){
+        	var_dump($resultArr);
+            $j = $i + 1;
+            $cf = $resultArr['faction'];
+            $pf = $resultArr["cash"];
+            $s->sendMessage(TF::BOLD.TF::AQUA.$j.". ".TF::RESET.TF::WHITE.$cf.TF::AQUA.TF::BOLD." - ".TF::LIGHT_PURPLE."$".$pf);
+            $i = $i + 1;
+        } 
     }
+	public function getSpawnerPrice(string $type) : int {
+		$sp = $this->prefs->get("spawnerPrices");
+		if(isset($sp[$type])) return $sp[$type];
+		return 0;
+	}
+	public function getEconomy(){
+		$pl = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+		if(!$pl) return $pl;
+		if(!$pl->isEnabled()) return null;
+		return $pl;
+	}
+    
     public function onDisable() {
         $this->db->close();
     }
