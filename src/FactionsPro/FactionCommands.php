@@ -404,9 +404,6 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("§aThis plot is claimed by §2$fac §awith §2$power §aSTR"));
 			return true;
                     }
-                    if (strtolower($args[0]) == 'top') {
-                        $this->plugin->sendListOfTop10FactionsTo($sender);
-                    }
                     if (strtolower($args[0]) == 'forcedelete') {
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f forcedelete <faction>"));
@@ -1065,11 +1062,11 @@ class FactionCommands {
                     }
 		////////////////////////////// BALANCE, by primus ;) ///////////////////////////////////////
 					if(strtolower($args[0]) === "bal" or strtolower($args[0]) === "balance"){
-						if(!$this->plugin->isInFaction($player)){
+						if(!$this->plugin->isInFaction($playerName)){
 							$sender->sendMessage($this->plugin->formatMessage("You must be in faction to check balance!", false));
 							return true;
 						}
-						$faction = $this->plugin->getPlayerFaction($player);
+						$faction = $this->plugin->getPlayerFaction($playerName);
 						$balance = $this->plugin->getBalance($faction);
 						$sender->sendMessage($this->plugin->formatMessage("Faction balance: " . TF::GOLD . "$".$balance));
 						return true;
@@ -1088,11 +1085,11 @@ class FactionCommands {
 							$sender->sendMessage($this->plugin->formatMessage("Amount must be numeric value", false));
 							return true;
 						}
-						if(!$this->plugin->isInFaction($player)){
+						if(!$this->plugin->isInFaction($playerName)){
 							$sender->sendMessage($this->plugin->formatMessage("You must be in faction to check balance!", false));
 							return true;
 						}
-						if(!$this->plugin->isLeader($player)){
+						if(!$this->plugin->isLeader($playerName)){
 							$sender->sendMessage($this->plugin->formatMessage("Only leader can withdraw from faction bank account!", false));
 							return true;
 						}
@@ -1120,7 +1117,7 @@ class FactionCommands {
 							$sender->sendMessage($this->plugin->formatMessage("Amount must be numeric value", false));
 							return true;
 						}
-						if(!$this->plugin->isInFaction($player)){
+						if(!$this->plugin->isInFaction($playerName)){
 							$sender->sendMessage($this->plugin->formatMessage("You must be in faction to donate", false));
 							return true;
 						}
