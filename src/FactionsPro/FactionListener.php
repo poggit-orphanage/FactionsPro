@@ -23,26 +23,26 @@ class FactionListener implements Listener {
 	
 	public function factionChat(PlayerChatEvent $PCE) {
 		
-		$player = $PCE->getPlayer()->getName();
+		$playerName = $PCE->getPlayer()->getName();
 		//MOTD Check
-		if($this->plugin->motdWaiting($player)) {
-			if(time() - $this->plugin->getMOTDTime($player) > 30) {
+		if($this->plugin->motdWaiting($playerName)) {
+			if(time() - $this->plugin->getMOTDTime($playerName) > 30) {
 				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("Timed out. Please use /f desc again."));
-				$this->plugin->db->query("DELETE FROM motdrcv WHERE player='$player';");
+				$this->plugin->db->query("DELETE FROM motdrcv WHERE player='$playerName';");
 				$PCE->setCancelled(true);
 				return true;
 			} else {
 				$motd = $PCE->getMessage();
-				$faction = $this->plugin->getPlayerFaction($player);
+				$faction = $this->plugin->getPlayerFaction($playerName);
 				$this->plugin->setMOTD($faction, $player, $motd);
 				$PCE->setCancelled(true);
 				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("§dSuccessfully updated the faction description. Type §5/f info.", true));
 			}
 		}
-		if(isset($this->plugin->factionChatActive[$player])){
-			if($this->plugin->factionChatActive[$player]){
+		if(isset($this->plugin->factionChatActive[$playerName])){
+			if($this->plugin->factionChatActive[$playerName]){
 				$msg = $PCE->getMessage();
-				$faction = $this->plugin->getPlayerFaction($player);
+				$faction = $this->plugin->getPlayerFaction($playerName);
 				foreach($this->plugin->getServer()->getOnlinePlayers() as $fP){
 					if($this->plugin->getPlayerFaction($fP->getName()) == $faction){
 						if($this->plugin->getServer()->getPlayer($fP->getName())){
@@ -53,16 +53,16 @@ class FactionListener implements Listener {
 				}
 			}
 		}
-		if(isset($this->plugin->allyChatActive[$player])){
-			if($this->plugin->allyChatActive[$player]){
+		if(isset($this->plugin->allyChatActive[$playerName])){
+			if($this->plugin->allyChatActive[$playerName]){
 				$msg = $PCE->getMessage();
-				$faction = $this->plugin->getPlayerFaction($player);
+				$faction = $this->plugin->getPlayerFaction($playerName);
 				foreach($this->plugin->getServer()->getOnlinePlayers() as $fP){
 					if($this->plugin->areAllies($this->plugin->getPlayerFaction($fP->getName()), $faction)){
 						if($this->plugin->getServer()->getPlayer($fP->getName())){
 							$PCE->setCancelled(true);
-							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $player: ".TextFormat::AQUA. $msg);
-							$PCE->getPlayer()->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $player: ".TextFormat::AQUA. $msg);
+							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $playerName: ".TextFormat::AQUA. $msg);
+							$PCE->getPlayer()->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $playerName: ".TextFormat::AQUA. $msg);
 						}
 					}
 				}
@@ -173,7 +173,7 @@ class FactionListener implements Listener {
     
     public function onBlockBreak(BlockBreakEvent $event){
 		if($event->isCancelled()) return;
-		$player = $event->getPlayer();
+		$playerName = $event->getPlayer();
 		if(!$this->plugin->isInFaction($player->getName())) return;
 		$block = $event->getBlock();
 		if($block->getId() === Block::MONSTER_SPAWNER){
