@@ -1067,7 +1067,7 @@ class FactionCommands {
 						}
 						$faction = $this->plugin->getPlayerFaction($playerName);
 						$balance = $this->plugin->getBalance($faction);
-						$sender->sendMessage($this->plugin->formatMessage("Faction balance: " . TF::GOLD . "$".$balance));
+						$sender->sendMessage($this->plugin->formatMessage("Faction balance: " . TextFormat::GOLD . "$".$balance));
 						return true;
 					}
 					if(strtolower($args[0]) === "withdraw" or strtolower($args[0]) === "wd"){
