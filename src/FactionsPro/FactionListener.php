@@ -1,17 +1,17 @@
 <?php
-
 namespace FactionsPro;
-
+use pocketmine\plugin\PluginBase;
+use pocketmine\command\{Command, CommandSender};
 use pocketmine\event\Listener;
-use pocketmine\event\block\BlockBreakEvent;
-use pocketmine\event\player\PlayerChatEvent;
+use pocketmine\event\block\{BlockPlaceEvent, BlockBreakEvent};
 use pocketmine\Player;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
-use pocketmine\utils\TextFormat;
-use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\tile\MobSpawner;
+use pocketmine\utils\{TextFormat as TF, Config};
+use pocketmine\scheduler\PluginTask;
 use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\event\block\BlockPlaceEvent;
-use pocketmine\event\player\PlayerDeathEvent;
+use pocketmine\event\player\{PlayerMoveEvent, PlayerDeathEvent, PlayerChatEvent, PlayerInteractEvent};
+use pocketmine\block\Block;
 
 class FactionListener implements Listener {
 	
@@ -89,6 +89,23 @@ class FactionListener implements Listener {
 			}
 		}
 	}
+	
+	public function onInteract(PlayerInteractEvent $e){
+		if($this->plugin->isInPlot($e->getPlayer())){
+			if(!$this->plugin->inOwnPlot($e->getPlayer())){
+				if($e->getPlayer()->isCreative()){
+					$e->getPlayer()->sendMessage($this->plugin->formatMessage("Raiding environment detected. Switching to survival mode."));
+					$p->setGamemode(0);
+					$e->setCancelled();
+				}
+				if($this->plugin->essentialsPE->isGod($e->getPlayer())){
+					$e->getPlayer()->sendMessage($this->plugin->formatMessage("Raiding environment detected. Disabling god mode."));
+					$e->setCancelled();
+				}
+			}
+		}
+	}
+	
 	public function factionBlockBreakProtect(BlockBreakEvent $event) {
 		$x = $event->getBlock()->getX();
 		$z = $event->getBlock()->getZ();
@@ -154,7 +171,15 @@ class FactionListener implements Listener {
         }
     }
     
-	public function onPlayerJoin(PlayerJoinEvent $event) {
-		$this->plugin->updateTag($event->getPlayer()->getName());
+    public function onBlockBreak(BlockBreakEvent $event){
+		if($event->isCancelled()) return;
+		$player = $event->getPlayer();
+		if(!$this->plugin->isInFaction($player->getName())) return;
+		$block = $event->getBlock();
+		if($block->getId() === Block::MONSTER_SPAWNER){
+			$fHere = $this->plugin->factionFromPoint($block->x, $block->y);
+			$playerF = $this->plugin->getPlayerFaction($player->getName());
+			if($fHere !== $playerF and !$player->isOp()){ $event->setCancelled(true); return; };
+		}
 	}
 }
