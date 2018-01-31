@@ -423,13 +423,13 @@ class FactionMain extends PluginBase implements Listener {
 	public function sendListOfTop10RichestFactionsTo(Player $s){
         $result = $this->db->query("SELECT * FROM balance ORDER BY cash DESC LIMIT 10;");
         $i = 0;
-        $s->sendMessage(TF::BOLD.TF::AQUA."Top 10 Richest Factions".TF::RESET);
+        $s->sendMessage(TextFormat::BOLD.TextFormat::AQUA."Top 10 Richest Factions".TextFormat::RESET);
         while($resultArr = $result->fetchArray(SQLITE3_ASSOC)){
         	var_dump($resultArr);
             $j = $i + 1;
             $cf = $resultArr['faction'];
             $pf = $resultArr["cash"];
-            $s->sendMessage(TF::BOLD.TF::AQUA.$j.". ".TextFormat::RESET.TextFormat::WHITE.$cf.TF::AQUA.TextFormat::BOLD." - ".TextFormat::LIGHT_PURPLE."$".$pf);
+            $s->sendMessage(TextFormat::BOLD.TextFormat::AQUA.$j.". ".TextFormat::RESET.TextFormat::WHITE.$cf.TextFormat::AQUA.TextFormat::BOLD." - ".TextFormat::LIGHT_PURPLE."$".$pf);
             $i = $i + 1;
         } 
     }
