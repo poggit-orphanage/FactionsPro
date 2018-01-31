@@ -1066,7 +1066,7 @@ class FactionCommands {
 					if(strtolower($args[0]) === "withdraw" or strtolower($args[0]) === "wd"){
 							$sender->sendMessage($this->plugin->formatMessage("§cThis action currently is not available", false));
 							return true;
-					}
+		        }
                         if(($e = $this->plugin->getEconomy()) == null){
 						}
 						if(!isset($args[1])){
@@ -1098,7 +1098,7 @@ class FactionCommands {
 					if(strtolower($args[0]) === "donate"){
 							$sender->sendMessage($this->plugin->formatMessage("§cThis action currently is not available", false));
 							return true;
-					}
+			}
                         if(($e = $this->plugin->getEconomy()) === null){
 						}
 						if(!isset($args[1])){
