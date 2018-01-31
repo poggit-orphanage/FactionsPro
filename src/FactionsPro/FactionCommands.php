@@ -1064,7 +1064,7 @@ class FactionCommands {
 						return true;
 					}
 					if(strtolower($args[0]) === "withdraw" or strtolower($args[0]) === "wd"){
-							$sender->sendMessage($this->plugin->formatMessage("§cThis action currently is not available", true));
+							$sender->sendMessage($this->plugin->formatMessage("§cThis action currently is not available", false));
 							return true;
                         if(($e = $this->plugin->getEconomy()) == null){
 						}
@@ -1095,7 +1095,7 @@ class FactionCommands {
 						return true;
 					}
 					if(strtolower($args[0]) === "donate"){
-							$sender->sendMessage($this->plugin->formatMessage("§cThis action currently is not available", true));
+							$sender->sendMessage($this->plugin->formatMessage("§cThis action currently is not available", false));
 							return true;
                         if(($e = $this->plugin->getEconomy()) === null){
 						}
@@ -1119,6 +1119,7 @@ class FactionCommands {
 						if($e->reduceMoney($sender, $args[1], false, "faction bank account") === \onebone\economyapi\EconomyAPI::RET_SUCCESS){
 							$this->plugin->addToBalance($faction, $args[1]);
 							$sender->sendMessage($this->plugin->formatMessage("§a$".$args[1]." §ddonated to your faction"));
+							return true;
 						}
 					}
 
