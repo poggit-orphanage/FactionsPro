@@ -1071,7 +1071,7 @@ class FactionCommands {
 						}
 						if(!isset($args[1])){
 							$sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f withdraw <amount>"));
-							return true;
+							return false;
 						}
 						if(!is_numeric($args[1])){
 							$sender->sendMessage($this->plugin->formatMessage("§cAmount must be numeric value", false));
@@ -1103,7 +1103,7 @@ class FactionCommands {
 						}
 						if(!isset($args[1])){
 							$sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f donate <amount>"));
-							return true;
+							return false;
 						}
 						if(!is_numeric($args[1])){
 							$sender->sendMessage($this->plugin->formatMessage("§cAmount must be numeric value", false));
@@ -1146,6 +1146,7 @@ class FactionCommands {
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§dPlayers: " . TextFormat::LIGHT_PURPLE . "§5$numPlayers/50" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§eStrength " . TextFormat::RED . "§d$power" . " §5STR" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§aDescription: " . TextFormat::AQUA . TextFormat::UNDERLINE . "§5$message" . TextFormat::RESET);
+			$sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§bFaction Balance: " . TextFormat::AQUA . "§5$balance" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§3_____§2[§5§lFaction Information§2]§3_____§r" . TextFormat::RESET);
                     } else {
                         if (!$this->plugin->isInFaction($playerName)) {
@@ -1165,6 +1166,7 @@ class FactionCommands {
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§dPlayers: " . TextFormat::LIGHT_PURPLE . "§5$numPlayers/50" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§eStrength: " . TextFormat::RED . "§d$power" . " §5STR" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§aDescription: " . TextFormat::AQUA . TextFormat::UNDERLINE . "§b$message" . TextFormat::RESET);
+			$sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§bFaction Balance: " . TextFormat::AQUA . "§5$balance" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§3_____§2[§5§lYour Faction Information§r§2]§3_____" . TextFormat::RESET);
                     }
                     return true;
