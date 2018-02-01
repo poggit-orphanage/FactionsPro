@@ -605,7 +605,7 @@ class FactionCommands {
                                 $this->plugin->db->query("DELETE FROM strength WHERE faction='$faction';");
                                 $this->plugin->db->query("DELETE FROM motd WHERE faction='$faction';");
                                 $this->plugin->db->query("DELETE FROM home WHERE faction='$faction';");
-			        $this->plugin->db->query("DELETE FROM balance WHERE faction=$faction';");
+			        $this->plugin->db->query("DELETE FROM balance WHERE faction='$faction';");
                                 $sender->sendMessage($this->plugin->formatMessage("§2The Faction named: §5$faction §2has been successfully disbanded and the faction plot was unclaimed", true));
                             } else {
                                 $sender->sendMessage($this->plugin->formatMessage("§cYou are not leader!"));
