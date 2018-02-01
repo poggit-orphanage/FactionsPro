@@ -539,8 +539,8 @@ class FactionCommands {
                         $result = $stmt->execute();
                     }
 		    /////////////////////////////// TOP, also by @PrimusLV //////////////////////////
-					if(strtolower($args[0]) === "top"){
-						if(isset($args[1]) && $args[1] === "money"){
+					if(strtolower($args[0]) == "top"){
+						if(isset($args[1]) && $args[1] == "money"){
                             $this->plugin->sendListOfTop10RichestFactionsTo($sender);
 						}else{
                             $this->plugin->sendListOfTop10FactionsTo($sender);
@@ -1053,7 +1053,7 @@ class FactionCommands {
                         }
                     }
 		////////////////////////////// BALANCE, by primus ;) ///////////////////////////////////////
-					if(strtolower($args[0]) === "bal" or strtolower($args[0]) === "balance"){
+					if(strtolower($args[0]) == "bal" or strtolower($args[0]) == "balance"){
 						if(!$this->plugin->isInFaction($playerName)){
 							$sender->sendMessage($this->plugin->formatMessage("You must be in faction to check balance!", false));
 							return true;
@@ -1063,15 +1063,12 @@ class FactionCommands {
 						$sender->sendMessage($this->plugin->formatMessage("§6Faction balance: " . TextFormat::GREEN . "$".$balance));
 						return true;
 					}
-					if(strtolower($args[0]) === "withdraw" or strtolower($args[0]) === "wd"){
-							$sender->sendMessage($this->plugin->formatMessage("§cThis action currently is not available", false));
-							return true;
-		                                 } else {
-                        if(($e = $this->plugin->getEconomy()) == null){
-						}
-						if(!isset($args[1])){
+					if(strtolower($args[0]) == "withdraw" or strtolower($args[0]) == "wd"){
+					   if(!isset($args[1])){
 							$sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f withdraw <amount>"));
-							return false;
+							return true;
+                                                }
+                        if(($e = $this->plugin->getEconomy()) == null){
 						}
 						if(!is_numeric($args[1])){
 							$sender->sendMessage($this->plugin->formatMessage("§cAmount must be numeric value", false));
@@ -1095,15 +1092,12 @@ class FactionCommands {
 						$sender->sendMessage($this->plugin->formatMessage("§a$".$args[1]." §dgranted from faction", true));
 						return true;
 					}
-					if(strtolower($args[0]) === "donate"){
-							$sender->sendMessage($this->plugin->formatMessage("§cThis action currently is not available", false));
-							return true;
-                                                 } else {
+					if(strtolower($args[0]) == "donate"){
+					   if(!isset($args[1])){
+						       $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f donate <amount>"));
+						       return false;
+                                                }
                         if(($e = $this->plugin->getEconomy()) === null){
-						}
-						if(!isset($args[1])){
-							$sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f donate <amount>"));
-							return false;
 						}
 						if(!is_numeric($args[1])){
 							$sender->sendMessage($this->plugin->formatMessage("§cAmount must be numeric value", false));
