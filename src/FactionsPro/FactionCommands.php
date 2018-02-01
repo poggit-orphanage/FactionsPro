@@ -416,6 +416,7 @@ class FactionCommands {
                         $this->plugin->db->query("DELETE FROM strength WHERE faction='$args[1]';");
                         $this->plugin->db->query("DELETE FROM motd WHERE faction='$args[1]';");
                         $this->plugin->db->query("DELETE FROM home WHERE faction='$args[1]';");
+		        $this->plugin->db->query("DELETE FROM balance WHERE faction=$args[1]';");
                         $sender->sendMessage($this->plugin->formatMessage("§aUnwanted faction was successfully deleted and their faction plot was unclaimed! §bUsing /f forcedelete is not allowed. If you do use this command, please tell Zeao right away. It is not acceptable.", true));
                     }
                     if (strtolower($args[0]) == 'addstrto') {
@@ -604,15 +605,8 @@ class FactionCommands {
                                 $this->plugin->db->query("DELETE FROM strength WHERE faction='$faction';");
                                 $this->plugin->db->query("DELETE FROM motd WHERE faction='$faction';");
                                 $this->plugin->db->query("DELETE FROM home WHERE faction='$faction';");
+			        $this->plugin->db->query("DELETE FROM balance WHERE faction=$faction';");
                                 $sender->sendMessage($this->plugin->formatMessage("§2The Faction named: §5$faction §2has been successfully disbanded and the faction plot was unclaimed", true));
-				if($this->plugin->prefs->get("BroadcastFactionDisband")){
-		                $sender->getServer()->broadcastMessage(str_replace([
-			            "%PLAYER%",
-		                    "%FACTION%"
-				    ], [
-				    $sender->getName(),
-				    $factionName
-			        ], $this->plugin->prefs->get("FactionDisbandBroadcastMessage")));
 				}
                             } else {
                                 $sender->sendMessage($this->plugin->formatMessage("§cYou are not leader!"));
