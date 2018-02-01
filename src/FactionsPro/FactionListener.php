@@ -1,3 +1,4 @@
+
 <?php
 namespace FactionsPro;
 use pocketmine\plugin\PluginBase;
@@ -13,7 +14,6 @@ use pocketmine\scheduler\PluginTask;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\player\{PlayerMoveEvent, PlayerDeathEvent, PlayerChatEvent, PlayerInteractEvent};
 use pocketmine\block\Block;
-
 class FactionListener implements Listener {
 	
 	public $plugin;
@@ -63,6 +63,7 @@ class FactionListener implements Listener {
 						if($this->plugin->getServer()->getPlayer($fP->getName())){
 							$PCE->setCancelled(true);
 							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $playerName: ".TextFormat::AQUA. $msg);
+							$PCE->getPlayer()->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $playerName: ".TextFormat::AQUA. $msg);
 						}
 					}
 				}
