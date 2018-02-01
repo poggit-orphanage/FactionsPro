@@ -36,7 +36,7 @@ class FactionListener implements Listener {
 				$faction = $this->plugin->getPlayerFaction($playerName);
 				$this->plugin->setMOTD($faction, $playerName, $motd);
 				$PCE->setCancelled(true);
-				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("§dSuccessfully updated the faction description. Type §5/f info.", true));
+				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("§dSuccessfully updated the faction description. Type §5/f who", true));
 			}
 		}
 		if(isset($this->plugin->factionChatActive[$playerName])){
