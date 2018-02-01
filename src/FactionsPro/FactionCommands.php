@@ -1095,7 +1095,7 @@ class FactionCommands {
 					if(strtolower($args[0]) == "donate"){
 					   if(!isset($args[1])){
 						       $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f donate <amount>"));
-						       return false;
+						       return true;
                                                 }
                         if(($e = $this->plugin->getEconomy()) === null){
 						}
