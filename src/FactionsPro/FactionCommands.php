@@ -998,7 +998,7 @@ class FactionCommands {
                     }
                     /////////////////////////////// ABOUT ///////////////////////////////
                     if (strtolower($args[0] == 'about')) {
-                        $sender->sendMessage(TextFormat::GREEN . "[ORIGINAL] §6FactionsPro v2.0.0 by " . TextFormat::BOLD . "§5VMPE Development Team");
+                        $sender->sendMessage(TextFormat::GREEN . "[ORIGINAL] §6FactionsPro v2.0.0-BETA by " . TextFormat::BOLD . "§5VMPE Development Team");
                         $sender->sendMessage(TextFormat::GOLD . "[MODDED] This version is by §6Void§bFactions§cPE\n§b[EDITED] §cThis plugin was edited by " . TextFormat::BOLD . "§5Zeao");
                     }
                     ////////////////////////////// CHAT ////////////////////////////////
@@ -1127,7 +1127,7 @@ class FactionCommands {
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§dPlayers: " . TextFormat::LIGHT_PURPLE . "§5$numPlayers/50" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§eStrength " . TextFormat::RED . "§d$power" . " §5STR" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§aDescription: " . TextFormat::AQUA . TextFormat::UNDERLINE . "§5$message" . TextFormat::RESET);
-			$sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§bFaction Balance: " . TextFormat::AQUA . "§5$ " . TextFormat::DARK_PURPLE . "$balance" . TextFormat::RESET);
+			$sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§bFaction Balance: " . TextFormat::AQUA . "§5$" . TextFormat::DARK_PURPLE . "$balance" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§3_____§2[§5§lFaction Information§2]§3_____§r" . TextFormat::RESET);
                     } else {
                         if (!$this->plugin->isInFaction($playerName)) {
@@ -1148,14 +1148,14 @@ class FactionCommands {
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§dPlayers: " . TextFormat::LIGHT_PURPLE . "§5$numPlayers/50" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§eStrength: " . TextFormat::RED . "§d$power" . " §5STR" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§aDescription: " . TextFormat::AQUA . TextFormat::UNDERLINE . "§b$message" . TextFormat::RESET);
-			$sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§bFaction Balance: " . TextFormat::AQUA . "§5$ " . TextFormat::DARK_PURPLE . "$balance" . TextFormat::RESET);
+			$sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§bFaction Balance: " . TextFormat::AQUA . "§5$" . TextFormat::DARK_PURPLE . "$balance" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§3_____§2[§5§lYour Faction Information§r§2]§3_____" . TextFormat::RESET);
                     }
                     return true;
                 }
                 if (strtolower($args[0]) == "help") {
                         $sender->sendMessage(TextFormat::RED . "\n§a/f about §2- See the plugin version.\n§a/f accept §2- Accept a faction invitation.\n§a/f overclaim §2- [Takeover the plot of the requested faction]\n§a/f claim §2- Claim a plot / land.\n§a/f create <name> -§2 Create a faction.\n§a/f del §2- Disband a faction.\n§a/f demote <player> §2- Demotes a player in your faction\n§a/f deny -§2Denies a Faction invitation.");
-                        $sender->sendMessage(TextFormat::RED . "\n§b/f home §3- Teleports to your faction home.\n§b/f help §3- Gives Factions help commands.\n§b/f info §3-Shows faction information.\n§b/f info <faction> §3- shows another faction's information.\n§b/f invite <player> §3- Invites a player to your faction.\n§b/f kick <player> §3- Kicks a player from your faction.\n§b/f leader <player> §3- Transfers leadership of the faction.\n§b/f leave §3- Leaves a faction.");
+                        $sender->sendMessage(TextFormat::RED . "\n§b/f home §3- Teleports to your faction home.\n§b/f help §3- Gives Factions help commands.\n§b/f who §3-Shows faction information.\n§b/f who <faction> §3- shows another faction's information.\n§b/f invite <player> §3- Invites a player to your faction.\n§b/f kick <player> §3- Kicks a player from your faction.\n§b/f leader <player> §3- Transfers leadership of the faction.\n§b/f leave §3- Leaves a faction.");
                         $sender->sendMessage(TextFormat::RED . "\n§c/f sethome §4- Set Faction home.\n§c/f unclaim §4- Unclaims a plot / land.\n§c/f unsethome §4- Deletes a faction home.\n§c/f ourmembers §4- {Members + Statuses}\n/f ourofficers - {Officers + Statuses}\n§c/f ourleader §4- {Leader + Status}\n§c/f allies - §4{The allies of your faction");
                         $sender->sendMessage(TextFormat::RED . "\n§9/f desc - §1Make a description of your faction.\n§9/f promote <player> §1- Promote a player.\n§9/f ally <faction> §1- Ally a faction.\n§9/f unally <faction> §1- Un ally a faction.\n§9/f allyok §1- [Accept a request for alliance]\n§9/f allyno §1- [Deny a request for alliance]\n§9/f allies <faction> §1- {The allies of your chosen faction}");
                         $sender->sendMessage(TextFormat::RED . "\n§d/f listmembers <faction> §5- Shows a list of members in a faction.\n§d/f listofficers <faction> §5- Shows a list of officers in a faction.\n§d/f listleader <faction> §5- Shows who the leader of a faction is.\n§d/f say - §5<send message to everyone in your faction>\n§d/f pf <player> §5- Shows what faction a player is in.\n§d/f top §5- Shows the top 10 BEST factions on the server.");
