@@ -8,6 +8,8 @@ use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 use pocketmine\level\Position;
+use pocketmine\math\Vector3;
+use pocketmine\level\level;
 
 class FactionCommands {
         // ASCII Map
