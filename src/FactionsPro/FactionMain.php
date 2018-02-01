@@ -270,7 +270,7 @@ class FactionMain extends PluginBase implements Listener {
             $cf = $resultArr['faction'];
             $pf = $this->getFactionPower($cf);
             $df = $this->getNumberOfPlayers($cf);
-            $s->sendMessage(TextFormat::ITALIC . TextFormat::GOLD . "§6§l$j -> " . TextFormat::GREEN . "§r§d$cf" . TextFormat::GOLD . " §b| " . TextFormat::RED . "§e$pf STR" . TextFormat::GOLD . " §b| " . TextFormat::LIGHT_PURPLE . "§a$df/50" . TextFormat::RESET);
+            $s->sendMessage(TextFormat::ITALIC . TextFormat::GOLD . "§6§l$j -> " . TextFormat::GREEN . "§r§d$cf" . TextFormat::GOLD . " §b| " . TextFormat::RED . "§e$pf STR" . TextFormat::GOLD . " §b| " . TextFormat::LIGHT_PURPLE . "§a$df/50\n§r§aTo see top 10 Richest Factions, do §b/f top money" . TextFormat::RESET);
             $i = $i + 1;
         }
     }
@@ -423,13 +423,13 @@ class FactionMain extends PluginBase implements Listener {
 	public function sendListOfTop10RichestFactionsTo(Player $s){
         $result = $this->db->query("SELECT * FROM balance ORDER BY cash DESC LIMIT 10;");
         $i = 0;
-        $s->sendMessage(TextFormat::BOLD.TextFormat::AQUA."Top 10 Richest Factions".TextFormat::RESET);
+        $s->sendMessage(TextFormat::BOLD.TextFormat::AQUA."§5§lTop 10 Richest Factions".TextFormat::RESET);
         while($resultArr = $result->fetchArray(SQLITE3_ASSOC)){
         	var_dump($resultArr);
             $j = $i + 1;
             $cf = $resultArr['faction'];
             $pf = $resultArr["cash"];
-            $s->sendMessage(TextFormat::BOLD.TextFormat::AQUA.$j.". ".TextFormat::RESET.TextFormat::WHITE.$cf.TextFormat::AQUA.TextFormat::BOLD." - ".TextFormat::LIGHT_PURPLE."$".$pf);
+            $s->sendMessage(TextFormat::BOLD.TextFormat::GOLD.$j.". ".TextFormat::RESET.TextFormat::AQUA.$cf.TextFormat::RED.TextFormat::BOLD." §c- ".TextFormat::LIGHT_PURPLE."§d$".$pf);
             $i = $i + 1;
         } 
     }
