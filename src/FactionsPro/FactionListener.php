@@ -63,7 +63,6 @@ class FactionListener implements Listener {
 						if($this->plugin->getServer()->getPlayer($fP->getName())){
 							$PCE->setCancelled(true);
 							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $playerName: ".TextFormat::AQUA. $msg);
-							$PCE->getPlayer()->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $playerName: ".TextFormat::AQUA. $msg);
 						}
 					}
 				}
@@ -95,12 +94,12 @@ class FactionListener implements Listener {
 		if($this->plugin->isInPlot($e->getPlayer())){
 			if(!$this->plugin->inOwnPlot($e->getPlayer())){
 				if($e->getPlayer()->isCreative()){
-					$e->getPlayer()->sendMessage($this->plugin->formatMessage("Raiding environment detected. Switching to survival mode."));
+					$e->getPlayer()->sendMessage($this->plugin->formatMessage("§c§lRaiding environment detected. Switching to survival mode."));
 					$p->setGamemode(0);
 					$e->setCancelled();
 				}
 				if($this->plugin->essentialsPE->isGod($e->getPlayer())){
-					$e->getPlayer()->sendMessage($this->plugin->formatMessage("Raiding environment detected. Disabling god mode."));
+					$e->getPlayer()->sendMessage($this->plugin->formatMessage("§c§lRaiding environment detected. Disabling god mode."));
 					$e->setCancelled();
 				}
 			}
