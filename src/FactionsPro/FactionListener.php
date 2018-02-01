@@ -28,14 +28,14 @@ class FactionListener implements Listener {
 		//MOTD Check
 		if($this->plugin->motdWaiting($playerName)) {
 			if(time() - $this->plugin->getMOTDTime($playerName) > 30) {
-				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("Timed out. Please use /f desc again."));
+				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("§cTimed out. §bPlease use: §3/f desc again."));
 				$this->plugin->db->query("DELETE FROM motdrcv WHERE player='$playerName';");
 				$PCE->setCancelled(true);
 				return true;
 			} else {
 				$motd = $PCE->getMessage();
 				$faction = $this->plugin->getPlayerFaction($playerName);
-				$this->plugin->setMOTD($faction, $player, $motd);
+				$this->plugin->setMOTD($faction, $playerName, $motd);
 				$PCE->setCancelled(true);
 				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("§dSuccessfully updated the faction description. Type §5/f info.", true));
 			}
@@ -48,7 +48,7 @@ class FactionListener implements Listener {
 					if($this->plugin->getPlayerFaction($fP->getName()) == $faction){
 						if($this->plugin->getServer()->getPlayer($fP->getName())){
 							$PCE->setCancelled(true);
-							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $player: ".TextFormat::AQUA. $msg);
+							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $playerName: ".TextFormat::AQUA. $msg);
 						}
 					}
 				}
