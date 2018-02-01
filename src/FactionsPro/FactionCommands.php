@@ -15,9 +15,9 @@ class FactionCommands {
 	CONST MAP_HEIGHT = 8;
 	CONST MAP_HEIGHT_FULL = 17;
 	CONST MAP_KEY_CHARS = "\\/#?ç¬£$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZÄÖÜÆØÅ1234567890abcdeghjmnopqrsuvwxyÿzäöüæøåâêîûô";
-	CONST MAP_KEY_WILDERNESS = TF::GRAY . "-";
-	CONST MAP_KEY_SEPARATOR = TF::AQUA . "+";
-	CONST MAP_KEY_OVERFLOW = TF::WHITE . "-" . TF::WHITE; # ::MAGIC?
+	CONST MAP_KEY_WILDERNESS = TextFormat::GRAY . "-";
+	CONST MAP_KEY_SEPARATOR = TextFormat::AQUA . "+";
+	CONST MAP_KEY_OVERFLOW = TextFormat::WHITE . "-" . TextFormat::WHITE; # ::MAGIC?
 	CONST MAP_OVERFLOW_MESSAGE = self::MAP_KEY_OVERFLOW . ": Too Many Factions (>" . 107 . ") on this Map.";
 	
     public $plugin;
@@ -1206,8 +1206,8 @@ class FactionCommands {
 		$map = [];
 		$centerFaction = $this->plugin->factionFromPoint($observer->getFloorX(), $observer->getFloorZ());
 		$centerFaction = $centerFaction ? $centerFaction : "Wilderness";
-		$head = TF::GREEN . " (" . $centerPs->getX() . "," . $centerPs->getZ() . ") " . $centerFaction . " " . TF::WHITE;
-		$head = TF::GOLD . str_repeat("_", (($width - strlen($head)) / 2)) . ".[" . $head . TF::GOLD . "]." . str_repeat("_", (($width - strlen($head)) / 2));
+		$head = TextFormat::GREEN . " (" . $centerPs->getX() . "," . $centerPs->getZ() . ") " . $centerFaction . " " . TextFormat::WHITE;
+		$head = TextFormat::GOLD . str_repeat("_", (($width - strlen($head)) / 2)) . ".[" . $head . TextFormat::GOLD . "]." . str_repeat("_", (($width - strlen($head)) / 2));
 		$map[] = $head;
 		$halfWidth = $width / 2;
 		$halfHeight = $height / 2;
@@ -1215,7 +1215,7 @@ class FactionCommands {
 		$height = $halfHeight * 2 + 1;
 		$topLeftPs = new Vector3($centerPs->x + -$halfWidth, 0, $centerPs->z + -$halfHeight);
 		// Get the compass
-		$asciiCompass = self::getASCIICompass($inDegrees, TF::RED, TF::GOLD);
+		$asciiCompass = self::getASCIICompass($inDegrees, TextFormat::RED, TextFormat::GOLD);
 		// Make room for the list of names
 		$height--;
 		/** @var string[] $fList */
@@ -1264,9 +1264,9 @@ class FactionCommands {
 	}
 	public function getColorForTo(Player $player, $faction){
 		if($this->plugin->getPlayerFaction($player->getName()) === $faction){
-			return TF::GREEN;
+			return TextFormat::GREEN;
 		}
-		return TF::LIGHT_PURPLE;
+		return TextFormat::LIGHT_PURPLE;
 	}
 		const N = 'N';
     const NE = '/';
