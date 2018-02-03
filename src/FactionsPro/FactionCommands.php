@@ -376,7 +376,7 @@ class FactionCommands {
                         $x = floor($sender->getX());
                         $y = floor($sender->getY());
                         $z = floor($sender->getZ());
-                        if ($this->plugin->drawPlot($sender, $faction, $x, $y, $z, $sender->getPlayer()->getLevel(), $this->plugin->prefs->get("PlotSize")) == false) {
+                        if ($this->plugin->drawPlot($sender, $faction, $x, $y, $z, $level $sender->getPlayer()->getLevel(), $this->plugin->prefs->get("PlotSize")) == false) {
                         }
                         $sender->sendMessage($this->plugin->formatMessage("§dGetting your coordinates...", true));
                         $plot_size = $this->plugin->prefs->get("PlotSize");
