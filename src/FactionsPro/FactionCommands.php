@@ -391,7 +391,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§5This plot is not claimed by anyone. §dYou can claim it by typing §5/f claim", true));
 			    return true;
 			}
-                        $fac = $this->plugin->factionFromPoint($x, $z, Level $sender->getPlayer()->getLevel()->getName());
+                        $fac = $this->plugin->factionFromPoint($x, $z, $sender->getPlayer()->getLevel()->getName());
                         $power = $this->plugin->getFactionPower($fac);
                         $sender->sendMessage($this->plugin->formatMessage("§aThis plot is claimed by §2$fac §awith §2$power §aSTR"));
 			return true;
