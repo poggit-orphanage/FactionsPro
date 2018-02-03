@@ -383,6 +383,16 @@ class FactionCommands {
                         $faction_power = $this->plugin->getFactionPower($faction);
                         $sender->sendMessage($this->plugin->formatMessage("§bYour land has been claimed.", true));
                     }
+		    if(strtolower($args[0]) == 'pos'){
+                        $x = floor($sender->getX());
+						$y = floor($sender->getY());
+						$z = floor($sender->getZ());
+                        $fac = $this->plugin->factionFromPoint($x,$z);
+                        $power = $this->plugin->getFactionPower($fac);
+                        if(!$this->plugin->isInPlot($sender)){
+                            $sender->sendMessage($this->plugin->formatMessage("§bThis area is unclaimed. §aUse /f claim to claim", true));
+							return true;
+			}
                     if (strtolower($args[0]) == 'plotinfo') {
                         $x = floor($sender->getX());
                         $y = floor($sender->getY());
@@ -689,6 +699,28 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§cHome is currently not set Set it by using /f sethome"));
 			    return true;
                         }
+                    }
+		    /////////////////////////////// POWER ///////////////////////////////
+                    if(strtolower($args[0] == "power")) {
+                        if(!$this->plugin->isInFaction($playerName)) {
+							$sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to do this"));
+                            return true;
+						}
+                        $faction_power = $this->plugin->getFactionPower($this->plugin->getPlayerFaction($sender->getName()));
+                        
+                        $sender->sendMessage($this->plugin->formatMessage("§bYour faction has§3 $faction_power §bpower",true));
+                    }
+                    if(strtolower($args[0] == "seepower")) {
+                        if(!isset($args[1])){
+                            $sender->sendMessage($this->plugin->formatMessage("§aPlease use: §b/f seepower <faction>"));
+                            return true;
+                        }
+                        if(!$this->plugin->factionExists($args[1])) {
+							$sender->sendMessage($this->plugin->formatMessage("§cFaction does not exist"));
+                            return true;
+						}
+                        $faction_power = $this->plugin->getFactionPower($args[1]);
+                        $sender->sendMessage($this->plugin->formatMessage("§3$args[1] §bhas §3$faction_power §bpower.",true));
                     }
                     /////////////////////////////// MEMBERS/OFFICERS/LEADER AND THEIR STATUSES ///////////////////////////////
                     if (strtolower($args[0] == "ourmembers")) {
