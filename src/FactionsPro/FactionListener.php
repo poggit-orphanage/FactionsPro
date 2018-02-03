@@ -110,7 +110,7 @@ class FactionListener implements Listener {
 		$x = $event->getBlock()->getX();
 		$z = $event->getBlock()->getZ();
 		$level = $event->getBlock()->getLevel()->getName();
-		if($this->plugin->pointIsInPlot($x, $z, $level)){
+		if($this->plugin->pointIsInPlot($x, $z, $event->getBlock()->getLevel()->getName())){
 			if($this->plugin->factionFromPoint($x, $z, $level) === $this->plugin->getFaction($event->getPlayer()->getName())){
 				return true;
 			}else{
