@@ -376,7 +376,7 @@ class FactionCommands {
                         $x = floor($sender->getX());
                         $y = floor($sender->getY());
                         $z = floor($sender->getZ());
-                        if ($this->plugin->drawPlot($sender, $faction, $x, $y, $z, $level, $sender->getPlayer()->getLevel(), $this->plugin->prefs->get("PlotSize")) == false) {
+                        if ($this->plugin->drawPlot($sender, $faction, $x, $y, $z, Level $sender->getPlayer()->getLevel(), $this->plugin->prefs->get("PlotSize")) == false) {
                         }
                         $sender->sendMessage($this->plugin->formatMessage("§dGetting your coordinates...", true));
                         $plot_size = $this->plugin->prefs->get("PlotSize");
@@ -391,7 +391,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§5This plot is not claimed by anyone. §dYou can claim it by typing §5/f claim", true));
 			    return true;
 			}
-                        $fac = $this->plugin->factionFromPoint($x, $z, $level, $sender->getPlayer()->getLevel()->getName());
+                        $fac = $this->plugin->factionFromPoint($x, $z, Level $sender->getPlayer()->getLevel()->getName());
                         $power = $this->plugin->getFactionPower($fac);
                         $sender->sendMessage($this->plugin->formatMessage("§aThis plot is claimed by §2$fac §awith §2$power §aSTR"));
 			return true;
