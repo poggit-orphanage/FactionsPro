@@ -705,7 +705,7 @@ class FactionCommands {
                         if(!$this->plugin->isInFaction($playerName)) {
 							$sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to do this"));
                             return true;
-						}
+			}
                         $faction_power = $this->plugin->getFactionPower($this->plugin->getPlayerFaction($sender->getName()));
                         
                         $sender->sendMessage($this->plugin->formatMessage("§bYour faction has§3 $faction_power §bpower",true));
@@ -718,7 +718,7 @@ class FactionCommands {
                         if(!$this->plugin->factionExists($args[1])) {
 							$sender->sendMessage($this->plugin->formatMessage("§cFaction does not exist"));
                             return true;
-						}
+			}
                         $faction_power = $this->plugin->getFactionPower($args[1]);
                         $sender->sendMessage($this->plugin->formatMessage("§3$args[1] §bhas §3$faction_power §bpower.",true));
                     }
