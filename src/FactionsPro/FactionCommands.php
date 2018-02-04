@@ -382,17 +382,7 @@ class FactionCommands {
                         $plot_size = $this->plugin->prefs->get("PlotSize");
                         $faction_power = $this->plugin->getFactionPower($faction);
                         $sender->sendMessage($this->plugin->formatMessage("§bYour land has been claimed.", true));
-                    }
-		    if(strtolower($args[0]) == 'pos'){
-                        $x = floor($sender->getX());
-						$y = floor($sender->getY());
-						$z = floor($sender->getZ());
-                        $fac = $this->plugin->factionFromPoint($x,$z);
-                        $power = $this->plugin->getFactionPower($fac);
-                        if(!$this->plugin->isInPlot($sender)){
-                            $sender->sendMessage($this->plugin->formatMessage("§bThis area is unclaimed. §aUse /f claim to claim", true));
-							return true;
-			}
+		    }
                     if (strtolower($args[0]) == 'plotinfo') {
                         $x = floor($sender->getX());
                         $y = floor($sender->getY());
