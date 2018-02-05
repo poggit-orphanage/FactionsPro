@@ -177,7 +177,7 @@ class FactionListener implements Listener {
 		if(!$this->plugin->isInFaction($playerName->getName())) return;
 		$block = $event->getBlock();
 		if($block->getId() === Block::MONSTER_SPAWNER){
-			$fHere = $this->plugin->factionFromPoint($block->x, $block->y, $block->level);
+			$fHere = $this->plugin->factionFromPoint($block->x, $block->y, $block->string, $block->level);
 			$playerF = $this->plugin->getPlayerFaction($playerName->getName());
 			if($fHere !== $playerF and !$playerName->isOp()){ $event->setCancelled(true); return; };
 		}
