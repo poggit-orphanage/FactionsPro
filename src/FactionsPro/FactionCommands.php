@@ -481,7 +481,7 @@ class FactionCommands {
                         $z = floor($sender->getZ());
                         if($this->plugin->prefs->get("EnableOverClaim")){
                             if ($this->plugin->isInPlot($sender)) {
-                                $faction_victim = $this->plugin->factionFromPoint($x, $z, $level, $sender->getPlayer()->getLevel()->getName());
+                                $faction_victim = $this->plugin->factionFromPoint($x, $z, $sender->getPlayer()->getLevel()->getName());
                                 $faction_victim_power = $this->plugin->getFactionPower($faction_victim);
                                 $faction_ours = $this->plugin->getPlayerFaction($playerName);
                                 $faction_ours_power = $this->plugin->getFactionPower($faction_ours);
