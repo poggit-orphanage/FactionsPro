@@ -47,5 +47,6 @@ A modified plugin, better than ever. Being updated frequently. Edited by the VMP
 * Fix /f overclaim - Not done.
 * Add /f map - Not done.
 * Renamed command to /f who - DONE.
+* Fix /f claim - DONE.
 
 If you want anything else added, please open a issue. Thank you.
