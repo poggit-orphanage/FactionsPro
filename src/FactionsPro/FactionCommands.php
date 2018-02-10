@@ -344,7 +344,7 @@ class FactionCommands {
                     }
                     /////////////////////////////// CLAIM ///////////////////////////////
                     if(strtolower($args[0]) == "claim"){
-				if($this->plugin->prefs->get("ClaimingEnabled") == true){
+				if($this->plugin->prefs->get("ClaimingEnabled") == false){
 					$sender->sendMessage($this->plugin->formatMessage("§cPlots are not enabled on this server."));
 					return true;
 			}
