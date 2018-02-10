@@ -496,7 +496,7 @@ class FactionCommands {
                                         $this->plugin->db->query("DELETE FROM plots WHERE faction='$faction_ours';");
                                         $this->plugin->db->query("DELETE FROM plots WHERE faction='$faction_victim';");
                                         $arm = (($this->plugin->prefs->get("PlotSize")) - 1) / 2;
-                                        $this->plugin->newPlot($faction_ours, $x + $arm, $z + $arm, $x - $arm, $z - $arm);
+                                        $this->plugin->newPlot($faction_ours, $x + $arm, $z + $arm, $x2 - $arm, $z2 - $arm);
                                         $sender->sendMessage($this->plugin->formatMessage("§dThe land of §5$faction_victim §dhas been claimed. It is now yours.", true));
 					return true;
                                     }
