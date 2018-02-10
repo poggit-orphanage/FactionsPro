@@ -385,7 +385,7 @@ class FactionCommands {
 		    }
                     if (strtolower($args[0]) == 'plotinfo') {
                         $x = floor($sender->getX());
-                        $y = floor($sender->getY());
+			    
                         $z = floor($sender->getZ());
                         if (!$this->plugin->isInPlot($sender)) {
                             $sender->sendMessage($this->plugin->formatMessage("§5This plot is not claimed by anyone. §dYou can claim it by typing §5/f claim", true));
@@ -475,7 +475,7 @@ class FactionCommands {
                         $x = floor($sender->getX());
                         $y = floor($sender->getY());
                         $z = floor($sender->getZ());
-                        if ($this->plugin->prefs->get("EnableOverClaim")) {
+                        if($this->plugin->prefs->get("EnableOverClaim")) {
                             if ($this->plugin->isInPlot($sender)) {
                                 $faction_victim = $this->plugin->factionFromPoint($x, $z, $level, $sender->getPlayer()->getLevel()->getName());
                                 $faction_victim_power = $this->plugin->getFactionPower($faction_victim);
@@ -493,7 +493,7 @@ class FactionCommands {
                                         $this->plugin->db->query("DELETE FROM plots WHERE faction='$faction_victim';");
                                         $arm = (($this->plugin->prefs->get("PlotSize")) - 1) / 2;
                                         $this->plugin->newPlot($faction_ours, $x + $arm, $z + $arm, $x - $arm, $z - $arm);
-                                        $sender->sendMessage($this->plugin->formatMessage("The land of $faction_victim has been claimed. It is now yours.", true));
+                                        $sender->sendMessage($this->plugin->formatMessage("§dThe land of §5$faction_victim §dhas been claimed. It is now yours.", true));
 					return true;
                                     }
                                 }
