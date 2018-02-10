@@ -41,12 +41,7 @@ A modified plugin, better than ever. Being updated frequently. Edited by the VMP
 
 
 ## TO-DO LIST
-* Add faction Values system - DONE.
-* Adds Faction titles when entering / leaving a faction plot - Not done.
-* Work more with Mob spawners - Not done.
-* Fix /f overclaim - Not done.
-* Add /f map - Not done.
-* Renamed command to /f who - DONE.
-* Fix /f claim - DONE.
+Check out the to-do list here:
+https://github.com/TheFixerDevelopment/FactionsPro/issues/9
 
 If you want anything else added, please open a issue. Thank you.
