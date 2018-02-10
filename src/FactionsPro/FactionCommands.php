@@ -376,7 +376,7 @@ class FactionCommands {
                         $x = floor($sender->getX());
                         $y = floor($sender->getY());
                         $z = floor($sender->getZ());
-                        if ($this->plugin->drawPlot($sender, $faction, $x, $y, $z, $sender->getPlayer()->getLevel(), $this->plugin->prefs->get("PlotSize")) == false) {
+                        if($this->plugin->drawPlot($sender, $faction, $x, $y, $z, $sender->getPlayer()->getLevel(), $this->plugin->prefs->get("PlotSize"))){
                         }
                         $sender->sendMessage($this->plugin->formatMessage("§dGetting your coordinates...", true));
                         $plot_size = $this->plugin->prefs->get("PlotSize");
@@ -475,7 +475,7 @@ class FactionCommands {
                         $x = floor($sender->getX());
                         $y = floor($sender->getY());
                         $z = floor($sender->getZ());
-                        if($this->plugin->prefs->get("EnableOverClaim")) {
+                        if($this->plugin->prefs->get("EnableOverClaim")){
                             if ($this->plugin->isInPlot($sender)) {
                                 $faction_victim = $this->plugin->factionFromPoint($x, $z, $level, $sender->getPlayer()->getLevel()->getName());
                                 $faction_victim_power = $this->plugin->getFactionPower($faction_victim);
