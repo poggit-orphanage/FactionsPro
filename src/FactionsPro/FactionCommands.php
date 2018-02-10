@@ -344,7 +344,7 @@ class FactionCommands {
                     }
                     /////////////////////////////// CLAIM ///////////////////////////////
                     if(strtolower($args[0]) == "claim"){
-				if($this->plugin->prefs->get("ClaimingEnabled") == false){
+				if($this->plugin->prefs->get("ClaimingEnabled") == true){
 					$sender->sendMessage($this->plugin->formatMessage("§cPlots are not enabled on this server."));
 					return true;
 			}
@@ -1124,7 +1124,7 @@ class FactionCommands {
                     return true;
                 }
                 if (strtolower($args[0]) == "help") {
-                        $sender->sendMessage(TextFormat::RED . "\n§a/f about §2- See the plugin version.\n§a/f accept §2- Accept a faction invitation.\n§a/f overclaim §2- [Takeover the plot of the requested faction]\n§a/f claim §2- Claim a plot / land.\n§a/f create <name> -§2 Create a faction.\n§a/f del §2- Disband a faction.\n§a/f demote <player> §2- Demotes a player in your faction\n§a/f deny -§2Denies a Faction invitation.");
+                        $sender->sendMessage(TextFormat::RED . "\n§a/f about §2- See the plugin version.\n§a/f accept §2- Accept a faction invitation.\n§a/f claim §2- Claim a plot / land.\n§a/f create <name> -§2 Create a faction.\n§a/f del §2- Disband a faction.\n§a/f demote <player> §2- Demotes a player in your faction\n§a/f deny -§2Denies a Faction invitation.");
                         $sender->sendMessage(TextFormat::RED . "\n§b/f home §3- Teleports to your faction home.\n§b/f help §3- Gives Factions help commands.\n§b/f who §3-Shows faction information.\n§b/f who <faction> §3- shows another faction's information.\n§b/f invite <player> §3- Invites a player to your faction.\n§b/f kick <player> §3- Kicks a player from your faction.\n§b/f leader <player> §3- Transfers leadership of the faction.\n§b/f leave §3- Leaves a faction.");
                         $sender->sendMessage(TextFormat::RED . "\n§c/f sethome §4- Set Faction home.\n§c/f unclaim §4- Unclaims a plot / land.\n§c/f unsethome §4- Deletes a faction home.\n§c/f ourmembers §4- {Members + Statuses}\n/f ourofficers - {Officers + Statuses}\n§c/f ourleader §4- {Leader + Status}\n§c/f allies - §4{The allies of your faction");
                         $sender->sendMessage(TextFormat::RED . "\n§9/f desc - §1Make a description of your faction.\n§9/f promote <player> §1- Promote a player.\n§9/f ally <faction> §1- Ally a faction.\n§9/f unally <faction> §1- Un ally a faction.\n§9/f allyok §1- [Accept a request for alliance]\n§9/f allyno §1- [Deny a request for alliance]\n§9/f allies <faction> §1- {The allies of your chosen faction}");
