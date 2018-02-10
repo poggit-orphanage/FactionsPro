@@ -323,11 +323,11 @@ class FactionMain extends PluginBase implements Listener {
     public function drawPlot($sender, $faction, $x, $y, $z, Level $level, $size) {
         $arm = ($size - 1) / 2;
         $block = new Snow();
-        if ($this->cornerIsInPlot($x + $arm, $z + $arm, $x - $arm, $z - $arm, $level->getName())) {
+        if($this->cornerIsInPlot($x + $arm, $z + $arm, $x - $arm, $z - $arm, $level->getName())){
             $claimedBy = $this->factionFromPoint($x, $z, $level->getName());
             $power_claimedBy = $this->getFactionPower($claimedBy);
             $power_sender = $this->getFactionPower($faction);
-            if ($this->prefs->get("EnableOverClaim")) {
+            if($this->prefs->get("EnableOverClaim")) {
                 if ($power_sender < $power_claimedBy) {
                     $sender->sendMessage($this->formatMessage("§dYou don't have enough power to overclaim this plot."));
                 } else {
