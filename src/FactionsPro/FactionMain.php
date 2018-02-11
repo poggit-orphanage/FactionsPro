@@ -49,11 +49,11 @@ class FactionMain extends PluginBase implements Listener {
                 $this->getLogger()->warning("Unable to check update.");
             }
         }
-        if($this->getConfig()->get('Prefs-version') < self::CONFIG_VERSION){
-            rename($this->getDataFolder() . "Prefs.yml", $this->getDataFolder() . "Prefs.old.yml");
+        if($this->getConfig()->get('Config-version') < self::CONFIG_VERSION){
+            rename($this->getDataFolder() . "Config.yml", $this->getDataFolder() . "Config.old.yml");
             $this->saveDefaultConfig();
             $this->getConfig()->reload();
-            $this->getLogger()->notice($this->getMessage("console.prefs-outdated"));
+            $this->getLogger()->notice($this->getMessage("console.config-outdated"));
         }
         $this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
         $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
@@ -65,7 +65,7 @@ class FactionMain extends PluginBase implements Listener {
             $this->getLogger()->info("Add PureChat to display Faction ranks in chat");
         }
         $this->fCommand = new FactionCommands($this);
-        $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", CONFIG::YAML, array(
+        $this->prefs = new Config($this->getDataFolder() . "Config.yml", CONFIG::YAML, array(
             "MaxFactionNameLength" => 15,
             "MaxPlayersPerFaction" => 30,
             "OnlyLeadersAndOfficersCanInvite" => true,
