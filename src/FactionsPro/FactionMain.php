@@ -81,7 +81,7 @@ class FactionMain extends PluginBase implements Listener {
                 	"magma" => 10000,
                 	"ghast" => 10000,
                 	"blaze" => 15000,
-					"empty" => 100
+			"empty" => 100
                 ],
 		));
 		$this->prefix = $this->prefs->get("prefix", $this->prefix);
