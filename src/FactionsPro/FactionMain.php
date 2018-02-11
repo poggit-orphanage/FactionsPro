@@ -1,6 +1,7 @@
 <?php
 namespace FactionsPro;
 use pocketmine\plugin\PluginBase;
+use pocketmine\plugin\PluginDescription;
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\event\Listener;
 use pocketmine\event\block\BlockBreakEvent;
@@ -34,6 +35,24 @@ class FactionMain extends PluginBase implements Listener {
             $file = fopen($this->getDataFolder() . "BannedNames.txt", "w");
             $txt = "Admin:admin:Staff:staff:Owner:owner:Builder:builder:Op:OP:op";
             fwrite($file, $txt);
+        }
+	if($this->getConfig()->get("check-update", true)){
+            $this->getLogger()->info("Checking update...");
+            try{
+                if(($version = (new PluginDescription(file_get_contents("https://raw.githubusercontent.com/TheFixerDevelopment/FactionsPro/beta/plugin.yml")))->getVersion()) != $this->getDescription()->getVersion()){
+                    $this->getLogger()->notice("New version $version available! Get it here: " . $this->getDescription()->getWebsite());
+                } else {
+                    $this->getLogger()->info("Already up-to-date.");
+                }
+            } catch(\Exception $ex) {
+                $this->getLogger()->warning("Unable to check update.");
+            }
+        }
+        if($this->getConfig()->get('config-version') < self::CONFIG_VERSION){
+            rename($this->getDataFolder() . "prefs.yml", $this->getDataFolder() . "prefs.old.yml");
+            $this->saveDefaultConfig();
+            $this->getConfig()->reload();
+            $this->getLogger()->notice($this->getMessage("console.config-outdated"));
         }
         $this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
         $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
