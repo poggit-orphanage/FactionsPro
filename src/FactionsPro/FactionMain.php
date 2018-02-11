@@ -49,11 +49,11 @@ class FactionMain extends PluginBase implements Listener {
                 $this->getLogger()->warning("Unable to check update.");
             }
         }
-        if($this->getConfig()->get('config-version') < self::CONFIG_VERSION){
-            rename($this->getDataFolder() . "prefs.yml", $this->getDataFolder() . "prefs.old.yml");
+        if($this->getConfig()->get('Prefs-version') < self::CONFIG_VERSION){
+            rename($this->getDataFolder() . "Prefs.yml", $this->getDataFolder() . "Prefs.old.yml");
             $this->saveDefaultConfig();
             $this->getConfig()->reload();
-            $this->getLogger()->notice($this->getMessage("console.config-outdated"));
+            $this->getLogger()->notice($this->getMessage("console.prefs-outdated"));
         }
         $this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
         $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
@@ -102,7 +102,7 @@ class FactionMain extends PluginBase implements Listener {
                 	"magma" => 10000,
                 	"ghast" => 10000,
                 	"blaze" => 15000,
-					"empty" => 100
+			"empty" => 100
                 ],
 		));
 		$this->prefix = $this->prefs->get("prefix", $this->prefix);
