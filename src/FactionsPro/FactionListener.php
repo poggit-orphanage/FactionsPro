@@ -1,4 +1,3 @@
-
 <?php
 namespace FactionsPro;
 use pocketmine\plugin\PluginBase;
