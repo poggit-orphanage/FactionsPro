@@ -18,7 +18,8 @@ use pocketmine\entity\{Skeleton, Pig, Chicken, Zombie, Creeper, Cow, Spider, Bla
 use pocketmine\level\Level;
 
 class FactionMain extends PluginBase implements Listener {
-    
+    const CONFIG_VERSION = 3;
+	
     public $db;
     public $prefs;
     public $war_req = [];
