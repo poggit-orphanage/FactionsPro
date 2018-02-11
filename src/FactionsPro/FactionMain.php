@@ -1,7 +1,6 @@
 <?php
 namespace FactionsPro;
 use pocketmine\plugin\PluginBase;
-use pocketmine\plugin\PluginDescription;
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\event\Listener;
 use pocketmine\event\block\BlockBreakEvent;
@@ -16,10 +15,8 @@ use pocketmine\math\Vector3;
 use pocketmine\level\Position;
 use pocketmine\entity\{Skeleton, Pig, Chicken, Zombie, Creeper, Cow, Spider, Blaze, Ghast};
 use pocketmine\level\Level;
-
 class FactionMain extends PluginBase implements Listener {
-    const CONFIG_VERSION = 3;
-	
+    
     public $db;
     public $prefs;
     public $war_req = [];
@@ -37,24 +34,6 @@ class FactionMain extends PluginBase implements Listener {
             $txt = "Admin:admin:Staff:staff:Owner:owner:Builder:builder:Op:OP:op";
             fwrite($file, $txt);
         }
-	if($this->getConfig()->get("check-update", true)){
-            $this->getLogger()->info("Checking update...");
-            try{
-                if(($version = (new PluginDescription(file_get_contents("https://raw.githubusercontent.com/TheFixerDevelopment/FactionsPro/beta/plugin.yml")))->getVersion()) != $this->getDescription()->getVersion()){
-                    $this->getLogger()->notice("New version $version available! Get it here: " . $this->getDescription()->getWebsite());
-                } else {
-                    $this->getLogger()->info("Already up-to-date.");
-                }
-            } catch(\Exception $ex) {
-                $this->getLogger()->warning("Unable to check update.");
-            }
-        }
-        if($this->getConfig()->get('Config-version') < self::CONFIG_VERSION){
-            rename($this->getDataFolder() . "Config.yml", $this->getDataFolder() . "Config.old.yml");
-            $this->saveDefaultConfig();
-            $this->getConfig()->reload();
-            $this->getLogger()->notice($this->getMessage("console.config-outdated"));
-        }
         $this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
         $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
         if (!$this->antispam) {
@@ -65,7 +44,7 @@ class FactionMain extends PluginBase implements Listener {
             $this->getLogger()->info("Add PureChat to display Faction ranks in chat");
         }
         $this->fCommand = new FactionCommands($this);
-        $this->prefs = new Config($this->getDataFolder() . "Config.yml", CONFIG::YAML, array(
+        $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", CONFIG::YAML, array(
             "MaxFactionNameLength" => 15,
             "MaxPlayersPerFaction" => 30,
             "OnlyLeadersAndOfficersCanInvite" => true,
@@ -102,7 +81,7 @@ class FactionMain extends PluginBase implements Listener {
                 	"magma" => 10000,
                 	"ghast" => 10000,
                 	"blaze" => 15000,
-			"empty" => 100
+					"empty" => 100
                 ],
 		));
 		$this->prefix = $this->prefs->get("prefix", $this->prefix);
