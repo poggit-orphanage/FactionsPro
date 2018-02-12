@@ -30,7 +30,7 @@ class FactionTitle implements Listener {
 							 $x = floor($p->getX());
 							 $y = floor($p->getY());
 							 $z = floor($p->getZ());
-							 $fac = $this->plugin->factionFromPoint($x, $z, $level);
+							 $fac = $this->plugin->factionFromPoint($x, $z, $sender->getPlayer()->getLevel()->getName());
 							 $this->infac[] = $p->getName();
 							 $title = "§a§lNow Entering ";
 							 $subtitle = "§b§l" . $fac . " ";
