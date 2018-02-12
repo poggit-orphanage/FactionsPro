@@ -1,6 +1,6 @@
 <?php
 
-namespace FactionsPro;
+namespace FactionsPro\tasks;
 
 use pocketmine\scheduler\PluginTask;
 
