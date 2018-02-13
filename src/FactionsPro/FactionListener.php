@@ -192,16 +192,14 @@ class FactionListener implements Listener {
             }
         }
     }
-    /*public function onBlockBreak(BlockBreakEvent $event){
-		if($event->isCancelled()) return;
-		$playerName = $event->getPlayer();
-		if(!$this->plugin->isInFaction($playerName->getName())) return;
-		$block = $event->getBlock();
-		if($block->getId() === Block::MONSTER_SPAWNER){
-			$fHere = $this->plugin->factionFromPoint($block->x, $block->y, $block->z);
-			$playerF = $this->plugin->getPlayerFaction($playerName->getName());
-			if($fHere !== $playerF and !$playerName->isOp()){ $event->setCancelled(true); return; };
-			TODO
+    //*public function onBlockBreak(BlockBreakEvent $event){
+		//if($event->isCancelled()) return;
+		//$playerName = $event->getPlayer();
+		//if(!$this->plugin->isInFaction($playerName->getName())) return;
+		//$block = $event->getBlock();
+		//if($block->getId() === Block::MONSTER_SPAWNER){
+			//$fHere = $this->plugin->factionFromPoint($block->x, $block->y, $block->z);
+			//$playerF = $this->plugin->getPlayerFaction($playerName->getName());
+			//if($fHere !== $playerF and !$playerName->isOp()){ $event->setCancelled(true); return; };
 		}
 	}
-}
