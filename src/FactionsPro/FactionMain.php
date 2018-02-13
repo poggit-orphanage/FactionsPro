@@ -50,7 +50,7 @@ class FactionMain extends PluginBase implements Listener {
             "OnlyLeadersAndOfficersCanInvite" => true,
             "OfficersCanClaim" => false,
 	    "ClaimingEnabled" => true,
-            "PlotSize" => 26,
+            "PlotSize" => 16,
             "PlayersNeededInFactionToClaimAPlot" => 5,
             "PowerNeededToClaimAPlot" => 1000,
             "PowerNeededToSetOrUpdateAHome" => 250,
