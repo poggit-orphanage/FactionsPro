@@ -135,7 +135,8 @@ class FactionCommands {
                             $result = $stmt->execute();
                             $this->plugin->updateAllies($factionName);
                             $this->plugin->setFactionPower($factionName, $this->plugin->prefs->get("TheDefaultPowerEveryFactionStartsWith"));
-                            if($this->plugin->prefs->get("BroadcastFactionCreation")){
+			    $this->plugin->setBalance($factionName, $this->plugin->prefs->get("defaultFactionBalance"));
+                            if($this->plugin->prefs->get("BroadcastFactionCreationMessage")){
 		                $sender->getServer()->broadcastMessage(str_replace([
 			            "%PLAYER%",
 		                    "%FACTION%"
@@ -229,8 +230,6 @@ class FactionCommands {
                         $result = $stmt->execute();
                         $sender->sendMessage($this->plugin->formatMessage("§2You are no longer leader", true));
                         $this->plugin->getServer()->getPlayer($args[1])->sendMessage($this->plugin->formatMessage("§aYou are now leader \nof $factionName!", true));
-                        $this->plugin->updateTag($sender->getName());
-                        $this->plugin->updateTag($this->plugin->getServer()->getPlayer($args[1])->getName());
                     }
                     /////////////////////////////// PROMOTE ///////////////////////////////
                     if ($args[0] == "promote") {
@@ -325,7 +324,7 @@ class FactionCommands {
                             return true;
                         }
                         if ($this->plugin->getPlayerFaction($playerName) != $this->plugin->getPlayerFaction($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("The Player §4$playerName §cis not in this faction"));
+                            $sender->sendMessage($this->plugin->formatMessage("§cThe Player §4$playerName §cis not in this faction"));
                             return true;
                         }
                         if ($args[1] == $sender->getName()) {
@@ -337,6 +336,7 @@ class FactionCommands {
                         $this->plugin->db->query("DELETE FROM master WHERE player='$args[1]';");
                         $sender->sendMessage($this->plugin->formatMessage("§aYou successfully kicked §2$args[1]", true));
                         $this->plugin->subtractFactionPower($factionName, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
+			$this->plugin->takeFromBalance($factionName, $this->plugin->prefs->get("MoneyGainedPerPlayerInFaction"));
                         if ($kicked instanceof Player) {
                             $kicked->sendMessage($this->plugin->formatMessage("§2You have been kicked from \n §5$factionName", true));
                             return true;
@@ -515,6 +515,7 @@ class FactionCommands {
                             $this->plugin->db->query("DELETE FROM confirm WHERE player='$lowercaseName';");
                             $sender->sendMessage($this->plugin->formatMessage("§aYou successfully joined §2$faction", true));
                             $this->plugin->addFactionPower($faction, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
+			    $this->plugin->addToBalance($faction, $this->plugin->prefs->get("MoneyGainedPerPlayerInFaction"));
                             $this->plugin->getServer()->getPlayer($array["invitedby"])->sendMessage($this->plugin->formatMessage("§2$playerName §ajoined the faction", true));
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("§cInvite has timed out"));
@@ -572,6 +573,7 @@ class FactionCommands {
                             $this->plugin->db->query("DELETE FROM master WHERE player='$name';");
                             $sender->sendMessage($this->plugin->formatMessage("§2You successfully left §5$faction", true));
                             $this->plugin->subtractFactionPower($faction, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
+			    $this->plugin->takeFromBalance($faction, $this->plugin->prefs->get("MoneyGainedPerPlayerInFaction"));
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must delete the faction or give\nleadership to someone else first"));
 			    return true;
@@ -927,6 +929,8 @@ class FactionCommands {
                             $this->plugin->setAllies($sender_fac, $requested_fac);
                             $this->plugin->addFactionPower($sender_fac, $this->plugin->prefs->get("PowerGainedPerAlly"));
                             $this->plugin->addFactionPower($requested_fac, $this->plugin->prefs->get("PowerGainedPerAlly"));
+			    $this->plugin->addToBalance($sender_fac, $this->plugin->prefs->get("MoneyGainedPerAlly"));
+			    $this->plugin->addToBalance($requested_fac, $this->plugin->prefs->get("MoneyGainedPerAlly"));
                             $this->plugin->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
                             $this->plugin->updateAllies($requested_fac);
                             $this->plugin->updateAllies($sender_fac);
@@ -1075,7 +1079,7 @@ class FactionCommands {
 							return true;
 						}
 					}
-                /////////////////////////////// INFO ///////////////////////////////
+                /////////////////////////////// WHO ///////////////////////////////
                 if (strtolower($args[0]) == 'who') {
                     if (isset($args[1])) {
                         if (!(ctype_alnum($args[1])) or !($this->plugin->factionExists($args[1]))) {
