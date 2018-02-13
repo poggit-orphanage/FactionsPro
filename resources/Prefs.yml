@@ -34,11 +34,11 @@ AllyLimitPerFaction: 7
 # limitations of allies per faction. Default: 7.
 ClaimWorlds:
 - world
-# Claim worlds. Of where people can claim. The format is like that as styated above. You can add more worlds by doing this:
+# Claim worlds. Of where people can claim. The format is like that as stated above. You can add more worlds by doing this:
 # - world
 # - ender
 # - nether
-#And what not.
+# And what not.
 AllowChat: true
 # Allow Faction chat. Default: True.
 AllowFactionPvp: false
