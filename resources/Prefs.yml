@@ -1,10 +1,17 @@
 ---
+## Example configurations for those who are struggling with it.
 MaxFactionNameLength: 15
-MaxPlayersPerFaction: 30
+# The Faction Name Max Length a name can go up to. Default: 15
+MaxPlayersPerFaction: 50
+# Max Players per faction. 50 by default.
 OnlyLeadersAndOfficersCanInvite: true
+# The only ranks who can invite other players, are Leaders and Officers. Default: true
 OfficersCanClaim: false
+## Officers can claim. Default: false.
 ClaimingEnabled: true
+# Enable claiming (/f claim.) Default: true - There are some bugs with it, so report bugs by opening an issue on GitHub.
 PlotSize: 26
+# Plot Size for Claiming. Make sure it ends up being an even number, or it can contain issues.
 PlayersNeededInFactionToClaimAPlot: 5
 PowerNeededToClaimAPlot: 1000
 PowerNeededToSetOrUpdateAHome: 250
@@ -13,17 +20,30 @@ PowerGainedPerKillingAnEnemy: 10
 PowerGainedPerAlly: 100
 TheDefaultPowerEveryFactionStartsWith: 0
 EnableOverClaim: true
+# Currently not useable. 
 AllyLimitPerFaction: 7
-ClaimWorlds: []
+# limitations of allies per faction. Default: 7.
+ClaimWorlds:
+- world
+# Claim worlds. Of where people can claim. The format is like that as styated above. You can add more worlds by doing this:
+# - world
+# - ender
+# - nether
+#And what not.
 AllowChat: true
+# Allow Faction chat. Default: True.
 AllowFactionPvp: false
 AllowAlliedPvp: false
 BroadcastFactionCreation: true
+# Currently in BETA, so it may not function very well.
 FactionCreationBroadcastMessage: "The player named: §2%PLAYER% §ahas created a faction §anamed §2%FACTION%"
 BroadcastFactionDisband: true
+# Currently in BETA, so it may not function very well.
 FactionDisbandBroadcast: "The Faction named %FACTION% was disbaned by %PLAYER%"
 defaultFactionBalance: 0
+# NEW: When creating a faction, how much Money should a faction have by default? Default: 0.
 prefix: "§l§f[§bFactions§f] §r"
+# Faction Spawners prefix. Currently in BETA, so it may not function very well.
 spawnerPrices:
 skeleton: 500
 pig: 200
