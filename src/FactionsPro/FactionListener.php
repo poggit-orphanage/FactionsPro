@@ -145,14 +145,19 @@ class FactionListener implements Listener {
                 if($this->plugin->isInFaction($p)){
                     $f = $this->plugin->getPlayerFaction($p);
                     $e = $this->plugin->prefs->get("PowerGainedPerKillingAnEnemy");
-		    $e = $this->plugin->prefs->get("MoneyGainedPerKillingAnEnemy");
                     if($ent instanceof Player){
                         if($this->plugin->isInFaction($ent->getPlayer()->getName())){
                            $this->plugin->addFactionPower($f,$e);
-			   $this->plugin->addToBalance($f,$e);
                         } else {
                            $this->plugin->addFactionPower($f,$e/2);
-			   $this->plugin->addToBalance($f,$e/2);
+			}
+		    $f = $this->plugin->getPlayerFaction($p);
+                    $e = $this->plugin->prefs->get("MoneyGainedPerKillingAnEnemy");
+                    if($ent instanceof Player){
+                        if($this->plugin->isInFaction($ent->getPlayer()->getName())){
+                           $this->plugin->addToBalance($f,$e);
+                        } else {
+                           $this->plugin->addToBalance($f,$e/2);
                         }
                     }
                 }
@@ -163,14 +168,19 @@ class FactionListener implements Listener {
             if($this->plugin->isInFaction($e)){
                 $f = $this->plugin->getPlayerFaction($e);
                 $e = $this->plugin->prefs->get("PowerGainedPerKillingAnEnemy");
-		$e = $this->plugin->prefs->get("MoneyGainedPerKillingAnEnemy");
                 if($ent->getLastDamageCause() instanceof EntityDamageByEntityEvent && $ent->getLastDamageCause()->getDamager() instanceof Player){
                     if($this->plugin->isInFaction($ent->getLastDamageCause()->getDamager()->getPlayer()->getName())){      
                         $this->plugin->subtractFactionPower($f,$e*2);
-			$this->plugin->takeFromBalance($f,$e*2);
                     } else {
                         $this->plugin->subtractFactionPower($f,$e);
-			$this->plugin->takeFromBalance($f,$e);
+		    }
+		$f = $this->plugin->getPlayerFaction($e);
+                $e = $this->plugin->prefs->get("MoneyGainedPerKillingAnEnemy");
+                if($ent->getLastDamageCause() instanceof EntityDamageByEntityEvent && $ent->getLastDamageCause()->getDamager() instanceof Player){
+                    if($this->plugin->isInFaction($ent->getLastDamageCause()->getDamager()->getPlayer()->getName())){      
+                        $this->plugin->takeFromBalance($f,$e*2);
+                    } else {
+                        $this->plugin->takeFromBalance($f,$e);
                     }
                 }
             }
