@@ -174,6 +174,12 @@ class FactionListener implements Listener {
                     } else {
                         $this->plugin->subtractFactionPower($f,$e);
 		    }
+		}
+	    }
+	}
+	if($ent instanceof Player){
+            $e = $ent->getPlayer()->getName();
+            if($this->plugin->isInFaction($e)){
 		$f = $this->plugin->getPlayerFaction($e);
                 $e = $this->plugin->prefs->get("MoneyGainedPerKillingAnEnemy");
                 if($ent->getLastDamageCause() instanceof EntityDamageByEntityEvent && $ent->getLastDamageCause()->getDamager() instanceof Player){
@@ -186,8 +192,7 @@ class FactionListener implements Listener {
             }
         }
     }
-    
-    public function onBlockBreak(BlockBreakEvent $event){
+    /*public function onBlockBreak(BlockBreakEvent $event){
 		if($event->isCancelled()) return;
 		$playerName = $event->getPlayer();
 		if(!$this->plugin->isInFaction($playerName->getName())) return;
@@ -196,6 +201,7 @@ class FactionListener implements Listener {
 			$fHere = $this->plugin->factionFromPoint($block->x, $block->y, $block->z);
 			$playerF = $this->plugin->getPlayerFaction($playerName->getName());
 			if($fHere !== $playerF and !$playerName->isOp()){ $event->setCancelled(true); return; };
+			TODO
 		}
 	}
 }
