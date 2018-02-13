@@ -864,6 +864,7 @@ class FactionCommands {
                         $this->plugin->deleteAllies($args[1], $fac);
                         $this->plugin->subtractFactionPower($fac, $this->plugin->prefs->get("PowerGainedPerAlly"));
                         $this->plugin->subtractFactionPower($args[1], $this->plugin->prefs->get("PowerGainedPerAlly"));
+			$this->plugin->takeFromBalance($fac, $this->plugin->prefs->get("MoneyGainedPerAlly"));
                         $this->plugin->updateAllies($fac);
                         $this->plugin->updateAllies($args[1]);
                         $sender->sendMessage($this->plugin->formatMessage("§2Your faction §5$fac §2is no longer allied with §5$args[1]", true));
