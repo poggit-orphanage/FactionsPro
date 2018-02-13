@@ -68,6 +68,8 @@ class FactionMain extends PluginBase implements Listener {
             "BroadcastFactionDisband" => true,
             "FactionDisbandBroadcast" => "The Faction named %FACTION% was disbaned by %PLAYER%",
             "defaultFactionBalance" => 0,
+	    "MoneyGainedPerPlayerInFaction" => 20,
+	    "MoneyGainedPerAlly" => 50,
                 "prefix" => "§l§f[§bFactions§f] §r",
                 "spawnerPrices" => [
                 	"skeleton" => 500,
