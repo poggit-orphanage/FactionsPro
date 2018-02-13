@@ -23,7 +23,7 @@ FactionCreationBroadcastMessage: "The player named: §2%PLAYER% §ahas created a
 BroadcastFactionDisband: true
 FactionDisbandBroadcast: "The Faction named %FACTION% was disbaned by %PLAYER%"
 defaultFactionBalance: 0
-prefix: §l§f[§bFactions§f] §r
+prefix: "§l§f[§bFactions§f] §r"
 spawnerPrices:
 skeleton: 500
 pig: 200
