@@ -18,17 +18,18 @@ PowerNeededToSetOrUpdateAHome: 250
 # Currently removed. We plan on adding this back soon.
 PowerGainedPerPlayerInFaction: 50
 # You gain power by inviting other players to your faction. Default: 50.
-MoneyGainedPerPlayerInfaction: 30
+MoneyGainedPerPlayerInFaction: 30
 # You gain balance / money by inviting other players to your faction. Default: 30
 # This feature is coming soon.
 PowerGainedPerKillingAnEnemy: 10
 # You gain power by killing enemies / other players who aren't in your faction. Default: 10.
-BalanceGainedPerKillingAnEnemy: 20
-# You gain Money by killing enies / other players who aren't in your faction. Default: 20.
+MoneyGainedPerKillingAnEnemy: 20
+# You gain Money by killing enemies / other players who aren't in your faction. Default: 20.
 # This feature is coming soon.
 PowerGainedPerAlly: 100
+MoneyGainedPerAlly: 50
 TheDefaultPowerEveryFactionStartsWith: 0
-EnableOverClaim: true
+EnableOverClaim: false
 # Currently not useable. 
 AllyLimitPerFaction: 7
 # limitations of allies per faction. Default: 7.
