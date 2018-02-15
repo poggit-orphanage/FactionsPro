@@ -83,30 +83,7 @@ class FactionMain extends PluginBase implements Listener {
                 	"magma" => 10000,
                 	"ghast" => 10000,
                 	"blaze" => 15000,
-			"empty" => 100,
-		        "Member" => array(
-				"claim" => false,
-				"demote" => false,
-				"home" => true,
-				"invite" => false,
-				"kick" => false,
-				"motd" => false,
-				"promote" => false,
-				"sethome" => false,
-				"unclaim" => false,
-				"unsethome" => false
-			),
-			"Officer" => array(
-				"claim" => true,
-				"demote" => false,
-				"home" => true,
-				"invite" => true,
-				"kick" => true,
-				"motd" => true,
-				"promote" => false,
-				"sethome" => true,
-				"unclaim" => true,
-				"unsethome" => true
+			"empty" => 100
                 ],
 		));
 		$this->prefix = $this->prefs->get("prefix", $this->prefix);
@@ -154,13 +131,13 @@ class FactionMain extends PluginBase implements Listener {
         }
     }
     
-    public function isInFaction(string $player) {
+    public function isInFaction($player) {
         $result = $this->db->query("SELECT player FROM master WHERE player='$player';");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
     
-    public function getFaction(string $player) {
+    public function getFaction($player) {
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["faction"];
@@ -234,17 +211,17 @@ class FactionMain extends PluginBase implements Listener {
         $stmt->bindValue(":power", $this->getFactionPower($faction) - $power);
         $stmt->execute();
     }
-    public function isLeader(string $player) {
+    public function isLeader($player) {
         $faction = $this->db->query("SELECT rank FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["rank"] == "Leader";
     }
-    public function isOfficer(string $player) {
+    public function isOfficer($player) {
         $faction = $this->db->query("SELECT rank FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["rank"] == "Officer";
     }
-    public function isMember(string $player) {
+    public function isMember($player) {
         $faction = $this->db->query("SELECT rank FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["rank"] == "Member";
@@ -270,10 +247,6 @@ class FactionMain extends PluginBase implements Listener {
         }
         $s->sendMessage($this->formatMessage("~ *<$rankname> of |$faction|* ~", true));
         $s->sendMessage($team);
-    }
-    public function hasPermission(string $player, $command){
-	    $rank = $this->getRank($player);
-	    return $this->prefs->get("$rank")["$command"];
     }
     public function getAllAllies($s, $faction) {
         $team = "";
@@ -303,34 +276,34 @@ class FactionMain extends PluginBase implements Listener {
             $i = $i + 1;
         }
     }
-    public function getPlayerFaction(string $player) {
+    public function getPlayerFaction($player) {
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["faction"];
     }
-    public function getLeader(string $faction) {
+    public function getLeader($faction) {
         $leader = $this->db->query("SELECT player FROM master WHERE faction='$faction' AND rank='Leader';");
         $leaderArray = $leader->fetchArray(SQLITE3_ASSOC);
         return $leaderArray['player'];
     }
-    public function factionExists(string $faction) {
+    public function factionExists($faction) {
         $result = $this->db->query("SELECT player FROM master WHERE faction='$faction';");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
-    public function sameFaction(string $player1, string $player2) {
+    public function sameFaction($player1, $player2) {
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player1';");
         $player1Faction = $faction->fetchArray(SQLITE3_ASSOC);
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player2';");
         $player2Faction = $faction->fetchArray(SQLITE3_ASSOC);
         return $player1Faction["faction"] == $player2Faction["faction"];
     }
-    public function getNumberOfPlayers(string $faction) {
+    public function getNumberOfPlayers($faction) {
         $query = $this->db->query("SELECT COUNT(player) as count FROM master WHERE faction='$faction';");
         $number = $query->fetchArray();
         return $number['count'];
     }
-    public function isFactionFull(string $faction) {
+    public function isFactionFull($faction) {
         return $this->getNumberOfPlayers($faction) >= $this->prefs->get("MaxPlayersPerFaction");
     }
     public function isNameBanned($name) {
@@ -391,22 +364,23 @@ class FactionMain extends PluginBase implements Listener {
         return($this->pointIsInPlot($x1, $z1, $level) || $this->pointIsInPlot($x1, $z2, $level) || $this->pointIsInPlot($x2, $z1, $level) || $this->pointIsInPlot($x2, $z2, $level));
     }
     public function formatMessage($string, $confirm = false) {
-            if($confirm){
-	            return "[" . TextFormat::BLUE . "§6Void§bFactions§cPE" . TextFormat::WHITE . "§7] " . TextFormat::GREEN . "$string";
-	    }else{
-	            return "[" . TextFormat::BLUE . "§6Void§bFactions§cPE" . TextFormat::WHITE . "§7] " . TextFormat::DARK_GREEN . "$string";
+        if ($confirm) {
+            return TextFormat::GREEN . "$string";
+        } else {
+            return TextFormat::YELLOW . "$string";
+        }
     }
-    public function motdWaiting(string $player) {
+    public function motdWaiting($player) {
         $stmt = $this->db->query("SELECT player FROM motdrcv WHERE player='$player';");
         $array = $stmt->fetchArray(SQLITE3_ASSOC);
         return !empty($array);
     }
-    public function getMOTDTime(string $player) {
+    public function getMOTDTime($player) {
         $stmt = $this->db->query("SELECT timestamp FROM motdrcv WHERE player='$player';");
         $array = $stmt->fetchArray(SQLITE3_ASSOC);
         return $array['timestamp'];
     }
-    public function setMOTD(string $faction, string $player, string $msg) {
+    public function setMOTD($faction, $player, $msg) {
         $stmt = $this->db->prepare("INSERT OR REPLACE INTO motd (faction, message) VALUES (:faction, :message);");
         $stmt->bindValue(":faction", $faction);
         $stmt->bindValue(":message", $msg);
@@ -414,7 +388,7 @@ class FactionMain extends PluginBase implements Listener {
         $this->db->query("DELETE FROM motdrcv WHERE player='$player';");
     }
     
-    public function getBalance(string $faction){
+    public function getBalance($faction){
 		$stmt = $this->db->query("SELECT * FROM balance WHERE `faction` LIKE '$faction';");
 		$array = $stmt->fetchArray(SQLITE3_ASSOC);
 		if(!$array){
@@ -423,17 +397,17 @@ class FactionMain extends PluginBase implements Listener {
 		}
 		return $array["cash"];
 	}
-	public function setBalance(string $faction, int $money){
+	public function setBalance($faction, int $money){
 		$stmt = $this->db->prepare("INSERT OR REPLACE INTO balance (faction, cash) VALUES (:faction, :cash);");
 		$stmt->bindValue(":faction", $faction);
 		$stmt->bindValue(":cash", $money);
 		return $stmt->execute();
 	}
-	public function addToBalance(string $faction, int $money){
+	public function addToBalance($faction, int $money){
 		if($money < 0) return false;
 		return $this->setBalance($faction, $this->getBalance($faction) + $money);
 	}
-	public function takeFromBalance(string $faction, int $money){
+	public function takeFromBalance($faction, int $money){
 		if($money < 0) return false;
 		return $this->setBalance($faction, $this->getBalance($faction) - $money);
 	}
