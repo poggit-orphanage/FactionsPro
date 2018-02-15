@@ -166,7 +166,7 @@ class FactionCommands {
                             return true;
                         }
                         if ($this->plugin->isInFaction($invited->getName()) == true) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cPlayer is currently in a faction"));
+                            $sender->sendMessage($this->plugin->formatMessage("§cThe player is currently in a faction"));
                             return true;
                         }
                         if ($this->plugin->prefs->get("OnlyLeadersAndOfficersCanInvite")) {
@@ -324,7 +324,7 @@ class FactionCommands {
                             return true;
                         }
                         if ($this->plugin->getPlayerFaction($playerName) != $this->plugin->getPlayerFaction($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cThe Player §4$args[1] §cis not in this faction"));
+                            $sender->sendMessage($this->plugin->formatMessage("§cThe Player §4$playerName §cis not in this faction"));
                             return true;
                         }
                         if ($args[1] == $sender->getName()) {
@@ -973,8 +973,8 @@ class FactionCommands {
                     }
                     /////////////////////////////// ABOUT ///////////////////////////////
                     if(strtolower($args[0]) == "about" or strtolower($args[0]) == "info"){
-                        $sender->sendMessage(TextFormat::GREEN . "[ORIGINAL] §6FactionsPro v2.0.0-BETA by " . TextFormat::BOLD . "§5VMPE Development Team");
-                        $sender->sendMessage(TextFormat::GOLD . "[MODDED] This version is by §6Void§bFactions§cPE\n§b[EDITED] §cThis plugin was edited by " . TextFormat::BOLD . "§5Zeao");
+                        $sender->sendMessage(TextFormat::GREEN . "[ORIGINAL] §aFactionsPro §cv2.0.0-BETA by " . TextFormat::BOLD . "§5VMPE Development Team");
+                        $sender->sendMessage(TextFormat::GOLD . "§7[§2MODDED§7] §3This version is by §6Void§bFactions§cPE\n§b[EDITED] §cThis plugin was edited by " . TextFormat::BOLD . "§5Zeao");
                     }
                     ////////////////////////////// CHAT ////////////////////////////////
 		    
