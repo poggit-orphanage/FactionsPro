@@ -373,6 +373,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§cYour faction doesn't have enough STR to claim a land."));
                             $sender->sendMessage($this->plugin->formatMessage("§4$needed_power §cSTR is required but your faction has only §4$faction_power §cSTR."));
                             return true;
+			}
                         $x = floor($sender->getX());
 			$y = floor($sender->getY());
 			$z = floor($sender->getZ());
