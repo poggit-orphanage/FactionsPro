@@ -1157,13 +1157,8 @@ class FactionCommands {
 				$sender->sendMessage(TextFormat::BLUE . "§6Void§bFactions§cPE §dHelp §2[§57/7§2]" . TextFormat::RED . "\n§b/f donate <amount> - §7Donate to a faction from your Eco Bank.\n§b/f withdraw|wd <amount> - §7With draw from your faction bank\n§b/f top money - §7Checks the top 10 RICHEST factions.\n§b/f balance|bal - §7Checks your faction balance");
 				return true;
 		        }
-
                      }
                 }
-	default:
-	        $sender->sendMessage(TextFormat::BLUE . "Unknown command. Type '/f help' for help.");
-	        return true;
-	        }
         } else {
             $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("Please run this command in game"));
         }
