@@ -721,6 +721,10 @@ class FactionCommands {
                         if (!$this->plugin->prefs->get("AllowChat")) {
               	    $sender->sendMessage($this->plugin->formatMessage("§6/f say|bc is disabled"));
          			    return true;
+				}
+			        if (!isset($args[1])) {
+                            	    $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f say|bc <message>"));
+                                    return true;
               	}
          			if (!($this->plugin->isInFaction($playerName))) {
          			    $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to send faction messages"));
