@@ -1130,14 +1130,20 @@ class FactionCommands {
                 }
 		if(strtolower($args[0]) == "help"){
 			if(!isset($args[1]) || $args[1] == 1){
-				$sender->sendMessage(TextFormat::BLUE . "FactionsPro Help Page 1 of 3" . TextFormat::RED . "\n/f about\n/f accept\n/f claim\n/f create <name>\n/f del\n/f demote <player>\n/f deny");
+				$sender->sendMessage(TextFormat::BLUE . "§6Void§bFactions§cPE §dHelp §2[§51/7§2]" . TextFormat::RED . "\n§b/f about|info - §7Shows Plugin information\n§b/f accept|yes - §7Accepts an faction invitation\n§b/f claim|cl - §7Claims a faction plot!\n§b/f create|make <name> - §7Creates a faction.\n§b/f del|disband - Deletes a faction.\n§b/f demote <player> - §7Demotes a player from a faction.\n§b/f deny|no - §7Denies a player's invitation.");
 				return true;
 			}
 			if($args[1] == 2){
-				$sender->sendMessage(TextFormat::BLUE . "FactionsPro Help Page 2 of 3" . TextFormat::RED . "\n/f home\n/f help <page>\n/f info\n/f info <faction>\n/f invite <player>\n/f kick <player>\n/f leader <player>\n/f leave");
+				$sender->sendMessage(TextFormat::BLUE . "§6Void§bFactions§cPE §dHelp §2[§52/7§2]" . TextFormat::RED . "\n§b/f home|h - §7Teleports to your faction home.\n§b/f help <page> - §7Factions help.\n§b/f who - §7Your Faction info.\n§b/f who <faction> - §7Other faction info.\n§b/f invite|inv <player> - §7Invite a player to your faction.\n§b/f kick|k <player> - §7Kicks a player from your faction.\n§bf/ leader <player> - §7Transfers leadership.\n§b/f leave|lv - §7Leaves a faction.");
 				return true;
 			}else{
-				$sender->sendMessage(TextFormat::BLUE . "FactionsPro Help Page 3 of 3" . TextFormat::RED . "\n/f motd\n/f promote <player>\n/f sethome\n/f unclaim\n/f unsethome\n/f unclaim <faction>\n/f forceunclaim [OP]<faction> : Deletes all faction land\n/f forcedelete <faction> : Delete the faction [OP]");
+				$sender->sendMessage(TextFormat::BLUE . "§6Void§bFactions§cPE §dHelp §2[§53/7§2]" . TextFormat::RED . "\n§b/f motd|desc - §7Set your faction Message of the day.\n§b/f promote <player> - §7Promote a player.\n§b/f sethome|shome - §7Set a faction home.\n§b/f unclaim|uncl - §7Unclaims a faction plot.\n§b/f unsethome|delhome - §7Deletes a faction home.\n§b/f top - §7Checks top 10 BEST Factions on the server.\n§b/f war <factionname|tp> - §7Starts a faction war / Requests a faction war.");
+				return true;
+			}else{
+				$sender->sendMessage(TextFormat::BLUE . "§6Void§bFactions§cPE §dHelp §2[§54/7§2]" . TextFormat::RED . "\n§b/f enemy <faction> - §7Enemy with a faction\n§b/f ally <faction> - §7Ally a faction.\n§b/f allyok|allyaccept - §7Accepts a ally request.\n§b/f allydeny|no - §7Denies a ally request.\n§b/f unally|una - §7Un allies with a faction.\n§b/f allies - §7Checks a list of allies you currently have.\n§b/f say|bc <MESSAGE> - §7Broadcast a faction measage.");
+				return true;
+			}else{
+				$sender->sendMessage(TextFormat::BLUE . "§6Void§bFactions§cPE §dHelp §2[§55/7§2]" . TextFormat::RED . "\n§b/f chat|c - §7Toggles faction chat.\n§b/f allychat|ac - §7Toggles Ally chat.\n§b/f plotinfo|pinfo - §7Checks if a specific area is claimed or not.\n§b/f power|pw - §7Checks to see how much power you have.\n§b/f seepower|sp <faction> - §7Sees power of another faction.");
 				return true;
 		        }
 
