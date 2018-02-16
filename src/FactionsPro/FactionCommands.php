@@ -1136,10 +1136,12 @@ class FactionCommands {
 			if($args[1] == 2){
 				$sender->sendMessage(TextFormat::BLUE . "§6Void§bFactions§cPE §dHelp §2[§52/7§2]" . TextFormat::RED . "\n§b/f home|h - §7Teleports to your faction home.\n§b/f help <page> - §7Factions help.\n§b/f who - §7Your Faction info.\n§b/f who <faction> - §7Other faction info.\n§b/f invite|inv <player> - §7Invite a player to your faction.\n§b/f kick|k <player> - §7Kicks a player from your faction.\n§bf/ leader <player> - §7Transfers leadership.\n§b/f leave|lv - §7Leaves a faction.");
 				return true;
-			}else{
+			}
+			if($args[1] == 3){
 				$sender->sendMessage(TextFormat::BLUE . "§6Void§bFactions§cPE §dHelp §2[§53/7§2]" . TextFormat::RED . "\n§b/f motd|desc - §7Set your faction Message of the day.\n§b/f promote <player> - §7Promote a player.\n§b/f sethome|shome - §7Set a faction home.\n§b/f unclaim|uncl - §7Unclaims a faction plot.\n§b/f unsethome|delhome - §7Deletes a faction home.\n§b/f top - §7Checks top 10 BEST Factions on the server.\n§b/f war <factionname|tp> - §7Starts a faction war / Requests a faction war.");
 				return true;
-			}else{
+			}
+			if($args[1] == 4){
 				$sender->sendMessage(TextFormat::BLUE . "§6Void§bFactions§cPE §dHelp §2[§54/7§2]" . TextFormat::RED . "\n§b/f enemy <faction> - §7Enemy with a faction\n§b/f ally <faction> - §7Ally a faction.\n§b/f allyok|allyaccept - §7Accepts a ally request.\n§b/f allydeny|no - §7Denies a ally request.\n§b/f unally|una - §7Un allies with a faction.\n§b/f allies - §7Checks a list of allies you currently have.\n§b/f say|bc <MESSAGE> - §7Broadcast a faction measage.");
 				return true;
 			}else{
