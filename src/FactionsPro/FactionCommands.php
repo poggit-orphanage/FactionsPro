@@ -1144,8 +1144,16 @@ class FactionCommands {
 			if($args[1] == 4){
 				$sender->sendMessage(TextFormat::BLUE . "§6Void§bFactions§cPE §dHelp §2[§54/7§2]" . TextFormat::RED . "\n§b/f enemy <faction> - §7Enemy with a faction\n§b/f ally <faction> - §7Ally a faction.\n§b/f allyok|allyaccept - §7Accepts a ally request.\n§b/f allydeny|no - §7Denies a ally request.\n§b/f unally|una - §7Un allies with a faction.\n§b/f allies - §7Checks a list of allies you currently have.\n§b/f say|bc <MESSAGE> - §7Broadcast a faction measage.");
 				return true;
-			}else{
+			}
+			if($args[1] == 5){
 				$sender->sendMessage(TextFormat::BLUE . "§6Void§bFactions§cPE §dHelp §2[§55/7§2]" . TextFormat::RED . "\n§b/f chat|c - §7Toggles faction chat.\n§b/f allychat|ac - §7Toggles Ally chat.\n§b/f plotinfo|pinfo - §7Checks if a specific area is claimed or not.\n§b/f power|pw - §7Checks to see how much power you have.\n§b/f seepower|sp <faction> - §7Sees power of another faction.");
+				return true;
+			}
+			if($args[1] == 6){
+				$sender->sendMessage(TextFormat::BLUE . "§6Void§bFactions§cPE §dHelp §2[§56/7§2]" . TextFormat::RED . "\n§b/f listleader <faction> - §7Checks who the leader is in a faction.\n§b/f listmembers <faction> - §7Checks who the members are in a faction.\n§b/f listofficers <faction> - §7Checks who the officers are in a faction.\n§b/f ourmembers - §7Checks who your faction members are.\n§b/f ourofficers - §7Checks who your faction officers are.\n§b/f ourleader - §7Checks to see who your leader is.");
+				return true;
+			}else{
+				$sender->sendMessage(TextFormat::BLUE . "§6Void§bFactions§cPE §dHelp §2[§57/7§2]" . TextFormat::RED . "\n§b/f donate <amount> - §7Donate to a faction from your Eco Bank.\n§b/f withdraw|wd <amount> - §7With draw from your faction bank\n§b/f top money - §7Checks the top 10 RICHEST factions.\n§b/f balance|bal - §7Checks your faction balance");
 				return true;
 		        }
 
