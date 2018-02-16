@@ -373,13 +373,14 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§cYour faction doesn't have enough STR to claim a land."));
                             $sender->sendMessage($this->plugin->formatMessage("§4$needed_power §cSTR is required but your faction has only §4$faction_power §cSTR."));
                             return true;
-                        }
                         $x = floor($sender->getX());
-                        $y = floor($sender->getY());
-                        $z = floor($sender->getZ());
-                        if($this->plugin->drawPlot($sender, $faction, $x, $y, $z, $sender->getPlayer()->getLevel(), $this->plugin->prefs->get("PlotSize"))){
+			$y = floor($sender->getY());
+			$z = floor($sender->getZ());
+			$faction = $this->plugin->getPlayerFaction($sender->getPlayer()->getName());
+			if(!$this->plugin->drawPlot($sender, $faction, $x, $y, $z, $sender->getPlayer()->getLevel(), $this->plugin->prefs->get("PlotSize"))){
 				return true;
                         }
+			$plot_size = $this->plugin->prefs->get("PlotSize");
                         $faction_power = $this->plugin->getFactionPower($faction);
                         $sender->sendMessage($this->plugin->formatMessage("§bYour land has been claimed.", true));
 		    }
