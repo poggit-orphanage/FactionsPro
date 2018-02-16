@@ -1160,6 +1160,10 @@ class FactionCommands {
 
                      }
                 }
+	default:
+	        $sender->sendMessage(TextFormat::BLUE . "Unknown command. Type '/f help' for help.");
+	        return true;
+	        }
         } else {
             $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("Please run this command in game"));
         }
