@@ -380,7 +380,6 @@ class FactionCommands {
                         if($this->plugin->drawPlot($sender, $faction, $x, $y, $z, $sender->getPlayer()->getLevel(), $this->plugin->prefs->get("PlotSize"))){
 				return true;
                         }
-                        $plot_size = $this->plugin->prefs->get("PlotSize");
                         $faction_power = $this->plugin->getFactionPower($faction);
                         $sender->sendMessage($this->plugin->formatMessage("§bYour land has been claimed.", true));
 		    }
