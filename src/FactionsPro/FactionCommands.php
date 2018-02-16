@@ -789,9 +789,9 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("§aYou are now enemies with §2$args[1]!", true));
                         $leader->sendMessage($this->plugin->formatMessage("§aThe leader of §2$fac §ahas declared your faction as an enemy", true));
                     }
-                    if (strtolower($args[0] == "ally")) {
+                    if(strtolower($args[0]) == "ally" or strtolower($args[0]) == "a"){
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f ally <faction>"));
+                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f ally|a <faction>"));
                             return true;
                         }
                         if (!$this->plugin->isInFaction($playerName)) {
@@ -838,9 +838,9 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("§aYou requested to ally with §2$args[1]!\n§aWait for the leader's response...", true));
                         $leader->sendMessage($this->plugin->formatMessage("§bThe leader of §3$fac §brequested an alliance.\nType §3/f allyok §bto accept or §3/f allyno §bto deny.", true));
                     }
-                    if (strtolower($args[0] == "unally")) {
+                    if(strtolower($args[0]) == "unally" or strtolower($args[0]) == "una"){
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f unally <faction>"));
+                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f unally|una <faction>"));
                             return true;
                         }
                         if (!$this->plugin->isInFaction($playerName)) {
