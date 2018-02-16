@@ -150,14 +150,6 @@ class FactionListener implements Listener {
                            $this->plugin->addFactionPower($f,$e);
                         } else {
                            $this->plugin->addFactionPower($f,$e/2);
-			}
-		    $f = $this->plugin->getPlayerFaction($p);
-                    $e = $this->plugin->prefs->get("MoneyGainedPerKillingAnEnemy");
-                    if($ent instanceof Player){
-                        if($this->plugin->isInFaction($ent->getPlayer()->getName())){
-                           $this->plugin->addToBalance($f,$e);
-                        } else {
-                           $this->plugin->addToBalance($f,$e/2);
                         }
                     }
                 }
@@ -173,33 +165,21 @@ class FactionListener implements Listener {
                         $this->plugin->subtractFactionPower($f,$e*2);
                     } else {
                         $this->plugin->subtractFactionPower($f,$e);
-		    }
-		}
-	    }
-	}
-	if($ent instanceof Player){
-            $e = $ent->getPlayer()->getName();
-            if($this->plugin->isInFaction($e)){
-		$f = $this->plugin->getPlayerFaction($e);
-                $e = $this->plugin->prefs->get("MoneyGainedPerKillingAnEnemy");
-                if($ent->getLastDamageCause() instanceof EntityDamageByEntityEvent && $ent->getLastDamageCause()->getDamager() instanceof Player){
-                    if($this->plugin->isInFaction($ent->getLastDamageCause()->getDamager()->getPlayer()->getName())){      
-                        $this->plugin->takeFromBalance($f,$e*2);
-                    } else {
-                        $this->plugin->takeFromBalance($f,$e);
                     }
                 }
             }
         }
     }
-    //*public function onBlockBreak(BlockBreakEvent $event){
-		//if($event->isCancelled()) return;
-		//$playerName = $event->getPlayer();
-		//if(!$this->plugin->isInFaction($playerName->getName())) return;
-		//$block = $event->getBlock();
-		//if($block->getId() === Block::MONSTER_SPAWNER){
-			//$fHere = $this->plugin->factionFromPoint($block->x, $block->y, $block->z);
-			//$playerF = $this->plugin->getPlayerFaction($playerName->getName());
-			//if($fHere !== $playerF and !$playerName->isOp()){ $event->setCancelled(true); return; };
+    
+    public function onBlockBreak(BlockBreakEvent $event){
+		if($event->isCancelled()) return;
+		$playerName = $event->getPlayer();
+		if(!$this->plugin->isInFaction($playerName->getName())) return;
+		$block = $event->getBlock();
+		if($block->getId() === Block::MONSTER_SPAWNER){
+			$fHere = $this->plugin->factionFromPoint($block->x, $block->y, $block->string, $block->level);
+			$playerF = $this->plugin->getPlayerFaction($playerName->getName());
+			if($fHere !== $playerF and !$playerName->isOp()){ $event->setCancelled(true); return; };
 		}
 	}
+}
