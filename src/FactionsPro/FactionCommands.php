@@ -1128,19 +1128,21 @@ class FactionCommands {
                     }
                     return true;
                 }
-                if (strtolower($args[0]) == "help") {
-                        $sender->sendMessage(TextFormat::RED . "\n§a/f about|info §2- See the plugin version.\n§a/f accept|yes §2- Accept a faction invitation.\n§a/f claim|cl §2- Claim a plot / land.\n§a/f create|make <name> -§2 Create a faction.\n§a/f del|disband §2- Disband a faction.\n§a/f demote <player> §2- Demotes a player in your faction\n§a/f deny|no -§2Denies a Faction invitation.");
-                        $sender->sendMessage(TextFormat::RED . "\n§b/f home §3- Teleports to your faction home.\n§b/f help §3- Gives Factions help commands.\n§b/f who §3-Shows faction information.\n§b/f who <faction> §3- shows another faction's information.\n§b/f invite <player> §3- Invites a player to your faction.\n§b/f kick <player> §3- Kicks a player from your faction.\n§b/f leader <player> §3- Transfers leadership of the faction.\n§b/f leave §3- Leaves a faction.");
-                        $sender->sendMessage(TextFormat::RED . "\n§c/f sethome §4- Set Faction home.\n§c/f unclaim §4- Unclaims a plot / land.\n§c/f unsethome §4- Deletes a faction home.\n§c/f ourmembers §4- {Members + Statuses}\n/f ourofficers - {Officers + Statuses}\n§c/f ourleader §4- {Leader + Status}\n§c/f allies - §4{The allies of your faction");
-                        $sender->sendMessage(TextFormat::RED . "\n§9/f desc - §1Make a description of your faction.\n§9/f promote <player> §1- Promote a player.\n§9/f ally <faction> §1- Ally a faction.\n§9/f unally <faction> §1- Un ally a faction.\n§9/f allyok §1- [Accept a request for alliance]\n§9/f allyno §1- [Deny a request for alliance]\n§9/f allies <faction> §1- {The allies of your chosen faction}");
-                        $sender->sendMessage(TextFormat::RED . "\n§d/f listmembers <faction> §5- Shows a list of members in a faction.\n§d/f listofficers <faction> §5- Shows a list of officers in a faction.\n§d/f listleader <faction> §5- Shows who the leader of a faction is.\n§d/f say - §5<send message to everyone in your faction>\n§d/f pf <player> §5- Shows what faction a player is in.\n§d/f top §5- Shows the top 10 BEST factions on the server.");
-                        $sender->sendMessage(TextFormat::RED . "\n§e/f forceunclaim <faction> §6- [Unclaim a faction plot by force - OP]\n§e/f forcedelete <faction> §6- [Delete a faction by force - OP]");
-			$sender->sendMessage(TextFormat::RED . "\n§7/f enemy <faction> §8- Enemy with a faction.\n§7/f war §8- Request a faction war.");
-			$sender->sendMessage(TextFormat::RED . "\n§5/f donate §9- Donate to a faction using your Economy money.\n§5/f withdraw §9- Withdraw from your Faction bank\n§5/f balance §9- Shows your faction money.\n§5/f top money §9- Shows the Top 10 Richest Factions.");
-			return true;
+		if(strtolower($args[0]) == "help"){
+			if(!isset($args[1]) || $args[1] == 1){
+				$sender->sendMessage(TextFormat::BLUE . "FactionsPro Help Page 1 of 3" . TextFormat::RED . "\n/f about\n/f accept\n/f claim\n/f create <name>\n/f del\n/f demote <player>\n/f deny");
+				return true;
+			}
+			if($args[1] == 2){
+				$sender->sendMessage(TextFormat::BLUE . "FactionsPro Help Page 2 of 3" . TextFormat::RED . "\n/f home\n/f help <page>\n/f info\n/f info <faction>\n/f invite <player>\n/f kick <player>\n/f leader <player>\n/f leave");
+				return true;
+			}else{
+				$sender->sendMessage(TextFormat::BLUE . "FactionsPro Help Page 3 of 3" . TextFormat::RED . "\n/f motd\n/f promote <player>\n/f sethome\n/f unclaim\n/f unsethome\n/f unclaim <faction>\n/f forceunclaim [OP]<faction> : Deletes all faction land\n/f forcedelete <faction> : Delete the faction [OP]");
+				return true;
+		        }
+
+                     }
                 }
-                return true;
-            }
         } else {
             $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("Please run this command in game"));
         }
