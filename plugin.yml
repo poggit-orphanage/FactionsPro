@@ -4,7 +4,7 @@ description: A Extended Factions plugin.
 version: 2.0.0-BETA
 main: FactionsPro\FactionMain
 api: [3.0.0-ALPHA10, 3.0.0-ALPHA11]
-softdepend: ["PureChat", "AntiSpamPro"]
+softdepend: ["PureChat", "AntiSpamPro", "EssentialsPE"]
 commands:
   f:
     description: Faction commands.
