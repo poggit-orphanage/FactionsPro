@@ -24,6 +24,7 @@ class FactionMain extends PluginBase implements Listener {
     public $war_players = [];
     public $antispam;
     public $purechat;
+    public $esssentialspe;
     public $factionChatActive = [];
     public $allyChatActive = [];
     private $prefix = "§l§f[§bFactions§f] §r";
@@ -43,6 +44,10 @@ class FactionMain extends PluginBase implements Listener {
         if (!$this->purechat) {
             $this->getLogger()->info("Add PureChat to display Faction ranks in chat");
         }
+        $this->essentialspe = $this->getServer()->getPluginManager()->getPlugin("EssentialsPE");
+        if (!$this->essentialspe) {
+            $this->getLogger()->info("Add EssentialsPE to use the new Raiding system.");
+	}
         $this->fCommand = new FactionCommands($this);
         $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", CONFIG::YAML, array(
             "MaxFactionNameLength" => 15,
