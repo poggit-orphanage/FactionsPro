@@ -374,7 +374,13 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§4$needed_power §cSTR is required but your faction has only §4$faction_power §cSTR."));
                             return true;
 			}
-                        $x = floor($sender->getX());
+                        if ($this->plugin->getBalance($faction) < $this->plugin->prefs->get("MoneyNeededToClaimAPlot")) {
+                            $needed_money = $this->plugin->prefs->get("MoneyNeededToClaimAPlot");
+                            $balance = $this->plugin->getBalance($faction);
+                            $sender->sendMessage($this->plugin->formatMessage("§cYour faction doesn't have enough Money to claim a land."));
+                            $sender->sendMessage($this->plugin->formatMessage("§4$needed_money §cMoney is required but your faction has only §4$balance §cMoney."));
+                            return true;
+                        }
 			$y = floor($sender->getY());
 			$z = floor($sender->getZ());
 			$faction = $this->plugin->getPlayerFaction($sender->getPlayer()->getName());
@@ -383,7 +389,9 @@ class FactionCommands {
                         }
 			$plot_size = $this->plugin->prefs->get("PlotSize");
                         $faction_power = $this->plugin->getFactionPower($faction);
+                        $balance = $this->plugin->getBalance($faction);
 			$this->plugin->subtractFactionPower($faction, $this->plugin->prefs->get("PowerNeededToClaimAPlot"));
+                        $this->plugin->takeFromBalance($faction, $this->plugin->prefs->get("MoneyNeededToClaimAPlot"));
                         $sender->sendMessage($this->plugin->formatMessage("§bYour land has been claimed.", true));
 		    }
                     if(strtolower($args[0]) == "plotinfo" or strtolower($args[0]) == "pinfo"){
@@ -396,7 +404,8 @@ class FactionCommands {
 			}
                         $fac = $this->plugin->factionFromPoint($x, $z, $sender->getPlayer()->getLevel()->getName());
                         $power = $this->plugin->getFactionPower($fac);
-                        $sender->sendMessage($this->plugin->formatMessage("§aThis plot is claimed by §2$fac §awith §2$power §aSTR"));
+                        $balance = $this->plugin->getBalance($fac);
+                        $sender->sendMessage($this->plugin->formatMessage("§aThis plot is claimed by §2$fac §awith §2$power §aSTR, §aand §2$balance §aMoney"));
 			return true;
                     }
                     if(strtolower($args[0]) == "forcedelete" or strtolower($args[0]) == "fdisband"){
@@ -421,7 +430,6 @@ class FactionCommands {
                         $this->plugin->db->query("DELETE FROM home WHERE faction='$args[1]';");
 		        $this->plugin->db->query("DELETE FROM balance WHERE faction=$args[1]';");
                         $sender->sendMessage($this->plugin->formatMessage("§aUnwanted faction was successfully deleted and their faction plot was unclaimed! §bUsing /f forcedelete is not allowed. If you do use this command, please tell Zeao right away. It is not acceptable.", true));
-                    }
                     if (strtolower($args[0]) == 'addstrto') {
                         if (!isset($args[1]) or ! isset($args[2])) {
                             $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f addstrto <faction> <STR>"));
@@ -437,6 +445,22 @@ class FactionCommands {
                         }
                         $this->plugin->addFactionPower($args[1], $args[2]);
                         $sender->sendMessage($this->plugin->formatMessage("§aSuccessfully added §2$args[2] §aSTR to §2$args[1]", true));
+                    }
+                    if (strtolower($args[0]) == 'addbalto') {
+                        if (!isset($args[1]) or ! isset($args[2])) {
+                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f addbalto <faction> <money>"));
+                            return true;
+                        }
+                        if (!$this->plugin->factionExists($args[1])) {
+                            $sender->sendMessage($this->plugin->formatMessage("§cThe requested faction doesn't exist."));
+                            return true;
+                        }
+                        if (!($sender->isOp())) {
+                            $sender->sendMessage($this->plugin->formatMessage("§4§lYou must be OP to do this."));
+                            return true;
+                        }
+                        $this->plugin->addToBalance($args[1], $args[2]);
+                        $sender->sendMessage($this->plugin->formatMessage("§aSuccessfully added §2$args[2] §anBalance to §2$args[1]", true));
                     }
                     if(strtolower($args[0]) == "playerfaction" or strtolower($args[0]) == "pf"){
                         if (!isset($args[1])) {

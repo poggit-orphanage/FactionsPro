@@ -75,6 +75,7 @@ class FactionMain extends PluginBase implements Listener {
             "defaultFactionBalance" => 0,
 	    "MoneyGainedPerPlayerInFaction" => 20,
 	    "MoneyGainedPerAlly" => 50,
+            "MoneyNeededToClaimAPlot" => 0,
                 "prefix" => "§l§f[§bFactions§f] §r",
                 "spawnerPrices" => [
                 	"skeleton" => 500,
