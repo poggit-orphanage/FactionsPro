@@ -381,6 +381,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§4$needed_money §cMoney is required but your faction has only §4$balance §cMoney."));
                             return true;
                         }
+			$x = floor($sender->getX());
 			$y = floor($sender->getY());
 			$z = floor($sender->getZ());
 			$faction = $this->plugin->getPlayerFaction($sender->getPlayer()->getName());
