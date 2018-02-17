@@ -383,6 +383,7 @@ class FactionCommands {
                         }
 			$plot_size = $this->plugin->prefs->get("PlotSize");
                         $faction_power = $this->plugin->getFactionPower($faction);
+			$power = $this->plugin->substractFactionPower($faction);
                         $sender->sendMessage($this->plugin->formatMessage("§bYour land has been claimed.", true));
 		    }
                     if(strtolower($args[0]) == "plotinfo" or strtolower($args[0]) == "pinfo"){
