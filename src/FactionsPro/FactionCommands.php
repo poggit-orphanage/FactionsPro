@@ -381,7 +381,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§4$needed_money §cMoney is required but your faction has only §4$balance §cMoney."));
                             return true;
                         }
-			$x = floor($sender->getX());
+                        $x = floor($sender->getX());
 			$y = floor($sender->getY());
 			$z = floor($sender->getZ());
 			$faction = $this->plugin->getPlayerFaction($sender->getPlayer()->getName());
@@ -431,6 +431,7 @@ class FactionCommands {
                         $this->plugin->db->query("DELETE FROM home WHERE faction='$args[1]';");
 		        $this->plugin->db->query("DELETE FROM balance WHERE faction=$args[1]';");
                         $sender->sendMessage($this->plugin->formatMessage("§aUnwanted faction was successfully deleted and their faction plot was unclaimed! §bUsing /f forcedelete is not allowed. If you do use this command, please tell Zeao right away. It is not acceptable.", true));
+                    }
                     if (strtolower($args[0]) == 'addstrto') {
                         if (!isset($args[1]) or ! isset($args[2])) {
                             $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f addstrto <faction> <STR>"));
