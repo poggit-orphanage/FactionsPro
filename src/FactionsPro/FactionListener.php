@@ -9,6 +9,8 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use essentialspe\commands\God;
 use pocketmine\tile\MobSpawner;
 use pocketmine\utils\TextFormat;
+use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\utils\Config;
 use pocketmine\scheduler\PluginTask;
 use pocketmine\event\entity\EntityDamageEvent;
