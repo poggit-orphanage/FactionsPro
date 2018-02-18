@@ -352,7 +352,7 @@ class FactionMain extends PluginBase implements Listener {
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
-    public function factionFromPoint($x, $z, string $level) {
+    public function factionFromPoint($x, $z) {
         $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2 AND world = '$level';");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return $array["faction"];
@@ -369,8 +369,8 @@ class FactionMain extends PluginBase implements Listener {
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return !empty($array);
     }
-    public function cornerIsInPlot($x1, $z1, $x2, $z2, string $level) {
-        return($this->pointIsInPlot($x1, $z1, $level) || $this->pointIsInPlot($x1, $z2, $level) || $this->pointIsInPlot($x2, $z1, $level) || $this->pointIsInPlot($x2, $z2, $level));
+    public function cornerIsInPlot($x1, $z1, $x2, $z2) {
+        return($this->pointIsInPlot($x1, $z1) || $this->pointIsInPlot($x1, $z2) || $this->pointIsInPlot($x2, $z1) || $this->pointIsInPlot($x2, $z2));
     }
     public function formatMessage($string, $confirm = false) {
         if ($confirm) {
