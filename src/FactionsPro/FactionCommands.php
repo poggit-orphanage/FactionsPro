@@ -1266,7 +1266,7 @@ class FactionCommands {
 				}
 				if (!$overflown && $chrIdx >= strlen($this->plugin->getMapBlock())) $overflown = true;
 				$herePs = $topLeftPs->add($dx, 0, $dz);
-				$hereFaction = $this->plugin->factionFromPoint($herePs->x << $to, $herePs->z << $to);
+				$hereFaction = $this->plugin->factionFromPoint($herePs->x << $to, $herePs->z << $to, $herePs->getPlayer()->getLevel()->getName());
 				$contains = in_array($hereFaction, $fList, true);
 				if ($hereFaction === NULL) {
                     $SemClaim = "§7". "-";
