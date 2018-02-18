@@ -1237,7 +1237,7 @@ class FactionCommands {
 		$to = (int)sqrt($size);
 		$centerPs = new Vector3($observer->x >> $to, 0, $observer->z >> $to);
 		$map = [];
-		$centerFaction = $this->plugin->factionFromPoint($observer->getFloorX(), $observer->getFloorZ(), $sender->getPlayer()->getLevel()->getName());
+		$centerFaction = $this->plugin->factionFromPoint($observer->getFloorX(), $observer->getFloorZ(), $observer->getPlayer()->getLevel()->getName());
 		$centerFaction = $centerFaction ? $centerFaction : "Wilderness";
 		$head = TextFormat::DARK_GREEN . "________________." . TextFormat::DARK_GRAY . "[" .TextFormat::GREEN . " (" . $centerPs->getX() . "," . $centerPs->getZ() . ") " . $centerFaction . TextFormat::DARK_GRAY . "]" . TextFormat::DARK_GREEN . ".________________";
 		$map[] = $head;
