@@ -334,7 +334,7 @@ class FactionMain extends PluginBase implements Listener {
         $arm = ($size - 1) / 2;
         $block = new Snow();
         if($this->cornerIsInPlot($x + $arm, $z + $arm, $x - $arm, $z - $arm)) {
-            $claimedBy = $this->factionFromPoint($x, $z));
+            $claimedBy = $this->factionFromPoint($x, $z);
              $sender->sendMessage($this->formatMessage("This area is aleady claimed by $claimedBy"));
             return false;
         }
