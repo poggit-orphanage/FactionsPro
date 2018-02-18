@@ -321,20 +321,19 @@ class FactionMain extends PluginBase implements Listener {
         if (isset($name) && $this->antispam && $this->antispam->getProfanityFilter()->hasProfanity($name)) $isbanned = true;
         return (strpos(strtolower($bannedNames), strtolower($name)) > 0 || $isbanned);
     }
-    public function newPlot($faction, $x1, $z1, $x2, $z2, string $level) {
-        $stmt = $this->db->prepare("INSERT OR REPLACE INTO plots (faction, x1, z1, x2, z2, world) VALUES (:faction, :x1, :z1, :x2, :z2, :world);");
+    public function newPlot($faction, $x1, $z1, $x2, $z2) {
+        $stmt = $this->db->prepare("INSERT OR REPLACE INTO plots (faction, x1, z1, x2, z2) VALUES (:faction, :x1, :z1, :x2, :z2;");
         $stmt->bindValue(":faction", $faction);
         $stmt->bindValue(":x1", $x1);
         $stmt->bindValue(":z1", $z1);
         $stmt->bindValue(":x2", $x2);
         $stmt->bindValue(":z2", $z2);
-        $stmt->bindValue(":world", $level);
         $stmt->execute();
     }
-    public function drawPlot($sender, $faction, $x, $y, $z, Level $level, $size) {
+    public function drawPlot($sender, $faction, $x, $y, $z, $level, $size) {
         $arm = ($size - 1) / 2;
         $block = new Snow();
-        if($this->cornerIsInPlot($x + $arm, $z + $arm, $x - $arm, $z - $arm, $level->getName())){
+        if($this->cornerIsInPlot($x + $arm, $z + $arm, $x - $arm, $z - $arm)) {
             $claimedBy = $this->factionFromPoint($x, $z, $level->getName());
              $sender->sendMessage($this->formatMessage("This area is aleady claimed by $claimedBy"));
             return false;
@@ -347,8 +346,7 @@ class FactionMain extends PluginBase implements Listener {
     public function isInPlot(Player $player) {
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
-        $level = $player->getLevel()->getName();
-        $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2 AND world = '$level';");
+        $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
@@ -361,11 +359,10 @@ class FactionMain extends PluginBase implements Listener {
         $playerName = $player->getName();
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
-        $level = $player->getLevel()->getName();
         return $this->getPlayerFaction($playerName) == $this->factionFromPoint($x, $z);
     }
-    public function pointIsInPlot($x, $z, string $level) {
-        $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2 AND world = '$level';");
+    public function pointIsInPlot($x, $z) {
+        $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return !empty($array);
     }
