@@ -5,6 +5,7 @@ use pocketmine\command\Command;
 use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
+use pocketmine\math\Vector3;
 use pocketmine\level\Level;
 use pocketmine\level\Position;
 class FactionCommands {
