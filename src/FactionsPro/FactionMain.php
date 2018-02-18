@@ -335,9 +335,20 @@ class FactionMain extends PluginBase implements Listener {
         $block = new Snow();
         if($this->cornerIsInPlot($x + $arm, $z + $arm, $x - $arm, $z - $arm)) {
             $claimedBy = $this->factionFromPoint($x, $z);
-             $sender->sendMessage($this->formatMessage("This area is aleady claimed by $claimedBy"));
+             $sender->sendMessage($this->formatMessage("§5This area is already claimed by §d$claimedBy"));
             return false;
         }
+        if ($this->prefs->get("EnableOverClaim")) {
+                if ($power_sender < $power_claimedBy) {
+                    $sender->sendMessage($this->formatMessage("§dThis area is aleady claimed by §5$claimedBy §dwith §5$power_claimedBy §dSTR. Your faction has §5$power_sender power. §cYou don't have enough power to overclaim this plot."));
+                } else {
+                    $sender->sendMessage($this->formatMessage("§dThis area is aleady claimed by §5$claimedBy §dwith §5$power_claimedBy §dSTR. Your faction has §5$power_sender §dpower. §aType §b/f overclaim §ato overclaim this plot if you want."));
+                }
+                return false;
+            } else {
+                $sender->sendMessage($this->formatMessage("§2Overclaiming is disabled."));
+                return false;
+            }
         $level->setBlock(new Vector3($x + $arm, $y, $z + $arm), $block);
         $level->setBlock(new Vector3($x - $arm, $y, $z - $arm), $block);
         $this->newPlot($faction, $x + $arm, $z + $arm, $x - $arm, $z - $arm);
