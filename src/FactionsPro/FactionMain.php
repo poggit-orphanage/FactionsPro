@@ -322,7 +322,7 @@ class FactionMain extends PluginBase implements Listener {
         return (strpos(strtolower($bannedNames), strtolower($name)) > 0 || $isbanned);
     }
     public function newPlot($faction, $x1, $z1, $x2, $z2) {
-        $stmt = $this->db->prepare("INSERT OR REPLACE INTO plots (faction, x1, z1, x2, z2) VALUES (:faction, :x1, :z1, :x2, :z2;");
+        $stmt = $this->db->prepare("INSERT OR REPLACE INTO plots (faction, x1, z1, x2, z2) VALUES (:faction, :x1, :z1, :x2, :z2);");
         $stmt->bindValue(":faction", $faction);
         $stmt->bindValue(":x1", $x1);
         $stmt->bindValue(":z1", $z1);
