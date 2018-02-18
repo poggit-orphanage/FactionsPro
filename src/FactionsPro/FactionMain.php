@@ -362,7 +362,7 @@ class FactionMain extends PluginBase implements Listener {
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
         $level = $player->getLevel()->getName();
-        return $this->getPlayerFaction($playerName) == $this->factionFromPoint($x, $z, $level);
+        return $this->getPlayerFaction($playerName) == $this->factionFromPoint($x, $z);
     }
     public function pointIsInPlot($x, $z, string $level) {
         $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2 AND world = '$level';");
