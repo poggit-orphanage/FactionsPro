@@ -409,7 +409,7 @@ class FactionCommands {
 		    }
                     if(strtolower($args[0]) == "plotinfo" or strtolower($args[0]) == "pinfo"){
                         $x = floor($sender->getX());
-			    
+			
                         $z = floor($sender->getZ());
                         if (!$this->plugin->isInPlot($sender)) {
                             $sender->sendMessage($this->plugin->formatMessage("§5This plot is not claimed by anyone. §dYou can claim it by typing §5/f claim|cl", true));
@@ -630,12 +630,11 @@ class FactionCommands {
                             return true;
                         }
                         $factionName = $this->plugin->getPlayerFaction($sender->getName());
-                        $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO home (faction, x, y, z, world) VALUES (:faction, :x, :y, :z, :world);");
+                        $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO home (faction, x, y, z) VALUES (:faction, :x, :y, :z);");
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":x", $sender->getX());
                         $stmt->bindValue(":y", $sender->getY());
                         $stmt->bindValue(":z", $sender->getZ());
-                        $stmt->bindValue(":world", $sender->getLevel()->getName());
                         $result = $stmt->execute();
                         $sender->sendMessage($this->plugin->formatMessage("§aHome set succesfully. §bNow, you can use: §3/f home", true));
                     }
@@ -658,27 +657,19 @@ class FactionCommands {
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to do this"));
                             return true;
-                        }
+                        			
+		        }
                         $faction = $this->plugin->getPlayerFaction($sender->getName());
                         $result = $this->plugin->db->query("SELECT * FROM home WHERE faction = '$faction';");
                         $array = $result->fetchArray(SQLITE3_ASSOC);
                         if (!empty($array)) {
-                        	if ($array['world'] === null || $array['world'] === ""){
-								$sender->sendMessage($this->plugin->formatMessage("§6Home is missing world name, please delete and make it again"));
-								return true;
-							}
-							if(Server::getInstance()->loadLevel($array['world']) === false){
-								$sender->sendMessage($this->plugin->formatMessage("§cThe world §3'" . $array['world'] .  "'' §ccould not be found"));
-								return true;
-							}
-							$level = Server::getInstance()->getLevelByName($array['world']);
-                            $sender->getPlayer()->teleport(new Position($array['x'], $array['y'], $array['z'], $level));
-                            $sender->sendMessage($this->plugin->formatMessage("§bTeleported to your faction home", true));
+                            $sender->getPlayer()->teleport(new Position($array['x'], $array['y'], $array['z'], $this->plugin->getServer()->getLevelByName("world")));
+                            $sender->sendMessage($this->plugin->formatMessage("§bTeleported home", true));
                         } else {
-                            $sender->sendMessage($this->plugin->formatMessage("§cHome is currently not set Set it by using /f sethome"));
-			    return true;
+                            $sender->sendMessage($this->plugin->formatMessage("§cHome is not set"));
                         }
                     }
+
 		    /////////////////////////////// POWER ///////////////////////////////
                     if(strtolower($args[0]) == "power" or strtolower($args[0]) == "pw"){
                         if(!$this->plugin->isInFaction($playerName)) {
