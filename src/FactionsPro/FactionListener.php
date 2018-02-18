@@ -234,12 +234,9 @@ class FactionListener implements Listener {
                $tip = $compass . "§l§2Zona Livre§r";
                $event->getPlayer()->sendTip($tip);
             }
-         }
-      }
-  }   
-	public function onPlayerJoin(PlayerJoinEvent $event) {
-		$this->plugin->updateTag($event->getPlayer()->getName());
-	}
+        }
+    }
+        }
         const N = 'N';
     const NE = '/';
     const E = 'E';
