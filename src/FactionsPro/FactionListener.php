@@ -112,9 +112,8 @@ class FactionListener implements Listener {
 	public function factionBlockBreakProtect(BlockBreakEvent $event) {
 		$x = $event->getBlock()->getX();
 		$z = $event->getBlock()->getZ();
-		$level = $event->getBlock()->getLevel()->getName();
-		if($this->plugin->pointIsInPlot($x, $z, $event->getBlock()->getLevel()->getName())){
-			if($this->plugin->factionFromPoint($x, $z, $level) === $this->plugin->getFaction($event->getPlayer()->getName())){
+		if($this->plugin->pointIsInPlot($x, $z)) {
+			if($this->plugin->factionFromPoint($x, $z) === $this->plugin->getFaction($event->getPlayer()->getName())){
 				return true;
 			}else{
 				$event->setCancelled(true);
@@ -127,9 +126,8 @@ class FactionListener implements Listener {
 	public function factionBlockPlaceProtect(BlockPlaceEvent $event) {
       		$x = $event->getBlock()->getX();
      		$z = $event->getBlock()->getZ();
-     		$level = $event->getBlock()->getLevel()->getName();
-		if($this->plugin->pointIsInPlot($x, $z, $level)) {
-			if($this->plugin->factionFromPoint($x, $z, $level) === $this->plugin->getFaction($event->getPlayer()->getName())) {
+		if($this->plugin->pointIsInPlot($x, $z)) {
+			if($this->plugin->factionFromPoint($x, $z) === $this->plugin->getFaction($event->getPlayer()->getName())) {
 				return true;
 			} else {
 				$event->setCancelled(true);
