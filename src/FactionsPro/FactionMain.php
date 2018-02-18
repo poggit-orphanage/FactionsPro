@@ -28,6 +28,9 @@ class FactionMain extends PluginBase implements Listener {
     public $factionChatActive = [];
     public $allyChatActive = [];
     private $prefix = "§l§f[§bFactions§f] §r";
+    
+    const HEX_SYMBOL = "e29688";
+    
     public function onEnable() {
         @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
@@ -75,7 +78,7 @@ class FactionMain extends PluginBase implements Listener {
             "defaultFactionBalance" => 0,
 	    "MoneyGainedPerPlayerInFaction" => 20,
 	    "MoneyGainedPerAlly" => 50,
-            "MoneyNeededToClaimAPlot" => 50000,
+            "MoneyNeededToClaimAPlot" => 0,
                 "prefix" => "§l§f[§bFactions§f] §r",
                 "spawnerPrices" => [
                 	"skeleton" => 500,
@@ -393,7 +396,12 @@ class FactionMain extends PluginBase implements Listener {
         $result = $stmt->execute();
         $this->db->query("DELETE FROM motdrcv WHERE player='$player';");
     }
-    
+    public function getMapBlock(){
+        
+    $symbol = hex2bin(self::HEX_SYMBOL);
+        
+    return $symbol;
+    }
     public function getBalance($faction){
 		$stmt = $this->db->query("SELECT * FROM balance WHERE `faction` LIKE '$faction';");
 		$array = $stmt->fetchArray(SQLITE3_ASSOC);

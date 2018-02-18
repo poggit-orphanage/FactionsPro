@@ -171,16 +171,126 @@ class FactionListener implements Listener {
             }
         }
     }
+    public function broadcastTeamJoin(PlayerJoinEvent $event){
+       $player = $event->getPlayer();
+        
+            if($this->plugin->isInFaction($player->getName()) == true) {
+               $faction = $this->plugin->getPlayerFaction($player->getName());
+               $db = $this->plugin->db->query("SELECT * FROM master WHERE faction='$faction'");
+				foreach($this->plugin->getServer()->getOnlinePlayers() as $fP){
+					if($this->plugin->getPlayerFaction($fP->getName()) == $faction){
+						if($this->plugin->getServer()->getPlayer($fP->getName())){
+							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage("§l§a(!)§r§e " . $player->getName() . " §ais now online");
+                               }
+                          }
+                    }
+            }
+    }
     
-    public function onBlockBreak(BlockBreakEvent $event){
-		if($event->isCancelled()) return;
-		$playerName = $event->getPlayer();
-		if(!$this->plugin->isInFaction($playerName->getName())) return;
-		$block = $event->getBlock();
-		if($block->getId() === Block::MONSTER_SPAWNER){
-			$fHere = $this->plugin->factionFromPoint($block->x, $block->y, $block->z, $block->level);
-			$playerF = $this->plugin->getPlayerFaction($playerName->getName());
-			if($fHere !== $playerF and !$playerName->isOp()){ $event->setCancelled(true); return; };
-		}
+    /*New*/
+    public function broadcastTeamQuit(PlayerQuitEvent $event){
+       $player = $event->getPlayer();
+       $name = $player->getName();
+        
+               if($this->plugin->isInFaction($player->getName()) == true) {
+               $faction = $this->plugin->getPlayerFaction($player->getName());
+               $db = $this->plugin->db->query("SELECT * FROM master WHERE faction='$faction'");
+				foreach($this->plugin->getServer()->getOnlinePlayers() as $fP){
+					if($this->plugin->getPlayerFaction($fP->getName()) == $faction){
+						if($this->plugin->getServer()->getPlayer($fP->getName())){
+                                                    $this->plugin->getServer()->getPlayer($fP->getName())->sendMessage("§l§c(!)§r§4 " . $player->getName() . " §cis now offline");
+            }
+          }
+        }
+               }
+    }
+    public function onMoveMAP(PlayerMoveEvent $event){
+        
+    $x = floor($event->getPlayer()->getX());
+    $y = floor($event->getPlayer()->getY());
+    $z = floor($event->getPlayer()->getZ());
+       $Faction = $this->plugin->factionFromPoint($x,$z);
+           $asciiCompass = self::getASCIICompass($event->getPlayer()->getYaw(), TextFormat::RED, TextFormat::GREEN);
+             $compass = "     " . $asciiCompass[0] . "\n     " . $asciiCompass[1] . "\n     " . $asciiCompass[2] . "\n";
+          if(isset($this->plugin->factionMapActive[$event->getPlayer()->getName()])){
+          if($this->plugin->factionMapActive[$event->getPlayer()->getName()]){
+        
+          if($this->plugin->isInPlot($event->getPlayer())) {
+             if($this->plugin->inOwnPlot($event->getPlayer())) {
+                $tip = $compass . "§l§6Zona Protegida§r";
+                $event->getPlayer()->sendTip($tip);
+            } else {
+                $tip = $compass . "§l§c".$Faction;
+                $event->getPlayer()->sendTip($tip);
+                }
+            }
+        if(!$this->plugin->ip->canGetHurt($event->getPlayer())) {
+               $tip = $compass . "§l§aZona Publica§r";
+               $event->getPlayer()->sendTip($tip);
+            }
+        if(!$this->plugin->isInPlot($event->getPlayer())){
+               $tip = $compass . "§l§2Zona Livre§r";
+               $event->getPlayer()->sendTip($tip);
+            }
+         }
+      }
+  }   
+	public function onPlayerJoin(PlayerJoinEvent $event) {
+		$this->plugin->updateTag($event->getPlayer()->getName());
 	}
-}
+        const N = 'N';
+    const NE = '/';
+    const E = 'E';
+    const SE = '\\';
+    const S = 'S';
+    const SW = '/';
+    const W = 'W';
+    const NW = '\\';
+    public static function getASCIICompass($degrees, $colorActive, $colorDefault) : array
+    {
+        $ret = [];
+        $point = self::getCompassPointForDirection($degrees);
+        $row = "";
+        $row .= ($point === self::NW ? $colorActive : $colorDefault) . self::NW;
+        $row .= ($point === self::N ? $colorActive : $colorDefault) . self::N;
+        $row .= ($point === self::NE ? $colorActive : $colorDefault) . self::NE;
+        $ret[] = $row;
+        $row = "";
+        $row .= ($point === self::W ? $colorActive : $colorDefault) . self::W;
+        $row .= $colorDefault . "+";
+        $row .= ($point === self::E ? $colorActive : $colorDefault) . self::E;
+        $ret[] = $row;
+        $row = "";
+        $row .= ($point === self::SW ? $colorActive : $colorDefault) . self::SW;
+        $row .= ($point === self::S ? $colorActive : $colorDefault) . self::S;
+        $row .= ($point === self::SE ? $colorActive : $colorDefault) . self::SE;
+        $ret[] = $row;
+        return $ret;
+    }
+    public static function getCompassPointForDirection($degrees)
+    {
+        $degrees = ($degrees - 180) % 360;
+        if ($degrees < 0)
+            $degrees += 360;
+        if (0 <= $degrees && $degrees < 22.5)
+            return self::N;
+        elseif (22.5 <= $degrees && $degrees < 67.5)
+            return self::NE;
+        elseif (67.5 <= $degrees && $degrees < 112.5)
+            return self::E;
+        elseif (112.5 <= $degrees && $degrees < 157.5)
+            return self::SE;
+        elseif (157.5 <= $degrees && $degrees < 202.5)
+            return self::S;
+        elseif (202.5 <= $degrees && $degrees < 247.5)
+            return self::SW;
+        elseif (247.5 <= $degrees && $degrees < 292.5)
+            return self::W;
+        elseif (292.5 <= $degrees && $degrees < 337.5)
+            return self::NW;
+        elseif (337.5 <= $degrees && $degrees < 360.0)
+            return self::N;
+        else
+            return null;    
+           }
+    }
