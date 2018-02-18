@@ -353,7 +353,7 @@ class FactionMain extends PluginBase implements Listener {
         return empty($array) == false;
     }
     public function factionFromPoint($x, $z) {
-        $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2';");
+        $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return $array["faction"];
     }
