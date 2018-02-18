@@ -415,7 +415,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§5This plot is not claimed by anyone. §dYou can claim it by typing §5/f claim|cl", true));
 			    return true;
 			}
-                        $fac = $this->plugin->factionFromPoint($x, $z));
+                        $fac = $this->plugin->factionFromPoint($x, $z);
                         $power = $this->plugin->getFactionPower($fac);
                         $balance = $this->plugin->getBalance($fac);
                         $sender->sendMessage($this->plugin->formatMessage("§aThis plot is claimed by §2$fac §awith §2$power §aSTR, §aand §2$balance §aMoney"));
@@ -1266,7 +1266,7 @@ class FactionCommands {
 				}
 				if (!$overflown && $chrIdx >= strlen($this->plugin->getMapBlock())) $overflown = true;
 				$herePs = $topLeftPs->add($dx, 0, $dz);
-				$hereFaction = $this->plugin->factionFromPoint($herePs->x << $to, $herePs->z << $to)));
+				$hereFaction = $this->plugin->factionFromPoint($herePs->x << $to, $herePs->z << $to);
 				$contains = in_array($hereFaction, $fList, true);
 				if ($hereFaction === NULL) {
                     $SemClaim = "§7". "-";
