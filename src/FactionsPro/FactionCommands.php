@@ -1237,7 +1237,7 @@ class FactionCommands {
 		$to = (int)sqrt($size);
 		$centerPs = new Vector3($observer->x >> $to, 0, $observer->z >> $to);
 		$map = [];
-		$centerFaction = $this->plugin->factionFromPoint($observer->getFloorX(), $observer->getFloorZ());
+		$centerFaction = $this->plugin->factionFromPoint($observer->getFloorX(), $observer->getFloorZ(), $sender->getPlayer()->getLevel()->getName());
 		$centerFaction = $centerFaction ? $centerFaction : "Wilderness";
 		$head = TextFormat::DARK_GREEN . "________________." . TextFormat::DARK_GRAY . "[" .TextFormat::GREEN . " (" . $centerPs->getX() . "," . $centerPs->getZ() . ") " . $centerFaction . TextFormat::DARK_GRAY . "]" . TextFormat::DARK_GREEN . ".________________";
 		$map[] = $head;
@@ -1266,7 +1266,7 @@ class FactionCommands {
 				}
 				if (!$overflown && $chrIdx >= strlen($this->plugin->getMapBlock())) $overflown = true;
 				$herePs = $topLeftPs->add($dx, 0, $dz);
-				$hereFaction = $this->plugin->factionFromPoint($herePs->x << $to, $herePs->z << $to);
+				$hereFaction = $this->plugin->factionFromPoint($herePs->x << $to, $herePs->z << $to, $herePs->level << $to);
 				$contains = in_array($hereFaction, $fList, true);
 				if ($hereFaction === NULL) {
                     $SemClaim = "§7". "-";
