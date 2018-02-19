@@ -112,9 +112,8 @@ class FactionListener implements Listener {
 	public function factionBlockBreakProtect(BlockBreakEvent $event) {
 		$x = $event->getBlock()->getX();
 		$z = $event->getBlock()->getZ();
-		$level = $event->getBlock()->getLevel()->getName();
-		if($this->plugin->pointIsInPlot($x, $z, $event->getBlock()->getLevel()->getName())){
-			if($this->plugin->factionFromPoint($x, $z, $level) === $this->plugin->getFaction($event->getPlayer()->getName())){
+		if($this->plugin->pointIsInPlot($x, $z)){
+			if($this->plugin->factionFromPoint($x, $z) === $this->plugin->getFaction($event->getPlayer()->getName())){
 				return true;
 			}else{
 				$event->setCancelled(true);
@@ -127,9 +126,8 @@ class FactionListener implements Listener {
 	public function factionBlockPlaceProtect(BlockPlaceEvent $event) {
       		$x = $event->getBlock()->getX();
      		$z = $event->getBlock()->getZ();
-     		$level = $event->getBlock()->getLevel()->getName();
-		if($this->plugin->pointIsInPlot($x, $z, $level)) {
-			if($this->plugin->factionFromPoint($x, $z, $level) === $this->plugin->getFaction($event->getPlayer()->getName())) {
+		if($this->plugin->pointIsInPlot($x, $z)) {
+			if($this->plugin->factionFromPoint($x, $z) === $this->plugin->getFaction($event->getPlayer()->getName())) {
 				return true;
 			} else {
 				$event->setCancelled(true);
@@ -219,7 +217,7 @@ class FactionListener implements Listener {
         
           if($this->plugin->isInPlot($event->getPlayer())) {
              if($this->plugin->inOwnPlot($event->getPlayer())) {
-                $tip = $compass . "§l§6Zona Protegida§r";
+                $tip = $compass . "§l§6Protected area§r";
                 $event->getPlayer()->sendTip($tip);
             } else {
                 $tip = $compass . "§l§c".$Faction;
@@ -227,11 +225,11 @@ class FactionListener implements Listener {
                 }
             }
         if(!$this->plugin->ip->canGetHurt($event->getPlayer())) {
-               $tip = $compass . "§l§aZona Publica§r";
+               $tip = $compass . "§l§aPublic area§r";
                $event->getPlayer()->sendTip($tip);
             }
         if(!$this->plugin->isInPlot($event->getPlayer())){
-               $tip = $compass . "§l§2Zona Livre§r";
+               $tip = $compass . "§l§2Zona Book§r";
                $event->getPlayer()->sendTip($tip);
             }
         }
