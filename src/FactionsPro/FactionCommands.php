@@ -730,8 +730,40 @@ class FactionCommands {
                         }
                     }
 		    /////////////////////////////// F WARP ///////////////////////////////
-		    /*TODO LIST*/
-		    
+		    if (strtolower($args[0] == "setwarp")) {
+			    if(!isset($args[1])){
+                            $sender->sendMessage($this->plugin->formatMessage("§aPlease use: §b/f setwarp <warp_name>"));
+                            return true;
+			    }
+			    
+			    if (!$this->plugin->isInFaction($playerName)) {
+				    $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to use this command"));
+				    return true;
+			    }
+			    if (!$this->plugin->isLeader($playerName)) {
+                            $sender->sendMessage($this->plugin->formatMessage("§cYou must be leader to set warp"));
+                            return true;
+			    }
+			$stmt->faction_cords = array('x' => (int) $sender->getX(),'y' => (int) $sender->getY(),'z' => (int) $sender->getZ());
+                        $stmt->world = $sender->getLevel()->getName();
+                        $stmt->faction_warp = $args[1];
+			$stm->faction = $factionName;
+                        $stmt->prepare = $this->plugin->db->prepare("SELECT faction,title,x,y,z,world FROM faction warp WHERE title = :title");
+                        $stmt->prepare->bindValue(":title", $this->faction_warp, SQLITE3_TEXT);
+                        $result = $stm->execute();
+                        $sql          = $stm->fetchall();
+                        if( count($sql) > 1 )
+                        {
+			$stmt->prepare = $this->plugin->db->prepare("UPDATE warps SET faction = :faction, world = :world, title = :title, x = :x, y = :y, z = :z WHERE title = :title");
+                        $stmt->bindValue(":faction", $factionName);
+			$stmt->bindValue(":world", $sender->getLevel()->getName());
+			$stm->bindValue(":title", $args[1]);
+                        $stmt->bindValue(":x", $sender->getX());
+                        $stmt->bindValue(":y", $sender->getY());
+                        $stmt->bindValue(":z", $sender->getZ());
+                        $result = $stmt->execute();
+                        $sender->sendMessage($this->plugin->formatMessage("§aFaction Warp set succesfully as $args[1]. §bNow, you can use: §3/f warp $args[1]", true));
+	    	    }
 		    /////////////////////////////// F TITLES ///////////////////////////////
 		    /*TODO LIST*/
 		    
