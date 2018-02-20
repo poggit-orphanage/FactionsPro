@@ -753,7 +753,6 @@ class FactionCommands {
                         $result = $stm->execute();
                         $sql          = $stm->fetchall();
                         if( count($sql) > 1 )
-                        {
 			$stmt->prepare = $this->plugin->db->prepare("UPDATE warps SET faction = :faction, world = :world, title = :title, x = :x, y = :y, z = :z WHERE title = :title");
                         $stmt->bindValue(":faction", $factionName);
 			$stmt->bindValue(":world", $sender->getLevel()->getName());
