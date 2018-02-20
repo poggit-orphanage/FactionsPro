@@ -729,6 +729,18 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§cFaction Home is not set"));
                         }
                     }
+		    /////////////////////////////// F WARP ///////////////////////////////
+		    /*TODO LIST*/
+		    
+		    /////////////////////////////// F TITLES ///////////////////////////////
+		    /*TODO LIST*/
+		    
+		    /////////////////////////////// F Titles upon entering / leaving a claim ///////////////////////////////
+		    /*TODO LIST*/
+		    
+		    /////////////////////////////// F RENAME ///////////////////////////////
+		    /*TODO LIST*/
+		    
 		    /////////////////////////////// POWER ///////////////////////////////
                     if(strtolower($args[0]) == "power" or strtolower($args[0]) == "pw"){
                         if(!$this->plugin->isInFaction($playerName)) {
@@ -1067,7 +1079,7 @@ class FactionCommands {
                     }
                     /////////////////////////////// ABOUT ///////////////////////////////
                     if(strtolower($args[0]) == "about" or strtolower($args[0]) == "info"){
-                        $sender->sendMessage(TextFormat::GREEN . "[ORIGINAL] §aFactionsPro §cv2.0.0-BETA by " . TextFormat::BOLD . "§5VMPE Development Team");
+                        $sender->sendMessage(TextFormat::GREEN . "[ORIGINAL] §aFactionsPro §cv2.0.0 by " . TextFormat::BOLD . "§5VMPE Development Team");
                         $sender->sendMessage(TextFormat::GOLD . "§7[§2MODDED§7] §3This version is by §6Void§bFactions§cPE\n§b[EDITED] §cThis plugin was edited by " . TextFormat::BOLD . "§5Zeao");
                     }
                     ////////////////////////////// CHAT ////////////////////////////////
