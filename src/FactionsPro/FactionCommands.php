@@ -343,7 +343,7 @@ class FactionCommands {
                             return true;
                         }
                         if ($this->plugin->getPlayerFaction($playerName) != $this->plugin->getPlayerFaction($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cThe Player named §4$playerName §cis not in this faction"));
+                            $sender->sendMessage($this->plugin->formatMessage("§cThe Player named §4$args[1] §cis not in this faction"));
                             return true;
                         }
                         if ($args[1] == $sender->getName()) {
@@ -1178,7 +1178,7 @@ class FactionCommands {
                             		       return true;
 					   }
                        			   $balance = $this->plugin->getBalance($args[1]);
-                       			   $sender->sendMessage($this->plugin->formatMessage("§bThe faction §a $args[1] §bhas §a$§a$balance §bMoney", true));
+                       			   $sender->sendMessage($this->plugin->formatMessage("§bThe faction §a $args[1] §bhas §a$balance §bMoney", true));
                     			}
 					if(strtolower($args[0]) == "withdraw" or strtolower($args[0]) == "wd"){
 					   if(!isset($args[1])){
@@ -1322,7 +1322,7 @@ class FactionCommands {
 				return true;
                         }
 			if($args[1] == 7){
-				$sender->sendMessage(TextFormat::BLUE . "§6Void§bFactions§cPE §dHelp §2[§57/7§2]" . TextFormat::RED . "\n§a/f donate <amount> - §7Donate to a faction from your Eco Bank.\n§a/f withdraw|wd <amount> - §7With draw from your faction bank\n§a/f top money - §7Checks the top 10 RICHEST factions.\n§a/f balance|bal - §7Checks your faction balance\n§a/f map - §7Faction Map command\n§a/f overclaim - §7Overclaims a plot.\n§4§ldo /f help 8 to see OP Commands.");
+				$sender->sendMessage(TextFormat::BLUE . "§6Void§bFactions§cPE §dHelp §2[§57/7§2]" . TextFormat::RED . "\n§a/f donate <amount> - §7Donate to a faction from your Eco Bank.\n§a/f withdraw|wd <amount> - §7With draw from your faction bank\n§a/f top money - §7Checks the top 10 RICHEST factions.\n§a/f balance|bal - §7Checks your faction balance\n§a/f map - §7Faction Map command\n§a/f overclaim - §7Overclaims a plot.\n§a/f seebalance|sb §4§ldo /f help 8 to see OP Commands.");
 				return true;
 			}else{
 				$sender->sendMessage(TextFormat::BLUE . "§6Void§bFactions§cPE §dHelp (OP Commands) §2[§51/1§2]" . TextFormat::RED . "\n§4/f addstrto <faction> <STR> - §cAdds Strength to a faction.\n§4/f addbalto <faction> <money> - §cAdds Money to a faction.\n§4/f forcedelete|fdisband <faction> - §cForce deletes a faction.\n§4/f forceunclaim|func <faction> - §cForce unclaims a plot / land.");
