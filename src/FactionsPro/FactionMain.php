@@ -33,6 +33,7 @@ class FactionMain extends PluginBase implements Listener {
     
     public function onEnable(): void{
         @mkdir($this->getDataFolder());
+	if (!$this->isSpoon()) {
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
             $file = fopen($this->getDataFolder() . "BannedNames.txt", "w");
             $txt = "Admin:admin:Staff:staff:Owner:owner:Builder:builder:Op:OP:op";
@@ -51,6 +52,23 @@ class FactionMain extends PluginBase implements Listener {
         if (!$this->essentialspe) {
             $this->getLogger()->info("Add EssentialsPE to use the new Raiding system.");
 	}
+	/**
+     * Checks if server is using a spoon.
+     *
+     * @return bool
+     */
+    public function isSpoon() {
+        if ($this->getServer()->getName() !== "PocketMine-MP") {
+            $this->getLogger()->error("");
+            return true;
+        }
+        if ($this->getDescription()->getAuthors() !== ["VMPE Development Team"] || $this->getDescription()->getName() !== "FactionsPro") {
+            $this->getLogger()->error("You are not using the original version of FactionsPro by VMPE Development Team, the most up to date Factions plugin through out the MCPE Community. This plugin may disable now.");
+            return true;
+        }
+        return false;
+	    
+        }
         $this->fCommand = new FactionCommands($this);
         $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", CONFIG::YAML, array(
             "MaxFactionNameLength" => 15,
