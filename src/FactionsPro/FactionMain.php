@@ -335,9 +335,9 @@ class FactionMain extends PluginBase implements Listener {
         $arm = ($size - 1) / 2;
         $block = new Snow();
         if($this->cornerIsInPlot($x + $arm, $z + $arm, $x - $arm, $z - $arm)) {
-            $claimedBy = $this->factionFromPoint($x, $z);
-             $sender->sendMessage($this->formatMessage("§5This area is already claimed by §d$claimedBy"));
-            return false;
+           $claimedBy = $this->factionFromPoint($x, $z);
+           $power_claimedBy = $this->getFactionPower($claimedBy);
+           $power_sender = $this->getFactionPower($faction); 
         }
         if ($this->prefs->get("EnableOverClaim")) {
                 if ($power_sender < $power_claimedBy) {
