@@ -1168,6 +1168,18 @@ class FactionCommands {
 						$sender->sendMessage($this->plugin->formatMessage("§6Faction balance: " . TextFormat::GREEN . "$".$balance));
 						return true;
 					}
+		    			if(strtolower($args[0]) == "seebalance" or strtolower($args[0]) == "sb"){
+                        		   if(!isset($args[1])){
+                            		        $sender->sendMessage($this->plugin->formatMessage("§aPlease use: §b/f seebalance <faction>\n§bAlias Command: §d/f sb <faction>\n§aDescription: §bAllows you to see A faction's balance."));
+                           			return true;
+                        		   }
+                        		   if(!$this->plugin->factionExists($args[1])) {
+									   $sender->sendMessage($this->plugin->formatMessage("§cThe faction named §4$args[1] §cdoes not exist"));
+                            		       return true;
+					   }
+                       			   $balance = $this->plugin->getBalance($args[1]);
+                       			   $sender->sendMessage($this->plugin->formatMessage("§bThe faction §a$args[1] §bhas §a$§a$balance §bMoney.",true));
+                    			}
 					if(strtolower($args[0]) == "withdraw" or strtolower($args[0]) == "wd"){
 					   if(!isset($args[1])){
 							$sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f withdraw <amount>\n§bAlias Command: §3/f wd <amount>\n§aDescription: §dWithdraw money from your faction bank."));
