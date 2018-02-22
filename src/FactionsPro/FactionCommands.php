@@ -1178,7 +1178,7 @@ class FactionCommands {
                             		       return true;
 					   }
                        			   $balance = $this->plugin->getBalance($args[1]);
-                       			   $sender->sendMessage($this->plugin->formatMessage("§bThe faction §a$args[1] §bhas §a$§a$balance §bMoney.",true));
+                       			   $sender->sendMessage($this->plugin->formatMessage("§bThe faction §a $args[1] §bhas §a$§a$balance §bMoney", true));
                     			}
 					if(strtolower($args[0]) == "withdraw" or strtolower($args[0]) == "wd"){
 					   if(!isset($args[1])){
