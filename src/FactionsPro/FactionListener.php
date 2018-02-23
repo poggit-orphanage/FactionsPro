@@ -171,6 +171,17 @@ class FactionListener implements Listener {
             }
         }
     }
+    public function onBlockBreak(BlockBreakEvent $event){
+	      if($event->isCancelled()) return;
+	      $player = $event->getPlayer();
+	      if(!$this->plugin->isInFaction($player->getName())) return;
+	      $block = $event->getBlock();
+	      if($block->getId() === Block::MONSTER_SPAWNER){
+		      $fHere = $this->plugin->factionFromPoint($block->x, $block->y);
+		      $playerF = $this->plugin->getPlayerFaction($player->getName());
+		      if($fHere !== $playerF and !$player->isOp()){ $event->setCancelled(true); return; };
+	      }
+    }
     public function broadcastTeamJoin(PlayerJoinEvent $event){
        $player = $event->getPlayer();
         
