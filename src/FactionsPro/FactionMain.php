@@ -337,19 +337,20 @@ class FactionMain extends PluginBase implements Listener {
         if($this->cornerIsInPlot($x + $arm, $z + $arm, $x - $arm, $z - $arm)) {
            $claimedBy = $this->factionFromPoint($x, $z);
            $power_claimedBy = $this->getFactionPower($claimedBy);
-           $power_sender = $this->getFactionPower($faction); 
+           $power_sender = $this->getFactionPower($faction);
+           
+	   if($this->prefs->get("EnableOverClaim")) {
+              if ($power_sender < $power_claimedBy) {
+                  $sender->sendMessage($this->formatMessage("§cYou don't have enough power to overclaim this plot."));
+              } else {
+                  $sender->sendMessage($this->formatMessage("§bYou have enough STR power to overclaim this plot! Now, Type §3/f overclaim to overclaim this plot if you want."));
+              }
+              return false;
+          } else {
+              $sender->sendMessage($this->formatMessage("§2Overclaiming is disabled."));
+              return false;
+	  }
         }
-        if ($this->prefs->get("EnableOverClaim")) {
-                if ($power_sender < $power_claimedBy) {
-                    $sender->sendMessage($this->formatMessage("§dThis area is already claimed by §5 $claimedBy §dwith §5 $power_claimedBy §dSTR. Your faction has §5 $power_sender power. §cYou don't have enough power to overclaim this plot."));
-                } else {
-                    $sender->sendMessage($this->formatMessage("§dThis area is already claimed by §5 $claimedBy §dwith§5 $power_claimedBy §dSTR. Your faction has §5 $power_sender §dpower. §aType §b/f overclaim §ato overclaim this plot if you want."));
-                }
-                return false;
-            } else {
-                $sender->sendMessage($this->formatMessage("§2Overclaiming is disabled."));
-                return false;
-            }
         $level->setBlock(new Vector3($x + $arm, $y, $z + $arm), $block);
         $level->setBlock(new Vector3($x - $arm, $y, $z - $arm), $block);
         $this->newPlot($faction, $x + $arm, $z + $arm, $x - $arm, $z - $arm);
