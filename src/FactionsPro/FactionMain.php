@@ -341,9 +341,9 @@ class FactionMain extends PluginBase implements Listener {
         }
         if ($this->prefs->get("EnableOverClaim")) {
                 if ($power_sender < $power_claimedBy) {
-                    $sender->sendMessage($this->formatMessage("§dThis area is aleady claimed by §5$claimedBy §dwith §5$power_claimedBy §dSTR. Your faction has §5$power_sender power. §cYou don't have enough power to overclaim this plot."));
+                    $sender->sendMessage($this->formatMessage("§dThis area is already claimed by §5 $claimedBy §dwith §5 $power_claimedBy §dSTR. Your faction has §5 $power_sender power. §cYou don't have enough power to overclaim this plot."));
                 } else {
-                    $sender->sendMessage($this->formatMessage("§dThis area is aleady claimed by §5$claimedBy §dwith §5$power_claimedBy §dSTR. Your faction has §5$power_sender §dpower. §aType §b/f overclaim §ato overclaim this plot if you want."));
+                    $sender->sendMessage($this->formatMessage("§dThis area is already claimed by §5 $claimedBy §dwith§5 $power_claimedBy §dSTR. Your faction has §5 $power_sender §dpower. §aType §b/f overclaim §ato overclaim this plot if you want."));
                 }
                 return false;
             } else {
@@ -355,7 +355,7 @@ class FactionMain extends PluginBase implements Listener {
         $this->newPlot($faction, $x + $arm, $z + $arm, $x - $arm, $z - $arm);
         return true;
     }
-    public function isInPlot(Player $player) {
+    public function isInPlot($player) {
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
         $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
@@ -367,7 +367,7 @@ class FactionMain extends PluginBase implements Listener {
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return $array["faction"];
     }
-    public function inOwnPlot(Player $player) {
+    public function inOwnPlot($player) {
         $playerName = $player->getName();
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
