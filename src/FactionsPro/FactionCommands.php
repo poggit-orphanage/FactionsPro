@@ -694,6 +694,13 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be leader to set home"));
                             return true;
                         }
+			$faction_power = $this->plugin->getFactionPower($this->plugin->getPlayerFaction($player));
+                        $needed_power = $this->plugin->prefs->get("PowerNeededToSetOrUpdateAHome");
+                        if($faction_power < $needed_power){
+                            $sender->sendMessage($this->plugin->formatMessage("§cYour faction doesn't have enough power to set a home. Get power by killing players!"));
+                            $sender->sendMessage($this->plugin->formatMessage("§4$needed_power §cpower is required to set a home. Your faction has §4$faction_power §cpower."));
+			    return true;
+			}
                         $factionName = $this->plugin->getPlayerFaction($sender->getName());
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO home (faction, x, y, z, world) VALUES (:faction, :x, :y, :z, :world);");
                         $stmt->bindValue(":faction", $factionName);
