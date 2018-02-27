@@ -590,7 +590,7 @@ class FactionCommands {
                     }
                     /////////////////////////////// TOP, also by @PrimusLV //////////////////////////
                                         if(strtolower($args[0]) == "top"){
-                                                if(isset($args[1]) && $args[1] == "money" && $args[1] == "str"){
+                                                if(isset($args[1]) && $args[1] == "money" or isset($args[1]) && $args[1] == "str"){
                                                 if(isset($args[1])) {
                                                    $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f top money|str\n§aDescription: §dChecks either top money or STR."));
                                                    return true;
