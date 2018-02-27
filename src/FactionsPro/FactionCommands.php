@@ -694,7 +694,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be leader to set home"));
                             return true;
                         }
-			$faction_power = $this->plugin->getFactionPower($this->plugin->getPlayerFaction($player));
+			$faction_power = $this->plugin->getFactionPower($this->plugin->getPlayerFaction($playerName));
                         $needed_power = $this->plugin->prefs->get("PowerNeededToSetOrUpdateAHome");
                         if($faction_power < $needed_power){
                             $sender->sendMessage($this->plugin->formatMessage("§cYour faction doesn't have enough power to set a home. Get power by killing players!"));
