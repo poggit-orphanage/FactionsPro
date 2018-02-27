@@ -695,11 +695,12 @@ class FactionCommands {
                             return true;
                         }
                         $factionName = $this->plugin->getPlayerFaction($sender->getName());
-                        $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO home (faction, x, y, z) VALUES (:faction, :x, :y, :z);");
+                        $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO home (faction, x, y, z, world) VALUES (:faction, :x, :y, :z, :world);");
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":x", $sender->getX());
                         $stmt->bindValue(":y", $sender->getY());
                         $stmt->bindValue(":z", $sender->getZ());
+			$stmt->bindValue(":world", $sender->getLevel()->getName());
                         $result = $stmt->execute();
                         $sender->sendMessage($this->plugin->formatMessage("§bHome set succesfully for §a$factionName. §bNow, you can use: §3/f home", true));
                     }
