@@ -591,15 +591,20 @@ class FactionCommands {
                     }
 		    /////////////////////////////// TOP, also by @PrimusLV //////////////////////////
 					if(strtolower($args[0]) == "top"){
-						if(isset($args[1]) && $args[1] == "money"){
-                            $this->plugin->sendListOfTop10RichestFactionsTo($sender);
-						}else{
-                            $this->plugin->sendListOfTop10FactionsTo($sender);
-							//$this->plugin->sendListOfTop10RichestFactionsTo($sender);
+						if(isset($args[1]) && $args[1] == "money" && $args[1] == "str"){
+						if(isset($args[1]))) {
+						   $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f top money|str\n§aDescription: §dChecks either top money or STR.");
+						   return true;
+						}
+                            			$this->plugin->sendListOfTop10RichestFactionsTo($sender);
+									}else{
+                          			$this->plugin->sendListOfTop10FactionsTo($sender);
+										//$this->plugin->sendListOfTop10RichestFactionsTo($sender);
 						}
 						return true;
 					}
-		    
+			}
+		    }
                     /////////////////////////////// ACCEPT ///////////////////////////////
                     if(strtolower($args[0]) == "accept" or strtolower($args[0]) == "yes"){
                         $lowercaseName = strtolower($playerName);
