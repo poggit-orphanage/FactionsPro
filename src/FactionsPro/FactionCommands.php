@@ -728,7 +728,7 @@ class FactionCommands {
                         $result = $this->plugin->db->query("SELECT * FROM home WHERE faction = '$faction';");
                         $array = $result->fetchArray(SQLITE3_ASSOC);
                         if (!empty($array)) {
-                            $sender->getPlayer()->teleport(new Position($array['x'], $array['y'], $array['z'], $this->plugin->getServer()->getLevelByName("world")));
+                            $sender->getPlayer()->teleport(new Position($array['x'], $array['y'], $array['z'], $this->plugin->getServer()->getLevelByName("world", "ender", "nether")));
                             $sender->sendMessage($this->plugin->formatMessage("§bTeleported to your faction home succesfully!", true));
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("§cFaction Home is not set. You can set it with: §4/f sethome"));
