@@ -588,7 +588,7 @@ class FactionCommands {
 		    /////////////////////////////// TOP, also by @PrimusLV //////////////////////////
 					if(strtolower($args[0]) == "top"){
 					          if(!isset($args[1])){
-					          $sender->sendMessage($this->plugin->formatMessage("§aPlease use: §b/f top money §d- To check top F Money.\n§aPlease use: vb/f top str §d- To check Top 10 BEST Factions (Highest STR)"));
+					          $sender->sendMessage($this->plugin->formatMessage("§aPlease use: §b/f top money §d- To check top F Money.\n§aPlease use: §b/f top str §d- To check Top 10 BEST Factions (Highest STR)"));
                             		          return true;
 			      		          }
 						    
