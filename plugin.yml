@@ -8,7 +8,6 @@ softdepend: ["PureChat", "AntiSpamPro", "EssentialsPE"]
 commands:
   f:
     description: Faction commands.
-    alias: ["fac"]
     permission: f.command
 permissions:
   f.command:
