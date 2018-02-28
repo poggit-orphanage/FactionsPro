@@ -587,21 +587,21 @@ class FactionCommands {
                     }
 		    /////////////////////////////// TOP, also by @PrimusLV //////////////////////////
 					if(strtolower($args[0]) == "top"){
-					     if(!isset($args[1])){
-					     $sender->sendMessage($this->plugin->formatMessage("§aPlease use: §b/f top money §d- To check top F Money.\n§aPlease use: vb/f top str §d- To check Top 10 BEST Factions (Highest STR)"));
-                            		     return true;
-			      		     }
+					          if(!isset($args[1])){
+					          $sender->sendMessage($this->plugin->formatMessage("§aPlease use: §b/f top money §d- To check top F Money.\n§aPlease use: vb/f top str §d- To check Top 10 BEST Factions (Highest STR)"));
+                            		          return true;
+			      		          }
 						    
-					     if(isset($args[1]) && $args[1] == "money"){
-                         $this->plugin->sendListOfTop10RichestFactionsTo($sender);
-					     }else{
-					     if(isset($args[1]) && $args[1] == "str"){
-                         $this->plugin->sendListOfTop10FactionsTo($sender);
-						      //$this->plugin->sendListOfTop10RichestFactionsTo($sender);
-			 }
-			 return true;
-		    }
-		    
+					          if(isset($args[1]) && $args[1] == "money"){
+                              $this->plugin->sendListOfTop10RichestFactionsTo($sender);
+					          }else{
+					          if(isset($args[1]) && $args[1] == "str"){
+                              $this->plugin->sendListOfTop10FactionsTo($sender);
+						           //$this->plugin->sendListOfTop10RichestFactionsTo($sender);
+			                          }
+			                          return true;
+		                          }
+                                        }
                     /////////////////////////////// ACCEPT ///////////////////////////////
                     if(strtolower($args[0]) == "accept" or strtolower($args[0]) == "yes"){
                         $lowercaseName = strtolower($playerName);
