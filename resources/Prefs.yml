@@ -15,7 +15,7 @@ PlotSize: 26
 PlayersNeededInFactionToClaimAPlot: 5
 PowerNeededToClaimAPlot: 1000
 PowerNeededToSetOrUpdateAHome: 250
-# Currently removed. We plan on adding this back soon.
+# ADDED BACK - The power which is needed th set / update a home. Default: 250. Select 0 to disable.
 PowerGainedPerPlayerInFaction: 50
 # You gain power by inviting other players to your faction. Default: 50.
 MoneyGainedPerPlayerInFaction: 30
