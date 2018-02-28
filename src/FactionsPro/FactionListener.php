@@ -99,11 +99,11 @@ class FactionListener implements Listener {
 				if($e->getPlayer()->isCreative()){
 					$e->getPlayer()->sendMessage($this->plugin->formatMessage("§c§lRaiding environment detected. Switching to survival mode."));
 					$p->setGamemode(0);
-					$e->setCancelled();
+					$e->setCancelled(true);
 				}
 				if($this->plugin->EssentialsPE->isGod($e->getPlayer())){
 					$e->getPlayer()->sendMessage($this->plugin->formatMessage("§c§lRaiding environment detected. Disabling god mode."));
-					$e->setCancelled();
+					$e->setCancelled(true);
 				}
 			}
 		}
@@ -111,6 +111,7 @@ class FactionListener implements Listener {
 	
 	public function factionBlockBreakProtect(BlockBreakEvent $event) {
 		$x = $event->getBlock()->getX();
+		$y = $event->getBlock()->getY();
 		$z = $event->getBlock()->getZ();
 		if($this->plugin->pointIsInPlot($x, $z)){
 			if($this->plugin->factionFromPoint($x, $z) === $this->plugin->getFaction($event->getPlayer()->getName())){
@@ -125,6 +126,7 @@ class FactionListener implements Listener {
 	
 	public function factionBlockPlaceProtect(BlockPlaceEvent $event) {
       		$x = $event->getBlock()->getX();
+		$y = $event->getBlock()->getY();
      		$z = $event->getBlock()->getZ();
 		if($this->plugin->pointIsInPlot($x, $z)) {
 			if($this->plugin->factionFromPoint($x, $z) === $this->plugin->getFaction($event->getPlayer()->getName())) {
@@ -172,14 +174,14 @@ class FactionListener implements Listener {
         }
     }
     public function onBlockBreak(BlockBreakEvent $event){
-	      if($event->isCancelled()) return;
+	      if($event->isCancelled()) return true;
 	      $player = $event->getPlayer();
-	      if(!$this->plugin->isInFaction($player->getName())) return;
+	      if(!$this->plugin->isInFaction($player->getName())) return true;
 	      $block = $event->getBlock();
 	      if($block->getId() === Block::MONSTER_SPAWNER){
 		      $fHere = $this->plugin->factionFromPoint($block->x, $block->y);
 		      $playerF = $this->plugin->getPlayerFaction($player->getName());
-		      if($fHere !== $playerF and !$player->isOp()){ $event->setCancelled(true); return; };
+		      if($fHere !== $playerF and !$player->isOp()){ $event->setCancelled(true); return true; };
 	      }
     }
     public function broadcastTeamJoin(PlayerJoinEvent $event){
@@ -197,8 +199,6 @@ class FactionListener implements Listener {
                     }
             }
     }
-    
-    /*New*/
     public function broadcastTeamQuit(PlayerQuitEvent $event){
        $player = $event->getPlayer();
        $name = $player->getName();
