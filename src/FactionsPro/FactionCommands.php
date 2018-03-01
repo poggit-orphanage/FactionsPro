@@ -1254,7 +1254,7 @@ class FactionCommands {
 					}
                 /////////////////////////////// MAP, map by Primus (no compass) ////////////////////////////////
 					// Coupon for compass: G1wEmEde0mp455
-					if(strtolower($args[0] == "map" or strtolower($args[0] == "compass"){
+					if(strtolower($args[0] == "map")) {
                         if(!isset($args[1])) {
 					    $size = 1;
 						$map = $this->getMap($sender, self::MAP_WIDTH, self::MAP_HEIGHT, $sender->getYaw(), $size);
