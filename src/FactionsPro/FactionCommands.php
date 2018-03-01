@@ -177,13 +177,13 @@ class FactionCommands {
 			     $sender->sendMessage($this->plugin->formatMessage("You must be leader to execute this command."));
 			}
 			if(isset($args[1]) && $args[1] == "setmaxplayers"){
-			if(!is_numeric($args[1])){
-			    $sender->sendMessage($this->plugin->formatMessage("Not numeric. Please enter a number to set the Max players in your faction."));
+			if(!is_numeric($args[2])){
+			    $sender->sendMessage($this->plugin->formatMessage("Not numeric. Please enter a number to set the Max players in your faction.", false));
 			    return true;
 			}
 			$factionName = $this->plugin->getPlayerFaction($factionName);
 			$maxPlayers = $this->plugin->getNumberOfPlayers($factionName);
-			$sender->sendMessage($this->plugin->formatMessage("§bYou've set the number of players to §a$maxPlayers"));
+			$sender->sendMessage($this->plugin->formatMessage("§bYou've set the number of players to §a$maxPlayers", false));
                         return true;
                         }
 		    }
