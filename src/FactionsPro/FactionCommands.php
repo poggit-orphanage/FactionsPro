@@ -586,7 +586,7 @@ class FactionCommands {
 		    /////////////////////////////// TOP, also by @PrimusLV //////////////////////////
 					if(strtolower($args[0]) == "top" or strtolower($args[0]) == "lb"){
 					          if(!isset($args[1])){
-					          $sender->sendMessage($this->plugin->formatMessage("§aPlease use: s/f $args[0] trcheck top F Money.\n§aPlease use: §b/f top str §d- To check Top 10 BEST Factions (Highest STR)"));
+					          $sender->sendMessage($this->plugin->formatMessage("§aPlease use: §a/f $args[0] §d- To check top F Money.\n§aPlease use: §b/f $args[0] str §d- To check Top 10 BEST Factions (Highest STR)"));
                             		          return true;
 			      		          }
 						    
@@ -738,7 +738,7 @@ class FactionCommands {
                         $array = $result->fetchArray(SQLITE3_ASSOC);
                         if (!empty($array)) {
 			        if ($array['world'] === null || $array['world'] === ""){
-				                                $sender->sendMessage($this->plugin->formatMessage("Home is missing world name, please delete and make it again"));
+				                                $sender->sendMessage($this->plugin->formatMessage("§cHome is missing world name, please delete and make it again"));
 				       			        return true;
 			       				}
 			       				if(Server::getInstance()->loadLevel($array['world']) === false){
@@ -807,7 +807,7 @@ class FactionCommands {
                     }
                     if(strtolower($args[0]) == "seepower" or strtolower($args[0]) == "sp"){
                         if(!isset($args[1])){
-                            $sender->sendMessage($this->plugin->formatMessage("§aPlease use: §b/f seepower <faction>\n§bAlias Command: §d/f sp <faction>\n§aDescription: §bAllows you to see A faction's power."));
+                            $sender->sendMessage($this->plugin->formatMessage("§aPlease use: §b/f $args[0] <faction>\n§aDescription: §bAllows you to see A faction's power."));
                             return true;
                         }
                         if(!$this->plugin->factionExists($args[1])) {
@@ -874,11 +874,11 @@ class FactionCommands {
                     }
                     if(strtolower($args[0]) == "say" or strtolower($args[0]) == "bc"){
                         if (!$this->plugin->prefs->get("AllowChat")) {
-              	    $sender->sendMessage($this->plugin->formatMessage("§6/f say|bc is disabled"));
+              	    $sender->sendMessage($this->plugin->formatMessage("§6/f $args[0] is disabled"));
          			    return true;
 				}
 			        if (!isset($args[1])) {
-                            	    $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f say <message>\n§bAlias Command: §3/f bc <message>\n§aDescription: §dBroadcasts a message to the whole faction."));
+                            	    $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f $args[0] <message>\n§aDescription: §dBroadcasts a message to the whole faction."));
                                     return true;
               	}
          			if (!($this->plugin->isInFaction($playerName))) {
@@ -946,7 +946,7 @@ class FactionCommands {
                     }
                     if(strtolower($args[0]) == "ally" or strtolower($args[0]) == "a"){
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f ally <faction>\n§bAlias Command: §3/f a <faction>\n§aDescription: §dAlly with a faction."));
+                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f $args[0] <faction>\n§aDescription: §dAlly with a faction."));
                             return true;
                         }
                         if (!$this->plugin->isInFaction($playerName)) {
@@ -995,7 +995,7 @@ class FactionCommands {
                     }
                     if(strtolower($args[0]) == "unally" or strtolower($args[0]) == "una"){
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f unally <faction>\n§bAlias Command: §3/f una {faction}\n§aDescription: §dUn allies a faction."));
+                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f $args[0] <faction>\n§aDescription: §dUn allies a faction."));
                             return true;
                         }
                         if (!$this->plugin->isInFaction($playerName)) {
@@ -1034,7 +1034,7 @@ class FactionCommands {
                     }
                     if(strtolower($args[0]) == "forceunclaim" or strtolower($args[0]) == "func"){
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f forceunclaim <faction>\n§bAlias Command: §3/f func <faction>\n§aDescription: §dForce Unclaims a land. - Operators only."));
+                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f $args[0] <faction>\n§aDescription: §dForce Unclaims a land. - Operators only."));
                             return true;
                         }
                         if (!$this->plugin->factionExists($args[1])) {
@@ -1177,7 +1177,7 @@ class FactionCommands {
 		////////////////////////////// BALANCE, by primus ;) ///////////////////////////////////////
 					if(strtolower($args[0]) == "bal" or strtolower($args[0]) == "balance"){
 						if(!$this->plugin->isInFaction($playerName)){
-							$sender->sendMessage($this->plugin->formatMessage("§cYou must be in faction to check balance!", false));
+							$sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to check balance!", false));
 							return true;
 						}
 						$faction = $this->plugin->getPlayerFaction($playerName);
@@ -1187,7 +1187,7 @@ class FactionCommands {
 					}
 		    			if(strtolower($args[0]) == "seebalance" or strtolower($args[0]) == "sb"){
                         		   if(!isset($args[1])){
-                            		        $sender->sendMessage($this->plugin->formatMessage("§aPlease use: §b/f seebalance <faction>\n§bAlias Command: §d/f sb <faction>\n§aDescription: §bAllows you to see A faction's balance."));
+                            		        $sender->sendMessage($this->plugin->formatMessage("§aPlease use: §b/f $args[0] <faction>\n§aDescription: §bAllows you to see A faction's balance."));
                            			return true;
                         		   }
                         		   if(!$this->plugin->factionExists($args[1])) {
@@ -1199,7 +1199,7 @@ class FactionCommands {
                     			}
 					if(strtolower($args[0]) == "withdraw" or strtolower($args[0]) == "wd"){
 					   if(!isset($args[1])){
-							$sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f withdraw <amount>\n§bAlias Command: §3/f wd <amount>\n§aDescription: §dWithdraw money from your faction bank."));
+							$sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f $args[0] <amount>\n§aDescription: §dWithdraw money from your faction bank."));
 							return true;
                                                 }
                         if(($e = $this->plugin->getEconomy()) == null){
@@ -1226,9 +1226,9 @@ class FactionCommands {
 						$sender->sendMessage($this->plugin->formatMessage("§a$".$args[1]." §bgranted from faction", true));
 						return true;
 					}
-					if(strtolower($args[0]) == "donate"){
+					if(strtolower($args[0]) == "donate" or strtolower($args[0]) == "pay"){
 					   if(!isset($args[1])){
-						       $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f donate <amount>\n§aDescription: §dDonate money to your/the faction you're in."));
+						       $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f $args[0] <amount>\n§aDescription: §dDonate money to your/the faction you're in."));
 						       return true;
                                                 }
                         if(($e = $this->plugin->getEconomy()) === null){
@@ -1248,13 +1248,13 @@ class FactionCommands {
 						$faction = $this->plugin->getPlayerFaction($sender->getName());
 						if($e->reduceMoney($sender, $args[1], false, "faction bank account") === \onebone\economyapi\EconomyAPI::RET_SUCCESS){
 							$this->plugin->addToBalance($faction, $args[1]);
-							$sender->sendMessage($this->plugin->formatMessage("§a$".$args[1]." §bdonated to your faction by §a$sender"));
+							$sender->sendMessage($this->plugin->formatMessage("§a$".$args[1]." §bdonated to your faction"));
 							return true;
 						}
 					}
                 /////////////////////////////// MAP, map by Primus (no compass) ////////////////////////////////
 					// Coupon for compass: G1wEmEde0mp455
-					if(strtolower($args[0] == "map")) {
+					if(strtolower($args[0] == "map" or strtolower($args[0] == "compass"){
                         if(!isset($args[1])) {
 					    $size = 1;
 						$map = $this->getMap($sender, self::MAP_WIDTH, self::MAP_HEIGHT, $sender->getYaw(), $size);
@@ -1281,8 +1281,7 @@ class FactionCommands {
                         $leader = $this->plugin->getLeader($faction);
                         $numPlayers = $this->plugin->getNumberOfPlayers($faction);
 			$balance = $this->plugin->getBalance($faction);
-                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§3_____§2[§5§lFaction Information§r§2]§3_____" . TextFormat::RESET);
-                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§bFaction Name: " . TextFormat::GREEN . "§5$faction" . TextFormat::RESET);
+                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§3_____§2[§5§l$faction Information§r§2]§3_____" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§cLeader Name: " . TextFormat::YELLOW . "§5$leader" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§dPlayers: " . TextFormat::LIGHT_PURPLE . "§5$numPlayers/50" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§eStrength " . TextFormat::RED . "§d$power" . " §5STR" . TextFormat::RESET);
@@ -1323,7 +1322,7 @@ class FactionCommands {
 				return true;
 			}
 			if($args[1] == 3){
-				$sender->sendMessage(TextFormat::BLUE . "§6Void§bFactions§cPE §dHelp §2[§53/7§2]" . TextFormat::RED . "\n§a/f motd|desc - §7Set your faction Message of the day.\n§a/f promote <player> - §7Promote a player.\n§a/f sethome|shome - §7Set a faction home.\n§a/f unclaim|uncl - §7Unclaims a faction plot.\n§a/f unsethome|delhome - §7Deletes a faction home.\n§a/f top - §7Checks top 10 BEST Factions on the server.\n§a/f war <factionname|tp> - §7Starts a faction war / Requests a faction war.");
+				$sender->sendMessage(TextFormat::BLUE . "§6Void§bFactions§cPE §dHelp §2[§53/7§2]" . TextFormat::RED . "\n§a/f motd|desc - §7Set your faction Message of the day.\n§a/f promote <player> - §7Promote a player.\n§a/f sethome|shome - §7Set a faction home.\n§a/f unclaim|uncl - §7Unclaims a faction plot.\n§a/f unsethome|delhome - §7Deletes a faction home.\n§a/f top|lb - §7Checks top 10 BEST Factions on the server.\n§a/f war|wr <factionname|tp> - §7Starts a faction war / Requests a faction war.");
 				return true;
 			}
 			if($args[1] == 4){
@@ -1339,7 +1338,7 @@ class FactionCommands {
 				return true;
                         }
 			if($args[1] == 7){
-				$sender->sendMessage(TextFormat::BLUE . "§6Void§bFactions§cPE §dHelp §2[§57/7§2]" . TextFormat::RED . "\n§a/f donate <amount> - §7Donate to a faction from your Eco Bank.\n§a/f withdraw|wd <amount> - §7With draw from your faction bank\n§a/f top money - §7Checks the top 10 RICHEST factions.\n§a/f balance|bal - §7Checks your faction balance\n§a/f map - §7Faction Map command\n§a/f overclaim - §7Overclaims a plot.\n§a/f seebalance|sb - §7Checks other faction balances.\n§4§ldo /f help 8 to see OP Commands.");
+				$sender->sendMessage(TextFormat::BLUE . "§6Void§bFactions§cPE §dHelp §2[§57/7§2]" . TextFormat::RED . "\n§a/f donate|pay <amount> - §7Donate to a faction from your Eco Bank.\n§a/f withdraw|wd <amount> - §7With draw from your faction bank\n§a/f balance|bal - §7Checks your faction balance\n§a/f map|compass - §7Faction Map command\n§a/f overclaim|oc - §7Overclaims a plot.\n§a/f seebalance|sb - §7Checks other faction balances.\n§4§ldo /f help 8 to see OP Commands.");
 				return true;
 			}else{
 				$sender->sendMessage(TextFormat::BLUE . "§6Void§bFactions§cPE §dHelp (OP Commands) §2[§51/1§2]" . TextFormat::RED . "\n§4/f addstrto <faction> <STR> - §cAdds Strength to a faction.\n§4/f addbalto <faction> <money> - §cAdds Money to a faction.\n§4/f forcedelete|fdisband <faction> - §cForce deletes a faction.\n§4/f forceunclaim|func <faction> - §cForce unclaims a plot / land.");
