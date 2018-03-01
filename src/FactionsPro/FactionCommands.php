@@ -179,9 +179,10 @@ class FactionCommands {
 			if(isset($args[1]) && $args[1] == "setmaxplayers"){
 			if(!is_numeric($args[1])){
 			    $sender->sendMessage($this->plugin->formatMessage("Not numeric. Please enter a number to set the Max players in your faction."));
+			    return true;
 			}
-			$factionName = $this->plugin->getPlayerFaction($playerName);
-			$maxPlayers = $this->plugin->getNumberOfPlayers($this->plugin->isFactionFull($factionName));
+			$factionName = $this->plugin->getPlayerFaction($factionName);
+			$maxPlayers = $this->plugin->getNumberOfPlayers($factionName);
 			$sender->sendMessage($this->plugin->formatMessage("§bYou've set the number of players to §a$maxPlayers"));
                         return true;
                         }
