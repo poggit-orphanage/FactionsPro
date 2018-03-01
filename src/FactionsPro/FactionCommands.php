@@ -164,7 +164,27 @@ class FactionCommands {
                             return true;
                         }
                     }
-                    /////////////////////////////// INVITE ///////////////////////////////
+		    /////////////////////////////// SETTINGS ///////////////////////////////
+		    if(strtolower($args[0]) == "settings"){
+			if (!isset($args[1])) {
+			    $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f settings <option>\n§aDescription: §dSet your options in your faction."));
+			    return true;
+			}
+			if (!$this->plugin->isInFaction($sender->getName())) {
+			    $sender->sendMessage($this->plugin->formatMessage("You must be in a faction to use this.");
+			}
+			if (!$this->plugin->isLeader($playerName)) {
+			     $sender->sendMessage($this->plugin->formatMessage("You must be leader to execute this command.");
+			}
+			if (!isset($args[1] && $args[1] == "setmaxplayers"){
+			if(!is_numeric($args[1])){
+			    $sender->sendMessage($this->plugin->formatMessage("Not numeric. Please enter a number to set the Max players in your faction.");
+			}
+			$factionName = $this->plugin->getPlayerFaction($playerName);
+			$maxPlayers = $this->plugin->setPlayerCount($factionName);
+			$sender->sendMessage($this->plugin->formatMessage("§bYou've set the number of players to §a$maxPlayers");
+		    }
+		    /////////////////////////////// INVITE ///////////////////////////////
                     if(strtolower($args[0]) == "invite" or strtolower($args[0]) == "inv"){
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f $args[0] <player>\n§aDescription: §dInvites a player to your faction."));
