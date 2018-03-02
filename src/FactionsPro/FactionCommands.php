@@ -586,7 +586,7 @@ class FactionCommands {
 		    /////////////////////////////// TOP, also by @PrimusLV //////////////////////////
 					if(strtolower($args[0]) == "top" or strtolower($args[0]) == "lb"){
 					          if(!isset($args[1])){
-					          $sender->sendMessage($this->plugin->formatMessage("§aPlease use: §a/f $args[0] §d- To check top F Money.\n§aPlease use: §b/f $args[0] str §d- To check Top 10 BEST Factions (Highest STR)"));
+					          $sender->sendMessage($this->plugin->formatMessage("§aPlease use: §a/f $args[0] money §d- To check top 10 Richest Factions on the server\n§aPlease use: §b/f $args[0] str §d- To check Top 10 BEST Factions (Highest STR)"));
                             		          return true;
 			      		          }
 						    
