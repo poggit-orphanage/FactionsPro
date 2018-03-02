@@ -443,7 +443,7 @@ class FactionCommands {
                         $this->plugin->db->query("DELETE FROM strength WHERE faction='$args[1]';");
                         $this->plugin->db->query("DELETE FROM motd WHERE faction='$args[1]';");
                         $this->plugin->db->query("DELETE FROM home WHERE faction='$args[1]';");
-		        $this->plugin->db->query("DELETE FROM balance WHERE faction=$args[1]';");
+		        $this->plugin->db->query("DELETE FROM balance WHERE faction='$args[1]';");
                         $sender->sendMessage($this->plugin->formatMessage("§aUnwanted faction was successfully deleted and their faction plot was unclaimed!", true));
                     }
                     if (strtolower($args[0]) == 'addstrto') {
@@ -888,7 +888,7 @@ class FactionCommands {
          			$r = count($args);
          			$row = array();
          			$rank = "";
-         			$f = $this->plugin->getPlayerFaction($playerName);
+         			$faction = $this->plugin->getPlayerFaction($playerName);
          			if ($this->plugin->isOfficer($playerName)) {
          			    $rank = "*";
          			} else if ($this->plugin->isLeader($playerName)) {
@@ -898,7 +898,7 @@ class FactionCommands {
          			for ($i = 0; $i < $r - 1; $i = $i + 1) {
          			    $message = $message . $args[$i + 1] . " ";
          			}
-              	$result = $this->plugin->db->query("SELECT * FROM master WHERE faction='$f';");
+              	$result = $this->plugin->db->query("SELECT * FROM master WHERE faction='$faction';");
          			for ($i = 0; $resultArr = $result->fetchArray(SQLITE3_ASSOC); $i = $i + 1) {
           			    $row[$i]['player'] = $resultArr['player'];
          			    $p = $this->plugin->getServer()->getPlayer($row[$i]['player']);
