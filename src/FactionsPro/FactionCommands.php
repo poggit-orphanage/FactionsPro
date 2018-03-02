@@ -684,6 +684,10 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must delete the faction or give\nleadership to someone else first"));
 			    return true;
                         }
+                    } else {
+                            $sender->sendMessage($this->plugin->formatMessage("§cYou are not in a faction!"));
+			    return true;
+                        }
                     }
                     /////////////////////////////// SETHOME ///////////////////////////////
                     if(strtolower($args[0]) == "sethome" or strtolower($args[0]) == "shome"){
