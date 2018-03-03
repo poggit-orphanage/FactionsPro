@@ -672,18 +672,23 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// LEAVE ///////////////////////////////
-                    if (strtolower($args[0] == "leave")) {
+                    if(strtolower($args[0] == "leave")) {
+                        if (!$this->plugin->isInFaction($playerName)) {
+                            $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to do this"));
+                            return true;
+                        }
                         if ($this->plugin->isLeader($playerName) == false) {
                             $faction = $this->plugin->getPlayerFaction($playerName);
                             $name = $sender->getName();
                             $this->plugin->db->query("DELETE FROM master WHERE player='$name';");
-                            $sender->sendMessage($this->plugin->formatMessage("You successfully left $faction", true));
+                            $sender->sendMessage($this->plugin->formatMessage("§bYou successfully left §a$faction", true));
                             $this->plugin->subtractFactionPower($faction, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
+			    $this->plugin->takeFromBalance($faction, $this->plugin->prefs->get("MoneyGainedPerPlayerInFaction"));
                         } else {
-                            $sender->sendMessage($this->plugin->formatMessage("You must delete the faction or give\nleadership to someone else first"));
+                            $sender->sendMessage($this->plugin->formatMessage("§cYou must delete the faction or give\nleadership to someone else first"));
+			    return true;
                         }
                     }
-
                     /////////////////////////////// SETHOME ///////////////////////////////
                     if(strtolower($args[0]) == "sethome" or strtolower($args[0]) == "shome"){
                         if (!$this->plugin->isInFaction($playerName)) {
