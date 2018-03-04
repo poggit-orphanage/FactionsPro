@@ -278,7 +278,7 @@ class FactionCommands {
                         $stmt->bindValue(":rank", "Officer");
                         $result = $stmt->execute();
                         $promotee = $this->plugin->getServer()->getPlayer($args[1]);
-                        $sender->sendMessage($this->plugin->formatMessage("§a$promotee §bhas been promoted to Officer", true));
+                        $sender->sendMessage($this->plugin->formatMessage("§a$args[1] §bhas been promoted to Officer", true));
                         if ($promotee instanceof Player) {
                             $promotee->sendMessage($this->plugin->formatMessage("§bYou were promoted to officer of §a$factionName!", true));
                             return true;
@@ -317,7 +317,7 @@ class FactionCommands {
                         $stmt->bindValue(":rank", "Member");
                         $result = $stmt->execute();
                         $demotee = $this->plugin->getServer()->getPlayer($args[1]);
-                        $sender->sendMessage($this->plugin->formatMessage("§5$demotee §2has been demoted to Member by §5$playerName", true));
+                        $sender->sendMessage($this->plugin->formatMessage("§5$args[1] §2has been demoted to Member by §5$playerName", true));
                         if ($demotee instanceof Player) {
                             $demotee->sendMessage($this->plugin->formatMessage("§2You were demoted to member of §5$factionName!", true));
                             return true;
