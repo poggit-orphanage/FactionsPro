@@ -478,6 +478,38 @@ class FactionCommands {
                         $this->plugin->addToBalance($args[1], $args[2]);
                         $sender->sendMessage($this->plugin->formatMessage("§bSuccessfully added §a$args[2] §bBalance to §a$args[1]", true));
                     }
+		    if (strtolower($args[0]) == 'rmbalto') {
+	                if (!isset($args[1]) or ! isset($args[2])) {
+                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f rmbalto <faction> <money>\n§aDescription: §dRemoves Money from a faction."));
+                            return true;
+                        }
+                        if (!$this->plugin->factionExists($args[1])) {
+                            $sender->sendMessage($this->plugin->formatMessage("§cThe faction named §4$args[1] §cdoesn't exist."));
+                            return true;
+                        }
+                        if (!($sender->isOp())) {
+                            $sender->sendMessage($this->plugin->formatMessage("§4§lYou must be OP to do this."));
+                            return true;
+                        }
+                        $this->plugin->takeFromBalance($args[1], $args[2]);
+                        $sender->sendMessage($this->plugin->formatMessage("§bSuccessfully removed §a$args[2] §bBalance from §a$args[1]", true));
+		    }
+                    if(strtolower($args[0]) == 'rmpower') {
+		       if (!isset($args[1]) or ! isset($args[2])) {
+                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f rmpower <faction> <power>\n§aDescription: §dRemoves Power from a faction."));
+                            return true;
+                        }
+                        if (!$this->plugin->factionExists($args[1])) {
+                            $sender->sendMessage($this->plugin->formatMessage("§cThe faction named §4$args[1] §cdoesn't exist."));
+                            return true;
+                        }
+                        if (!($sender->isOp())) {
+                            $sender->sendMessage($this->plugin->formatMessage("§4§lYou must be OP to do this."));
+                            return true;
+                        }
+                        $this->plugin->subtractFactionPower($args[1], $args[2]);
+                        $sender->sendMessage($this->plugin->formatMessage("§bSuccessfully removed §a$args[2] §bPower from §a$args[1]", true));
+                    }
                     if(strtolower($args[0]) == "playerfaction" or strtolower($args[0]) == "pf"){
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f $args[0] <player>\n§aDescription: §dCheck to see what faction a player's in."));
@@ -488,7 +520,8 @@ class FactionCommands {
                             return true;
                         }
                         $faction = $this->plugin->getPlayerFaction($args[1]);
-                        $sender->sendMessage($this->plugin->formatMessage("§a-$args[1] §bis in the faction: §a$faction-", true));
+			$playerName = $this->plugin->getServer()->getPlayer($args[1]);
+                        $sender->sendMessage($this->plugin->formatMessage("§a-$playerName §bis in the faction: §a$faction-", true));
                     }
                     
                     if (strtolower($args[0]) == "overclaim" or strtolower($args[0]) == "oc"){
