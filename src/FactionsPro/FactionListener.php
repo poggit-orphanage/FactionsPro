@@ -101,7 +101,7 @@ class FactionListener implements Listener {
 					$p->setGamemode(0);
 					$e->setCancelled(true);
 				}
-				if($this->plugin->EssentialsPE->isGod($e->getPlayer())){
+				if($this->plugin->essentialspe->isGod($e->getPlayer())){
 					$e->getPlayer()->sendMessage($this->plugin->formatMessage("§c§lRaiding environment detected. Disabling god mode."));
 					$e->setCancelled(true);
 				}
