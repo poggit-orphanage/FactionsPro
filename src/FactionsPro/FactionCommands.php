@@ -317,7 +317,7 @@ class FactionCommands {
                         $stmt->bindValue(":rank", "Member");
                         $result = $stmt->execute();
                         $demotee = $this->plugin->getServer()->getPlayer($args[1]);
-                        $sender->sendMessage($this->plugin->formatMessage("§5$args[1] §2has been demoted to Member by §5$playerName", true));
+                        $sender->sendMessage($this->plugin->formatMessage("§5$args[1] §2has been demoted to Member", true));
                         if ($demotee instanceof Player) {
                             $demotee->sendMessage($this->plugin->formatMessage("§2You were demoted to member of §5$factionName!", true));
                             return true;
@@ -1170,8 +1170,9 @@ class FactionCommands {
                     }
                     /////////////////////////////// ABOUT ///////////////////////////////
                     if(strtolower($args[0]) == "about" or strtolower($args[0]) == "info"){
-                        $sender->sendMessage(TextFormat::GREEN . "[ORIGINAL] §aFactionsPro §cv2.0.0 by " . TextFormat::BOLD . "§5VMPE Development Team");
-                        $sender->sendMessage(TextFormat::GOLD . "§7[§2MODDED§7] §3This version is by §6Void§bFactions§cPE\n§b[EDITED] §cThis plugin was edited by " . TextFormat::BOLD . "§5Zeao");
+                        $sender->sendMessage(TextFormat::GREEN . "§7[§6Void§bFactions§cPE§dINFO§7]");
+                        $sender->sendMessage(TextFormat::GOLD . "§7[§2MODDED§7] §3This version is by §6Void§bFactions§cPE\n§b");
+			$sender->sendMessage(TextFormat::GREEN . "§bPlugin Information:\n§aFaction Build release: §5321\n§aBuild Tested and works on: §5300-340\n§aPlugin Link: §5Not showing due to self-leak information\n§aPlugin download: §5Not showing due to self-leak information.\n§aAuthor: §5VMPE Development Team\n§aOriginal Author: §5Tethered\n§aDescription: §5A factions plugin which came back to life and re-added features like the good 'ol' versions of FactionsPro.\n§aVersion: §5v2.0.5\n§aPlugin Version: §5v2.0.0");
                     }
                     ////////////////////////////// CHAT ////////////////////////////////
 		    
