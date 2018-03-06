@@ -1169,7 +1169,7 @@ class FactionCommands {
                     if(strtolower($args[0]) == "about" or strtolower($args[0]) == "info"){
                         $sender->sendMessage(TextFormat::GREEN . "§7[§6Void§bFactions§cPE§dINFO§7]");
                         $sender->sendMessage(TextFormat::GOLD . "§7[§2MODDED§7] §3This version is by §6Void§bFactions§cPE\n§b");
-			$sender->sendMessage(TextFormat::GREEN . "§bPlugin Information:\n§aFaction Build release: §5321\n§aBuild Tested and works on: §5300-340\n§aPlugin Link: §5Not showing due to self-leak information\n§aPlugin download: §5Not showing due to self-leak information.\n§aAuthor: §5VMPE Development Team\n§aOriginal Author: §5Tethered\n§aDescription: §5A factions plugin which came back to life and re-added features like the good 'ol' versions of FactionsPro.\n§aVersion: §5v2.0.5\n§aPlugin Version: §5v2.0.0");
+			$sender->sendMessage(TextFormat::GREEN . "§bPlugin Information:\n§aFaction Build release: §5321\n§aBuild Tested and works on: §5300-321\n§aPlugin Link: §5Not showing due to self-leak information\n§aPlugin download: §5Not showing due to self-leak information.\n§aAuthor: §5VMPE Development Team\n§aOriginal Author: §5Tethered\n§aDescription: §5A factions plugin which came back to life and re-added features like the good 'ol' versions of FactionsPro.\n§aVersion: §5v2.0.5\n§aPlugin Version: §5v2.0.0");
                     }
                     ////////////////////////////// CHAT ////////////////////////////////
 		    
