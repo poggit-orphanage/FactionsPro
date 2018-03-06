@@ -1353,8 +1353,13 @@ class FactionCommands {
                     return true;
                 }
 		if(strtolower($args[0]) == "help"){
-			if(!isset($args[1]) || $args[1] == 1){
-				$sender->sendMessage(TextFormat::BLUE . "§6Void§bFactions§cPE §dHelp §2[§51/7§2]" . TextFormat::RED . "\n§a/f about|info - §7Shows Plugin information\n§a/f accept|yes - §7Accepts an faction invitation\n§a/f claim|cl - §7Claims a faction plot!\n§a/f create|make <name> - §7Creates a faction.\n§a/f del|disband - Deletes a faction.\n§a/f demote <player> - §7Demotes a player from a faction.\n§a/f deny|no - §7Denies a player's invitation.");
+			if(!isset($args[1])
+			        $sender->sendMessage(TextFormat::BLUE . "§aPlease use §b/f help <page> §afor a list of pages. (1-7]");
+			   	return true;
+			}
+			$serverName = $this->plugin->prefs->get("ServerName");
+			if($args[1] == 1){
+				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§51/7§2]" . TextFormat::RED . "\n§a/f about|info - §7Shows Plugin information\n§a/f accept|yes - §7Accepts an faction invitation\n§a/f claim|cl - §7Claims a faction plot!\n§a/f create|make <name> - §7Creates a faction.\n§a/f del|disband - Deletes a faction.\n§a/f demote <player> - §7Demotes a player from a faction.\n§a/f deny|no - §7Denies a player's invitation.");
 				return true;
 			}
 			if($args[1] == 2){
