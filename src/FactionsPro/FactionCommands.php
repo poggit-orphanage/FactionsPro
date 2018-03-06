@@ -1,13 +1,10 @@
 <?php
-
 namespace FactionsPro;
-
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\{Server, Player};
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 use pocketmine\level\{Level, Position};
-
 class FactionCommands {
 	
     public $plugin;
@@ -1353,8 +1350,8 @@ class FactionCommands {
                     return true;
                 }
 		if(strtolower($args[0]) == "help"){
-			if(!isset($args[1])
-			        $sender->sendMessage(TextFormat::BLUE . "§aPlease use §b/f help <page> §afor a list of pages. (1-7]");
+			if(!isset($args[1])) {
+			   $sender->sendMessage(TextFormat::BLUE . "§aPlease use §b/f help <page> §afor a list of pages. (1-7]");
 			   	return true;
 			}
 			$serverName = $this->plugin->prefs->get("ServerName");
