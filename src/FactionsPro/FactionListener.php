@@ -5,16 +5,12 @@ use pocketmine\command\{Command, CommandSender};
 use pocketmine\event\Listener;
 use pocketmine\event\block\{BlockPlaceEvent, BlockBreakEvent};
 use pocketmine\Player;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\entity\{EntityDamageEvent, EntityDamageByEntityEvent};
 use essentialspe\commands\God;
 use pocketmine\tile\MobSpawner;
-use pocketmine\utils\TextFormat;
-use pocketmine\utils\Config;
+use pocketmine\utils\{Config, TextFormat};
 use pocketmine\scheduler\PluginTask;
-use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\event\player\PlayerJoinEvent;
-use pocketmine\event\player\PlayerQuitEvent;
-use pocketmine\event\player\{PlayerMoveEvent, PlayerDeathEvent, PlayerChatEvent, PlayerInteractEvent};
+use pocketmine\event\player\{PlayerQuitEvent, PlayerJoinEvent, PlayerMoveEvent, PlayerDeathEvent, PlayerChatEvent, PlayerInteractEvent};
 use pocketmine\block\Block;
 class FactionListener implements Listener {
 	
