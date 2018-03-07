@@ -1,17 +1,20 @@
 <?php
+
 namespace FactionsPro;
+
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\event\Listener;
 use pocketmine\event\block\{BlockPlaceEvent, BlockBreakEvent};
 use pocketmine\Player;
 use pocketmine\event\entity\{EntityDamageEvent, EntityDamageByEntityEvent};
-use essentialspe\commands\God;
+use EssentialsPE\Commands\God;
 use pocketmine\tile\MobSpawner;
 use pocketmine\utils\{Config, TextFormat};
 use pocketmine\scheduler\PluginTask;
 use pocketmine\event\player\{PlayerQuitEvent, PlayerJoinEvent, PlayerMoveEvent, PlayerDeathEvent, PlayerChatEvent, PlayerInteractEvent};
 use pocketmine\block\Block;
+
 class FactionListener implements Listener {
 	
 	public $plugin;
@@ -25,7 +28,7 @@ class FactionListener implements Listener {
 		$playerName = $PCE->getPlayer()->getName();
 		//MOTD Check
 		if($this->plugin->motdWaiting($playerName)) {
-			if(time() - $this->plugin->getMOTDTime($playerName) > 30) {
+			if(time() - $this->plugin->getMOTDTime($playerName) > $this->plugin->prefs->get("MOTDTime") {
 				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("§cTimed out. §bPlease use: §3/f desc again."));
 				$this->plugin->db->query("DELETE FROM motdrcv WHERE player='$playerName';");
 				$PCE->setCancelled(true);
@@ -97,7 +100,7 @@ class FactionListener implements Listener {
 					$p->setGamemode(0);
 					$e->setCancelled(true);
 				}
-				if($this->plugin->essentialspe->isGod($e->getPlayer())){
+				if($this->plugin->essentialspe->baseapi->isGod($e->getPlayer())){
 					$e->getPlayer()->sendMessage($this->plugin->formatMessage("§c§lRaiding environment detected. Disabling god mode."));
 					$e->setCancelled(true);
 				}
