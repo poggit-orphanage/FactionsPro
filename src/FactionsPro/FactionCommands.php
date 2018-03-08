@@ -1,10 +1,13 @@
 <?php
+
 namespace FactionsPro;
+
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\{Server, Player};
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 use pocketmine\level\{Level, Position};
+
 class FactionCommands {
 	
     public $plugin;
@@ -1154,7 +1157,7 @@ class FactionCommands {
                         }
                         $allyTime = $array["timestamp"];
                         $currentTime = time();
-                        if (($currentTime - $allyTime) <= $this->plugin->prefs->get("AllyDenyTime") {
+                        if (($currentTime - $allyTime) <= $this->plugin->prefs->get("AllyDenyTime")) {
                             $requested_fac = $this->plugin->getPlayerFaction($array["requestedby"]);
                             $sender_fac = $this->plugin->getPlayerFaction($playerName);
                             $this->plugin->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
