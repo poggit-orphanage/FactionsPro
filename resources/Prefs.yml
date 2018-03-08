@@ -10,8 +10,8 @@ OfficersCanClaim: false
 ## Officers can claim. Default: false.
 ClaimingEnabled: true
 # Enable claiming (/f claim.) Default: true - There are some bugs with it, so report bugs by opening an issue on GitHub.
-PlotSize: 26
-# Plot Size for Claiming. Make sure it ends up being an even number, or it can contain issues.
+PlotSize: 16
+# Plot Size for Claiming. Make sure it ends up being an known number, or it can contain issues.
 PlayersNeededInFactionToClaimAPlot: 5
 PowerNeededToClaimAPlot: 1000
 PowerNeededToSetOrUpdateAHome: 250
@@ -61,8 +61,14 @@ defaultFactionBalance: 0
 # NEW: When creating a faction, how much Money should a faction have by default? Default: 0.
 MOTDTime: 30
 # NEW:  when setting a MOTD to your faction, they will have by default: 30 seconds untill it times out, and that you have to redo the command again.
-prefix: "§l§f[§bFactions§f] §r"
-# Faction Spawners prefix. Currently in BETA, so it may not function very well.
+InviteTime: 60
+# NEW: When inviting someone to your faction, they will have the maximum of x amount of seconds before it times out.
+# Default: 60.
+AllyTime: 60
+# NEW When requesting to ally a faction, they will have the maximum of x amount of seconds before it times out.
+# Default: 60.
+pluginprefix: "§l§f[§bFactions§f] §r"
+# Faction Commands prefix, coming soon.
 spawnerPrices:
 skeleton: 500
 pig: 200
