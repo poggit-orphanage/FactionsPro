@@ -1,5 +1,7 @@
 <?php
+
 namespace FactionsPro;
+
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\event\Listener;
@@ -7,14 +9,13 @@ use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\player\{PlayerJoinEvent, PlayerChatEvent};
 use pocketmine\Player;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
-use pocketmine\utils\TextFormat;
-use pocketmine\utils\Config;
+use pocketmine\utils\{Config, TextFormat};
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\block\Snow;
 use pocketmine\math\Vector3;
-use pocketmine\level\Position;
 use pocketmine\entity\{Skeleton, Pig, Chicken, Zombie, Creeper, Cow, Spider, Blaze, Ghast};
-use pocketmine\level\Level;
+use pocketmine\level\{Position, Level};
+
 class FactionMain extends PluginBase implements Listener {
     
     public $db;
@@ -41,15 +42,15 @@ class FactionMain extends PluginBase implements Listener {
         $this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
         $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
         if (!$this->antispam) {
-            $this->getLogger()->info("Add AntiSpamPro to ban rude Faction names");
+            $this->getLogger()->info("AntiSpamPro is not installed. If you want to ban rude Faction names, then AntiSpamPro needs to be installed. Disabling Rude faction names system.");
         }
         $this->purechat = $this->getServer()->getPluginManager()->getPlugin("PureChat");
         if (!$this->purechat) {
-            $this->getLogger()->info("Add PureChat to display Faction ranks in chat");
+            $this->getLogger()->info("PureChat is not installed. If you want to display Faction ranks in chat, then PureChat needs to be installed. Disabling Faction chat system.");
         }
         $this->essentialspe = $this->getServer()->getPluginManager()->getPlugin("EssentialsPE");
         if (!$this->essentialspe) {
-            $this->getLogger()->info("Add EssentialsPE to use the new Raiding system.");
+            $this->getLogger()->info("EssentialsPE is not installed. If you want to use the new Raiding system for FactionsPro, then EssentialsPE needs to be installed. Disabling Raiding system.");
     	}
         $this->fCommand = new FactionCommands($this);
         $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", CONFIG::YAML, array(
@@ -81,6 +82,10 @@ class FactionMain extends PluginBase implements Listener {
 	    "MoneyGainedPerAlly" => 50,
             "MoneyNeededToClaimAPlot" => 0,
 	    "MOTDTime" => 30,
+	    "AcceptTime" => 60,
+	    "DenyTime" => 60,
+	    "AllyAcceptTime" => 60,
+	    "AllyDenyTime" => 60,
 	    "ServerName" => "VoidFactionsPE",
                 "prefix" => "§l§f[§bFactions§f] §r",
                 "spawnerPrices" => [
