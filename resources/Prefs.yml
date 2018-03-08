@@ -59,6 +59,8 @@ BroadcastFactionDisband: true
 FactionDisbandBroadcast: "The Faction named %FACTION% was disbaned by %PLAYER%"
 defaultFactionBalance: 0
 # NEW: When creating a faction, how much Money should a faction have by default? Default: 0.
+MOTDTime: 30
+# NEW:  when setting a MOTD to your faction, they will have by default: 30 seconds untill it times out, and that you have to redo the command again.
 prefix: "§l§f[§bFactions§f] §r"
 # Faction Spawners prefix. Currently in BETA, so it may not function very well.
 spawnerPrices:
