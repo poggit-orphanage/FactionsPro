@@ -50,8 +50,12 @@ class FactionMain extends PluginBase implements Listener {
         }
         $this->essentialspe = $this->getServer()->getPluginManager()->getPlugin("EssentialsPE");
         if (!$this->essentialspe) {
-            $this->getLogger()->info("EssentialsPE is not installed. If you want to use the new Raiding system for FactionsPro, then EssentialsPE needs to be installed. Disabling Raiding system.");
+            $this->getLogger()->info("EssentialsPE is not installed. If you want to use the new Faction Raiding system, then EssentialsPE needs to be installed. Disabling Raiding system.");
     	}
+	$this->economyapi = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+	if (!$this->economyapi) {
+	    $this->getLogger()->info("EconomyAPI is not installed. If you want to use the Faction Values system, then EconomyAPI needs to be installed. Disabling the Factions Value system.");
+	}
         $this->fCommand = new FactionCommands($this);
         $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", CONFIG::YAML, array(
             "MaxFactionNameLength" => 15,
@@ -82,10 +86,8 @@ class FactionMain extends PluginBase implements Listener {
 	    "MoneyGainedPerAlly" => 50,
             "MoneyNeededToClaimAPlot" => 0,
 	    "MOTDTime" => 30,
-	    "AcceptTime" => 60,
-	    "DenyTime" => 60,
-	    "AllyAcceptTime" => 60,
-	    "AllyDenyTime" => 60,
+	    "InviteTime" => 60,
+	    "AllyTime" => 60,
 	    "ServerName" => "VoidFactionsPE",
                 "prefix" => "§l§f[§bFactions§f] §r",
                 "spawnerPrices" => [
@@ -105,9 +107,9 @@ class FactionMain extends PluginBase implements Listener {
 		));
 		$this->prefix = $this->prefs->get("prefix", $this->prefix);
 		if(sqrt($size = $this->prefs->get("PlotSize")) % 2 !== 0){
-			$this->getLogger()->notice("Square Root Of Plot Size ($size) Must Not Be An Odd Number! (Currently: ".(sqrt($size = $this->prefs->get("PlotSize"))).")");
+			$this->getLogger()->notice("Square Root Of Plot Size ($size) Must Not Be An unknown Number in the plugin! (The size was Currently: ".(sqrt($size = $this->prefs->get("PlotSize"))).")");
 			$this->getLogger()->notice("Available Sizes: 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024");
-			$this->getLogger()->notice("Plot Size Set To 16");
+			$this->getLogger()->notice("Plot Size Set To 16 automatically");
 			$this->prefs->set("PlotSize", 16);
 		}
         $this->db = new \SQLite3($this->getDataFolder() . "FactionsPro.db");
