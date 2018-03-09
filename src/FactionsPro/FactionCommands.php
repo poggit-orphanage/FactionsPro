@@ -779,11 +779,11 @@ class FactionCommands {
 				       			        return true;
 			       				}
 			       				if(Server::getInstance()->loadLevel($array['world']) === false){
-+								$sender->sendMessage($this->plugin->formatMessage("The world '" . $array['world'] .  "'' could not be found"));
+								$sender->sendMessage($this->plugin->formatMessage("The world '" . $array['world'] .  "'' could not be found"));
 				       				return true;
 			      				 }
                               				 $level = Server::getInstance()->getLevelByName($array['world']);
-+                           $sender->getPlayer()->teleport(new Position($array['x'], $array['y'], $array['z'], $level));
+                            $sender->getPlayer()->teleport(new Position($array['x'], $array['y'], $array['z'], $level));
                             $sender->sendMessage($this->plugin->formatMessage("§bTeleported to your faction home succesfully!", true));
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("§cFaction Home is not set. You can set it with: §4/f sethome"));
@@ -917,10 +917,10 @@ class FactionCommands {
 			        if (!isset($args[1])) {
                             	    $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f say <message>\n§aDescription: §dBroadcasts a message to the whole faction."));
                                     return true;
-              	}
+                         	}
          			if (!($this->plugin->isInFaction($playerName))) {
          			    $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to send faction messages"));
-           		    return true;
+           		            return true;
          			}
          			$r = count($args);
          			$row = array();
@@ -940,7 +940,7 @@ class FactionCommands {
           			    $row[$i]['player'] = $resultArr['player'];
          			    $p = $this->plugin->getServer()->getPlayer($row[$i]['player']);
          			    if ($p instanceof Player) {
-         				$p->sendMessage(TextFormat::ITALIC . TextFormat::RED . "§r§8[" . TextFormat:: GREEN . "§b$f§8] " . TextFormat::AQUA . "§8[§3$rank$f§8] " . TextFormat::GREEN . "§b$playerName" . ": " . TextFormat::RESET);
+         				$p->sendMessage(TextFormat::ITALIC . TextFormat::RED . "§r§8[" . TextFormat::AQUA . "§8[§3$rank$f§8] " . TextFormat::GREEN . "§b$playerName" . ": " . TextFormat::RESET);
          				$p->sendMessage(TextFormat::ITALIC . TextFormat::DARK_PURPLE . $message . TextFormat::RESET);
                             }
                         }
