@@ -67,6 +67,12 @@ InviteTime: 60
 AllyTime: 60
 # NEW When requesting to ally a faction, they will have the maximum of x amount of seconds before it times out.
 # Default: 60.
+TopSTR: "§5§lTop 10 BEST Factions"
+# NEW: Customise /f top str list to your own.
+# Use § color code.
+TopMoney: "§5§lTop 10 RICHEST Factions"
+# NEW: Customise /f top money list to your own.
+# Use § color code.
 pluginprefix: "§l§f[§bFactions§f] §r"
 # Faction Commands prefix, coming soon.
 spawnerPrices:
