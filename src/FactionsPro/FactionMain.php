@@ -85,11 +85,6 @@ class FactionMain extends PluginBase implements Listener {
 	    "MoneyGainedPerPlayerInFaction" => 20,
 	    "MoneyGainedPerAlly" => 50,
             "MoneyNeededToClaimAPlot" => 0,
-	    "MOTDTime" => 30,
-	    "InviteTime" => 60,
-	    "AllyTime" => 60,
-            "TopSTR" => "Top 10 BEST Factions",
-	    "TopMoney" => "Top 10 RICHEST Factions",
 	    "ServerName" => "VoidFactionsPE",
                 "prefix" => "§l§f[§bFactions§f] §r",
                 "spawnerPrices" => [
@@ -287,7 +282,7 @@ class FactionMain extends PluginBase implements Listener {
         $result = $this->db->query("SELECT faction FROM strength ORDER BY power DESC LIMIT 10;");
         $row = array();
         $i = 0;
-        $s->sendMessage($this->prefs->get("TopSTR"));
+        $s->sendMessage($this->formatMessage("§3_____§2[§5§lTop 10 BEST Factions§r§2]§3_____", true));
         while ($resultArr = $result->fetchArray(SQLITE3_ASSOC)) {
             $j = $i + 1;
             $cf = $resultArr['faction'];
@@ -449,7 +444,7 @@ class FactionMain extends PluginBase implements Listener {
 	public function sendListOfTop10RichestFactionsTo(Player $s){
         $result = $this->db->query("SELECT * FROM balance ORDER BY cash DESC LIMIT 10;");
         $i = 0;
-        $s->sendMessage($this->prefs->get("TopMoney"));
+        $s->sendMessage(TextFormat::BOLD.TextFormat::AQUA."§5§lTop 10 Richest Factions".TextFormat::RESET);
         while($resultArr = $result->fetchArray(SQLITE3_ASSOC)){
         	var_dump($resultArr);
             $j = $i + 1;
