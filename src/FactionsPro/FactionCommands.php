@@ -205,6 +205,31 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("§a$invitedName §bhas been invited succesfully! §5Wait for $invitedName 's response.", true));
                         $invited->sendMessage($this->plugin->formatMessage("§bYou have been invited to §a$factionName. §bType §3'/f accept / yes' or '/f deny / no' §binto chat to accept or deny!", true));
                     }
+		    /////////////////////////////// SPAWNER //////////////////////////////
+		    if(strtolower($args[0]) == "spawner"){
+			if (!isset($args[1])) {
+			    $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f spawner <mob> <price>\n§aDescription: §dALlows you to get a spawner."));
+			    return true;
+			}
+			if (!$this->plugin->getSpawnerPrice($type);
+				$type = $this->plugin->prefs->get("spawnerPrices")){
+				$sp = $this->plugin->getSpawnerPrice($type);
+			if(isset($sp[$type])) {
+				$sender->sendMessage($this->plugin->formatMessage("Spawner has been succesfully bought.", false));
+				return true;
+				}
+			} else {
+				$sender->sendMessage($this->plugin->formatMessage("Invalid spawner type. Do /f spawners for a list of spawners.", false));
+				return true;
+			}
+			if(strtolower($args[0]) == "spawners"){
+			   if (!$this->plugin->prefs->get("spawnerPrices")){
+				   $sender->sendMessage($this->plugin->formatMessage("Here is a list of spawners you can have:");
+				   $sender->sendMessagte($this->plugin->formatMessage($this->plugin->prefs->get("spawnerPrices")));
+				   return true;
+			    }
+			}
+		    }
                     /////////////////////////////// LEADER ///////////////////////////////
                     if ($args[0] == "leader"){
                         if (!isset($args[1])) {
