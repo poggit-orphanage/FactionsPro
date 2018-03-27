@@ -3,6 +3,7 @@
 namespace FactionsPro;
 
 use pocketmine\command\{Command, CommandSender};
+use FactionsPro\FactionMain;
 use pocketmine\{Server, Player};
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
@@ -1399,7 +1400,7 @@ class FactionCommands {
                      }
                 }
         } else {
-            $this->plugin->getServer()->getLogger()->info($this->plugin->prefs->get("prefix")($this->plugin->formatMessage("Please run this command in game")));
+            $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("Please run this command in game")));
         }
         return true;
     }
