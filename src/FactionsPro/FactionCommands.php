@@ -115,7 +115,7 @@ class FactionCommands {
                     if(strtolower($args[0]) == "create" or strtolower($args[0]) == "make"){
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <faction name>"));
-			    $sender->sendMessage($this->plugin->formatMessage("§b§aDescription: §dCreates a faction."));
+			    $sender->sendMessage($this->plugin->formatMessage("$prefix §b§aDescription: §dCreates a faction."));
                             return true;
                         }
                         if (!($this->alphanum($args[1]))) {
@@ -542,7 +542,7 @@ class FactionCommands {
                             $needed_power = $this->plugin->prefs->get("PowerNeededToClaimAPlot");
                             $faction_power = $this->plugin->getFactionPower($faction);
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYour faction doesn't have enough STR to claim a land."));
-                            $sender->sendMessage($this->plugin->formatMessage("§4$needed_power §cSTR is required but your faction has only §4$faction_power §cSTR."));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §4$needed_power §cSTR is required but your faction has only §4$faction_power §cSTR."));
                             return true;
                         }
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §5Getting your coordinates...", true));
@@ -617,7 +617,7 @@ class FactionCommands {
 		    /////////////////////////////// TOP, also by @PrimusLV //////////////////////////
 					if(strtolower($args[0]) == "top" or strtolower($args[0]) == "lb"){
 					          if(!isset($args[1])){
-					          $sender->sendMessage($this->plugin->formatMessage("$prefix §aPlease use: §a/f $args[0] money §d- To check top 10 Richest Factions on the server\n§aPlease use: §b/f $args[0] str §d- To check Top 10 BEST Factions (Highest STR)"));
+					          $sender->sendMessage($this->plugin->formatMessage("$prefix §aPlease use: §a/f $args[0] money §d- To check top 10 Richest Factions on the server\n$prefix §aPlease use: §b/f $args[0] str §d- To check Top 10 BEST Factions (Highest STR)"));
                             		          return true;
 			      		          }
 						    
@@ -650,10 +650,10 @@ class FactionCommands {
                             $stmt->bindValue(":rank", "Member");
                             $result = $stmt->execute();
                             $this->plugin->db->query("DELETE FROM confirm WHERE player='$lowercaseName';");
-                            $sender->sendMessage($this->plugin->formatMessage("§aYou successfully joined §2$faction", true));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §aYou successfully joined §2$faction", true));
                             $this->plugin->addFactionPower($faction, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
 			    $this->plugin->addToBalance($faction, $this->plugin->prefs->get("MoneyGainedPerPlayerInFaction"));
-                            $this->plugin->getServer()->getPlayer($array["invitedby"])->sendMessage($this->plugin->formatMessage("§2$playerName §ajoined the faction", true));
+                            $this->plugin->getServer()->getPlayer($array["invitedby"])->sendMessage($this->plugin->formatMessage("$prefix §2$playerName §ajoined the faction", true));
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cInvite has timed out"));
                             $this->plugin->db->query("DELETE FROM confirm WHERE player='$playerName';");
@@ -673,7 +673,7 @@ class FactionCommands {
                         if (($currentTime - $invitedTime) <= 60) { //This should be configurable
                             $this->plugin->db->query("DELETE FROM confirm WHERE player='$lowercaseName';");
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cInvite declined", true));
-                            $this->plugin->getServer()->getPlayer($array["invitedby"])->sendMessage($this->plugin->formatMessage("§4$playerName §cdeclined the invitation"));
+                            $this->plugin->getServer()->getPlayer($array["invitedby"])->sendMessage($this->plugin->formatMessage("$prefix §4$playerName §cdeclined the invitation"));
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cInvite has timed out"));
                             $this->plugin->db->query("DELETE FROM confirm WHERE player='$lowercaseName';");
@@ -918,12 +918,13 @@ class FactionCommands {
               	}
          			if (!($this->plugin->isInFaction($playerName))) {
          			    $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to send faction messages"));
-           		    return true;
+           		   	    return true;
          			}
          			$r = count($args);
          			$row = array();
          			$rank = "";
          			$f = $this->plugin->getPlayerFaction($playerName);
+			    
          			if ($this->plugin->isOfficer($playerName)) {
          			    $rank = "*";
          			} else if ($this->plugin->isLeader($playerName)) {
@@ -936,7 +937,7 @@ class FactionCommands {
               	$result = $this->plugin->db->query("SELECT * FROM master WHERE faction='$f';");
          			for ($i = 0; $resultArr = $result->fetchArray(SQLITE3_ASSOC); $i = $i + 1) {
           			    $row[$i]['player'] = $resultArr['player'];
-         			    $p = $this->plugin->getServer()->getPlayer($row[$i]['player']);
+         			    $p = $this->plugin->getServer()->getPlayerExact($row[$i]['player']);
          			    if ($p instanceof Player) {
          				$p->sendMessage(TextFormat::ITALIC . TextFormat::RED . "§r§8[" . TextFormat::AQUA . "§3$rank$f§8] " . TextFormat::GREEN . "§b$playerName" . ": " . TextFormat::RESET);
          				$p->sendMessage(TextFormat::ITALIC . TextFormat::DARK_PURPLE . $message . TextFormat::RESET);
@@ -1118,7 +1119,7 @@ class FactionCommands {
                         }
                         $allyTime = $array["timestamp"];
                         $currentTime = time();
-                        if (($currentTime - $allyTime) <= 60) { //This should be configurable
+                        if (($currentTime - $allyTime) <= 60) { //This should be configurable -> Use Beta branch to get this feature.
                             $requested_fac = $this->plugin->getPlayerFaction($array["requestedby"]);
                             $sender_fac = $this->plugin->getPlayerFaction($playerName);
                             $this->plugin->setAllies($requested_fac, $sender_fac);
@@ -1131,7 +1132,7 @@ class FactionCommands {
                             $this->plugin->updateAllies($requested_fac);
                             $this->plugin->updateAllies($sender_fac);
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bYour faction has successfully allied with §a$requested_fac", true));
-                            $this->plugin->getServer()->getPlayer($array["requestedby"])->sendMessage($this->plugin->formatMessage("§a$playerName §bfrom §a$sender_fac §bhas accepted the alliance!", true));
+                            $this->plugin->getServer()->getPlayer($array["requestedby"])->sendMessage($this->plugin->formatMessage("$prefix §a$playerName §bfrom §a$sender_fac §bhas accepted the alliance!", true));
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cRequest has timed out"));
                             $this->plugin->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
@@ -1159,8 +1160,8 @@ class FactionCommands {
                             $requested_fac = $this->plugin->getPlayerFaction($array["requestedby"]);
                             $sender_fac = $this->plugin->getPlayerFaction($playerName);
                             $this->plugin->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
-                            $sender->sendMessage($this->plugin->formatMessage("§bYour faction has successfully declined the alliance request.", true));
-                            $this->plugin->getServer()->getPlayer($array["requestedby"])->sendMessage($this->plugin->formatMessage("§a$playerName §bfrom §a$sender_fac §bhas declined the alliance!"));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §bYour faction has successfully declined the alliance request.", true));
+                            $this->plugin->getServer()->getPlayer($array["requestedby"])->sendMessage($this->plugin->formatMessage("$prefix §a$playerName §bfrom §a$sender_fac §bhas declined the alliance!"));
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cRequest has timed out"));
                             $this->plugin->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
@@ -1218,7 +1219,7 @@ class FactionCommands {
 						}
 						$faction = $this->plugin->getPlayerFaction($playerName);
 						$balance = $this->plugin->getBalance($faction);
-						$sender->sendMessage($this->plugin->formatMessage("§6Faction balance: " . TextFormat::GREEN . "$".$balance));
+						$sender->sendMessage($this->plugin->formatMessage("$prefix §6Faction balance: " . TextFormat::GREEN . "$".$balance));
 						return true;
 					}
 		    			if(strtolower($args[0]) == "seebalance" or strtolower($args[0]) == "sb"){
@@ -1227,7 +1228,7 @@ class FactionCommands {
                            			return true;
                         		   }
                         		   if(!$this->plugin->factionExists($args[1])) {
-									   $sender->sendMessage($this->plugin->formatMessage("§cThe faction named §4$args[1] §cdoes not exist"));
+									   $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe faction named §4$args[1] §cdoes not exist"));
                             		       return true;
 					   }
                        			   $balance = $this->plugin->getBalance($args[1]);
