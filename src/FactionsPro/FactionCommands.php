@@ -915,7 +915,7 @@ class FactionCommands {
 			        if (!isset($args[1])) {
                             	    $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <message>\n§aDescription: §dBroadcasts a message to the whole faction."));
                                     return true;
-              	}
+              			}
          			if (!($this->plugin->isInFaction($playerName))) {
          			    $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to send faction messages"));
            		   	    return true;
@@ -934,15 +934,15 @@ class FactionCommands {
          			for ($i = 0; $i < $r - 1; $i = $i + 1) {
          			    $message = $message . $args[$i + 1] . " ";
          			}
-              	$result = $this->plugin->db->query("SELECT * FROM master WHERE faction='$f';");
+              			$result = $this->plugin->db->query("SELECT * FROM master WHERE faction='$f';");
          			for ($i = 0; $resultArr = $result->fetchArray(SQLITE3_ASSOC); $i = $i + 1) {
           			    $row[$i]['player'] = $resultArr['player'];
          			    $p = $this->plugin->getServer()->getPlayerExact($row[$i]['player']);
          			    if ($p instanceof Player) {
          				$p->sendMessage(TextFormat::ITALIC . TextFormat::RED . "§r§8[" . TextFormat::AQUA . "§3$rank$f§8] " . TextFormat::GREEN . "§b$playerName" . ": " . TextFormat::RESET);
          				$p->sendMessage(TextFormat::ITALIC . TextFormat::DARK_PURPLE . $message . TextFormat::RESET);
-                            }
-                        }
+                           	    }
+                       		 }
                     }
                     ////////////////////////////// ALLY SYSTEM ////////////////////////////////
                     if (strtolower($args[0] == "enemy")) {
