@@ -7,7 +7,7 @@ use pocketmine\command\{Command, CommandSender};
 use pocketmine\event\Listener;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\player\{PlayerJoinEvent, PlayerChatEvent};
-use pocketmine\Player;
+use pocketmine\{Server, Player};
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\utils\{Config, TextFormat};
 use pocketmine\event\entity\EntityDamageEvent;
