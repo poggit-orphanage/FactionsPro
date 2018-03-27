@@ -28,7 +28,7 @@ class FactionCommands {
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
         if ($sender instanceof Player) {
             $playerName = $sender->getPlayer()->getName();
-	    $prefix = $this->plugin->prefs->get("prefix"));
+	    $prefix = $this->plugin->prefs->get("prefix");
             if (strtolower($command->getName()) === "f") {
                 if (empty($args)) {
                     $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use §3/f help §6for a list of commands"));
