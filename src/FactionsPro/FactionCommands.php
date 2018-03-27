@@ -30,7 +30,7 @@ class FactionCommands {
             $playerName = $sender->getPlayer()->getName();
             if (strtolower($command->getName()) === "f") {
                 if (empty($args)) {
-                    $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefix("§bPlease use §3/f help §6for a list of commands"));
+                    $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefix("§bPlease use §3/f help §6for a list of commands")));
                     return true;
                 }
                     ///////////////////////////////// WAR /////////////////////////////////
@@ -1399,7 +1399,7 @@ class FactionCommands {
                      }
                 }
         } else {
-            $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("Please run this command in game"));
+            $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage($this->plugin->prefix("Please run this command in game")));
         }
         return true;
     }
