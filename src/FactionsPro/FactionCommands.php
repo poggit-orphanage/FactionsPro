@@ -30,7 +30,7 @@ class FactionCommands {
             $playerName = $sender->getPlayer()->getName();
             if (strtolower($command->getName()) === "f") {
                 if (empty($args)) {
-                    $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefix("§bPlease use §3/f help §6for a list of commands")));
+                    $sender->sendMessage($this->plugin->prefs->get("prefix")($this->plugin->formatMessage("§bPlease use §3/f help §6for a list of commands")));
                     return true;
                 }
                     ///////////////////////////////// WAR /////////////////////////////////
