@@ -1,13 +1,10 @@
 <?php
-
 namespace FactionsPro;
-
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\{Server, Player};
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 use pocketmine\level\{Level, Position};
-
 class FactionCommands {
 	
     public $plugin;
@@ -421,7 +418,7 @@ class FactionCommands {
                         $fac = $this->plugin->factionFromPoint($x, $z);
                         $power = $this->plugin->getFactionPower($fac);
                         $balance = $this->plugin->getBalance($fac);
-                        $sender->sendMessage($this->plugin->formatMessage($prefix "§bThis plot is claimed by §a$fac §bwith §a$power §aSTR, §band §a$balance §bMoney"));
+                        $sender->sendMessage($this->plugin->formatMessage("$prefix §bThis plot is claimed by §a$fac §bwith §a$power §aSTR, §band §a$balance §bMoney"));
 			return true;
                     }
                     if(strtolower($args[0]) == "forcedelete" or strtolower($args[0]) == "fdisband"){
