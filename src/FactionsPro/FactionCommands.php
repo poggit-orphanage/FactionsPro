@@ -1399,7 +1399,7 @@ class FactionCommands {
                      }
                 }
         } else {
-            $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage($this->plugin->prefix("Please run this command in game")));
+            $this->plugin->getServer()->getLogger()->info($this->plugin->prefs->get("prefix")($this->plugin->formatMessage("Please run this command in game")));
         }
         return true;
     }
