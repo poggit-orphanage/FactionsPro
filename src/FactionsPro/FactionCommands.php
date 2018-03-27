@@ -28,9 +28,10 @@ class FactionCommands {
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
         if ($sender instanceof Player) {
             $playerName = $sender->getPlayer()->getName();
+	    $prefix = $this->plugin->prefs->get("prefix"));
             if (strtolower($command->getName()) === "f") {
                 if (empty($args)) {
-                    $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefix("§bPlease use §3/f help §6for a list of commands")));
+                    $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use §3/f help §6for a list of commands"));
                     return true;
                 }
                     ///////////////////////////////// WAR /////////////////////////////////
@@ -1399,7 +1400,7 @@ class FactionCommands {
                      }
                 }
         } else {
-            $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage($this->plugin->prefix("Please run this command in game")));
+            $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("$prefix Please run this command in game"));
         }
         return true;
     }
