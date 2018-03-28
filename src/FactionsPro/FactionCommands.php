@@ -266,14 +266,14 @@ class FactionCommands {
                             return true;
                         }
                         if ($this->plugin->getPlayerFaction($playerName) != $this->plugin->getPlayerFaction($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named: §4$args[1] §cis not in this faction"));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named: §4$promotee §cis not in this faction"));
                             return true;
                         }
                         if ($promotee->getName() == $playerName) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't promote yourself"));
                             return true;
                         }
-                        if ($this->plugin->isOfficer($args[1])) {
+                        if ($this->plugin->isOfficer($promotee->getName()) == true) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$args[1] §cis already an Officer of this faction"));
                             return true;
                         }
@@ -308,7 +308,7 @@ class FactionCommands {
                             return true;
                         }
                         if ($this->plugin->getPlayerFaction($playerName) != $this->plugin->getPlayerFaction($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named: §4$args[1] §cis not in this faction"));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named: §4$demotee §cis not in this faction"));
                             return true;
                         }
                         if ($demotee->getName() == $playerName) {
@@ -350,7 +350,7 @@ class FactionCommands {
                             return true;
                         }
                         if ($this->plugin->getPlayerFaction($playerName) != $this->plugin->getPlayerFaction($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe Player named §4$args[1] §cis not in this faction"));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe Player named §4$kicked §cis not in this faction"));
                             return true;
                         }
                         if ($kicked->getName() == $playerName) {
