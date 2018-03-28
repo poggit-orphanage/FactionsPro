@@ -287,7 +287,6 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §a$promotee §bhas been promoted to Officer", true));
                             $promotee->sendMessage($this->plugin->formatMessage("$prefix §bYou were promoted to officer of §a$factionName!", true));
                             return true;
-                        }
                     }
                     /////////////////////////////// DEMOTE ///////////////////////////////
                     if ($args[0] == "demote") {
@@ -330,7 +329,6 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §5$demotee §2has been demoted to Member", true));
                             $demotee->sendMessage($this->plugin->formatMessage("$prefix §2You were demoted to member of §5$factionName!", true));
                             return true;
-                        }
                     }
                     /////////////////////////////// KICK ///////////////////////////////
                     if(strtolower($args[0]) == "kick" or strtolower($args[0]) == "k"){
@@ -367,7 +365,6 @@ class FactionCommands {
 			$this->plugin->takeFromBalance($factionName, $this->plugin->prefs->get("MoneyGainedPerPlayerInFaction"));
                             $kicked->sendMessage($this->plugin->formatMessage("$prefix §bYou have been kicked from \n §a$factionName", true));
                             return true;
-                        }
                     }
                     /////////////////////////////// CLAIM ///////////////////////////////
                     if(strtolower($args[0]) == "claim" or strtolower($args[0]) == "cl"){
