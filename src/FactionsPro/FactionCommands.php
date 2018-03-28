@@ -265,7 +265,8 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be leader to use this"));
                             return true;
                         }
-                        if ($this->plugin->getPlayerFaction($playerName) != $this->plugin->getPlayerFaction($args[1])) {
+			$promoted = $this->plugin->getServer()->getPlayer($args[1]);
+                        if ($this->plugin->getPlayerFaction($playerName) != $this->plugin->getPlayerFaction($promoted)) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named: §4$promoted §cis not in this faction"));
                             return true;
                         }
@@ -285,7 +286,7 @@ class FactionCommands {
                         $stmt->bindValue(":rank", "Officer");
                         $result = $stmt->execute();
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §a$promotedName §bhas been promoted to Officer", true));
-                            $promotee->sendMessage($this->plugin->formatMessage("$prefix §bYou were promoted to officer of §a$factionName!", true));
+                            $promoted->sendMessage($this->plugin->formatMessage("$prefix §bYou were promoted to officer of §a$factionName!", true));
                             return true;
                     }
                     /////////////////////////////// DEMOTE ///////////////////////////////
@@ -307,7 +308,8 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be leader to use this"));
                             return true;
                         }
-                        if ($this->plugin->getPlayerFaction($playerName) != $this->plugin->getPlayerFaction($args[1])) {
+			$demoted = $this->plugin->getServer()->getPlayer($args[1]);
+                        if ($this->plugin->getPlayerFaction($playerName) != $this->plugin->getPlayerFaction($demoted)) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named: §4$demoted §cis not in this faction"));
                             return true;
                         }
@@ -327,7 +329,7 @@ class FactionCommands {
                         $stmt->bindValue(":rank", "Member");
                         $result = $stmt->execute();
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §5$demotedName §2has been demoted to Member", true));
-                            $demotee->sendMessage($this->plugin->formatMessage("$prefix §2You were demoted to member of §5$factionName!", true));
+                            $demoted->sendMessage($this->plugin->formatMessage("$prefix §2You were demoted to member of §5$factionName!", true));
                             return true;
                     }
                     /////////////////////////////// KICK ///////////////////////////////
@@ -349,7 +351,8 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be leader to use this"));
                             return true;
                         }
-                        if ($this->plugin->getPlayerFaction($playerName) != $this->plugin->getPlayerFaction($args[1])) {
+			$kicked = $this->plugin->getServer()->getPlayer($args[1]);
+                        if ($this->plugin->getPlayerFaction($playerName) != $this->plugin->getPlayerFaction($kicked)) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe Player named §4$kicked §cis not in this faction"));
                             return true;
                         }
