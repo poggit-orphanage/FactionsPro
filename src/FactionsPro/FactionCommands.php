@@ -1,10 +1,13 @@
 <?php
+
 namespace FactionsPro;
+
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\{Server, Player};
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 use pocketmine\level\{Level, Position};
+
 class FactionCommands {
 	
     public $plugin;
@@ -155,7 +158,7 @@ class FactionCommands {
 				    ], [
 				    $sender->getName(),
 				    $factionName
-			        ], $sender->getServer()->broadcastMessage("§aThe faction named §b$factionName §ahas been created by §b$sender->getName()")); //Should be configurable soon.
+			        ], $sender->getServer()->broadcastMessage("§aThe faction named §b$factionName §ahas been created by §b$sender->getName()"))); //Should be configurable soon.
 			   }
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bYour Faction named §a$factionName §bhas been created. §6Next, use /f desc to make a faction description.", true));
 			    var_dump($this->plugin->db->query("SELECT * FROM balance;")->fetchArray(SQLITE3_ASSOC));
@@ -940,7 +943,6 @@ class FactionCommands {
 			    }
 			}
 		    }
-
                     ////////////////////////////// ALLY SYSTEM ////////////////////////////////
                     if (strtolower($args[0] == "enemy")) {
                         if (!isset($args[1])) {
