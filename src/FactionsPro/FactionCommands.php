@@ -397,7 +397,7 @@ class FactionCommands {
                         $balance = $this->plugin->getBalance($faction);
 			$this->plugin->subtractFactionPower($faction, $this->plugin->prefs->get("PowerNeededToClaimAPlot"));
                         $this->plugin->takeFromBalance($faction, $this->plugin->prefs->get("MoneyNeededToClaimAPlot"));
-                        $this->getServer()->broadcastMessage("§aThe player §b$playerName §afrom §b$faction §3has claimed their land");
+                        $this->plugin->getServer()->broadcastMessage("§aThe player §b$playerName §afrom §b$faction §3has claimed their land");
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bYour Faction plot has been claimed.", true));
 		    }
                     if(strtolower($args[0]) == "plotinfo" or strtolower($args[0]) == "pinfo"){
@@ -435,7 +435,7 @@ class FactionCommands {
                         $this->plugin->db->query("DELETE FROM motd WHERE faction='$args[1]';");
                         $this->plugin->db->query("DELETE FROM home WHERE faction='$args[1]';");
 		        $this->plugin->db->query("DELETE FROM balance WHERE faction='$args[1]';");
-	                $this->getServer()->broadcastMessage("§4$playerName §chas forcefully deleted the faction named §4$args[1]");
+	                $this->plugin->getServer()->broadcastMessage("§4$playerName §chas forcefully deleted the faction named §4$args[1]");
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §aUnwanted faction was successfully deleted and their faction plot was unclaimed!", true));
                     }
                     if (strtolower($args[0]) == 'addstrto') {
@@ -561,7 +561,7 @@ class FactionCommands {
                                         $this->plugin->db->query("DELETE FROM plots WHERE faction='$faction_victim';");
                                         $arm = (($this->plugin->prefs->get("PlotSize")) - 1) / 2;
                                         $this->plugin->newPlot($faction_ours, $x + $arm, $z + $arm, $x - $arm, $z - $arm);
-			                $this->getServer()->broadcastMessage("§aPlayer §2$playerName §afrom §b$faction_ours §ahave overclaimed §b$faction_victim");
+			                $this->plugin->getServer()->broadcastMessage("§aPlayer §2$playerName §afrom §b$faction_ours §ahave overclaimed §b$faction_victim");
                                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bThe faction plot of §3$faction_victim §bhas been over claimed! It is now yours.", true));
                                         return true;
                                     }
@@ -591,7 +591,7 @@ class FactionCommands {
                         }
                         $faction = $this->plugin->getPlayerFaction($sender->getName());
                         $this->plugin->db->query("DELETE FROM plots WHERE faction='$faction';");
-	                $this->getServer()->broadcastMessage("§aThe player: §2$playerName §afrom §b$faction §ahave unclaimed their plot!");
+	                $this->plugin->getServer()->broadcastMessage("§aThe player: §2$playerName §afrom §b$faction §ahave unclaimed their plot!");
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bYour land has been unclaimed! It is no longer yours.", true));
                     }
                     /////////////////////////////// DESCRIPTION ///////////////////////////////
@@ -688,7 +688,7 @@ class FactionCommands {
                                 $this->plugin->db->query("DELETE FROM motd WHERE faction='$faction';");
                                 $this->plugin->db->query("DELETE FROM home WHERE faction='$faction';");
 			        $this->plugin->db->query("DELETE FROM balance WHERE faction='$faction';");
-		                $this->getServer()->broadcastMessage("§aThe player: §2$playerName §awho owned §3$faction §bhas been disbanded!");
+		                $this->plugin->getServer()->broadcastMessage("§aThe player: §2$playerName §awho owned §3$faction §bhas been disbanded!");
                                 $sender->sendMessage($this->plugin->formatMessage("$prefix §bThe Faction named: §a$faction §bhas been successfully disbanded and the faction plot, and Overclaims are unclaimed.", true));
                             } else {
                                 $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou are not leader!"));
@@ -709,7 +709,7 @@ class FactionCommands {
                             $faction = $this->plugin->getPlayerFaction($playerName);
                             $name = $sender->getName();
                             $this->plugin->db->query("DELETE FROM master WHERE player='$name';");
-			    $this->getServer()->broadcastMessage("§2$name §bhas left §2$faction");
+			    $this->plugin->getServer()->broadcastMessage("§2$name §bhas left §2$faction");
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bYou successfully left §a$faction", true));
                             $this->plugin->subtractFactionPower($faction, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
 			    $this->plugin->takeFromBalance($faction, $this->plugin->prefs->get("MoneyGainedPerPlayerInFaction"));
