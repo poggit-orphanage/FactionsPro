@@ -148,7 +148,7 @@ class FactionCommands {
                             $this->plugin->updateAllies($factionName);
                             $this->plugin->setFactionPower($factionName, $this->plugin->prefs->get("TheDefaultPowerEveryFactionStartsWith"));
 			    $this->plugin->setBalance($factionName, $this->plugin->prefs->get("defaultFactionBalance"));
-                            $this->getServer()->broadcastMessage("§a$playerName §bhas created a faction named §c$factionName");
+                            $this->plugin->getServer()->broadcastMessage("§a$playerName §bhas created a faction named §c$factionName");
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bYour Faction named §a$factionName §bhas been created. §6Next, use /f desc to make a faction description.", true));
 			    var_dump($this->plugin->db->query("SELECT * FROM balance;")->fetchArray(SQLITE3_ASSOC));
                             return true;
