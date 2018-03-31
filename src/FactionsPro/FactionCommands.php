@@ -25,7 +25,9 @@ class FactionCommands {
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
         if ($sender instanceof Player) {
             $playerName = $sender->getPlayer()->getName(); //Sender who executes the command.
-            $player = $player->getName(); //Player that the command's been executed on.
+	}
+        if ($player instanceof Player) {
+            $player = $player->getName();
 	    $prefix = $this->plugin->prefs->get("prefix"); //Prefix configurations.
             if (strtolower($command->getName()) === "f") {
                 if (empty($args)) {
