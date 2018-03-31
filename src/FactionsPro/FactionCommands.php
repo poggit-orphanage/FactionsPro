@@ -264,7 +264,7 @@ class FactionCommands {
                         }
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
-                        $stmt->bindValue(":player", $player;
+                        $stmt->bindValue(":player", $player);
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":rank", "Officer");
                         $result = $stmt->execute();
