@@ -25,9 +25,6 @@ class FactionCommands {
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
         if ($sender instanceof Player) {
             $playerName = $sender->getPlayer()->getName(); //Sender who executes the command.
-	}
-        if ($player instanceof Player) {
-            $player = $player->getName();
 	    $prefix = $this->plugin->prefs->get("prefix"); //Prefix configurations.
             if (strtolower($command->getName()) === "f") {
                 if (empty($args)) {
@@ -265,6 +262,7 @@ class FactionCommands {
                             return true;
                         }
                         $factionName = $this->plugin->getPlayerFaction($playerName);
+			$player = $player->getName();
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
                         $stmt->bindValue(":player", $player);
                         $stmt->bindValue(":faction", $factionName);
@@ -331,14 +329,16 @@ class FactionCommands {
                             return true;
                         }
                         if ($this->plugin->getPlayerFaction($playerName) != $this->plugin->getPlayerFaction($args[1])) {
+			    $player = $player->getName();
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe Player named §4$player §cis not in this faction"));
                             return true;
                         }
-                        if ($args[1] == $sender->getName()) {
+                        if ($playerName == $sender->getName()) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't kick yourself"));
                             return true;
                         }
                         $kicked = $this->plugin->getServer()->getPlayer($args[1]);
+			$player = $player->getName();
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $this->plugin->db->query("DELETE FROM master WHERE player='$player';");
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §aYou successfully kicked §2$player", true));
