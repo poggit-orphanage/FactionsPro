@@ -594,7 +594,7 @@ class FactionCommands {
                         }
                         $faction = $this->plugin->getPlayerFaction($sender->getName());
                         $this->plugin->db->query("DELETE FROM plots WHERE faction='$faction';");
-	                $this->plugin->getServer()->broadcastMessage("§aThe player: §2$playerName §afrom §b$faction §ahave unclaimed their plot!");
+	                $this->plugin->getServer()->broadcastMessage("§aThe player: §2$playerName §afrom §b$faction §ahas unclaimed their plot!");
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bYour land has been unclaimed! It is no longer yours.", true));
                     }
                     /////////////////////////////// DESCRIPTION ///////////////////////////////
@@ -654,7 +654,7 @@ class FactionCommands {
 			    $this->plugin->addToBalance($faction, $this->plugin->prefs->get("MoneyGainedPerPlayerInFaction"));
                             $this->plugin->getServer()->getPlayer($array["invitedby"])->sendMessage($this->plugin->formatMessage("$prefix §2$playerName §ajoined the faction", true));
                         } else {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cInvite has timed out"));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cInvite has expired."));
                             $this->plugin->db->query("DELETE FROM confirm WHERE player='$playerName';");
                         }
                     }
@@ -674,7 +674,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cInvite declined", true));
                             $this->plugin->getServer()->getPlayer($array["invitedby"])->sendMessage($this->plugin->formatMessage("$prefix §4$playerName §cdeclined the invitation"));
                         } else {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cInvite has timed out"));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cInvite has expired."));
                             $this->plugin->db->query("DELETE FROM confirm WHERE player='$lowercaseName';");
                         }
                     }
@@ -1322,10 +1322,10 @@ class FactionCommands {
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§eStrength " . TextFormat::RED . "§d$power" . " §5STR" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§aDescription: " . TextFormat::AQUA . TextFormat::UNDERLINE . "§5$message" . TextFormat::RESET);
 			$sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§bFaction Balance: " . TextFormat::AQUA . "§5$" . TextFormat::DARK_PURPLE . "$balance" . TextFormat::RESET);
-                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§3_____§2[§5§lFaction Information§2]§3_____§r" . TextFormat::RESET);
+                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§3_____§2[§5§l$faction Information§2]§3_____§r" . TextFormat::RESET);
 		    } else {
                         if (!$this->plugin->isInFaction($playerName)) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to use this!"));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to use this!"));
                             return true;
                         }
                         $faction = $this->plugin->getPlayerFaction(($sender->getName()));
