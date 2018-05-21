@@ -263,7 +263,7 @@ class FactionCommands {
                         }
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
-                        $stmt->bindValue(":player", $player);
+                        $stmt->bindValue(":player", $playerName);
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":rank", "Officer");
                         $result = $stmt->execute();
@@ -302,7 +302,7 @@ class FactionCommands {
                         }
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
-                        $stmt->bindValue(":player", $player);
+                        $stmt->bindValue(":player", $playerName);
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":rank", "Member");
                         $result = $stmt->execute();
@@ -328,7 +328,6 @@ class FactionCommands {
                             return true;
                         }
                         if ($this->plugin->getPlayerFaction($playerName) != $this->plugin->getPlayerFaction($args[1])) {
-			    $player = $player->getName();
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe Player named §4$$args[1] §cis not in this faction"));
                             return true;
                         }
@@ -338,7 +337,7 @@ class FactionCommands {
                         }
                         $kicked = $this->plugin->getServer()->getPlayer($args[1]);
                         $factionName = $this->plugin->getPlayerFaction($playerName);
-                        $this->plugin->db->query("DELETE FROM master WHERE player='$player';");
+                        $this->plugin->db->query("DELETE FROM master WHERE player='$playerName';");
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §aYou successfully kicked §2$kicked", true));
                         $this->plugin->subtractFactionPower($factionName, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
 			$this->plugin->takeFromBalance($factionName, $this->plugin->prefs->get("MoneyGainedPerPlayerInFaction"));
