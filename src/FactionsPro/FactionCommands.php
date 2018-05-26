@@ -122,7 +122,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou may only use letters and numbers"));
                             return true;
                         }
-                        if ($this->plugin->isNameBanned($args[1]) == false) {
+                        if ($this->plugin->isNameBanned($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe name §4$args[1] §cis not allowed"));
                             return true;
                         }
