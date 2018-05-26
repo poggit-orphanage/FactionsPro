@@ -649,7 +649,9 @@ class FactionCommands {
                                 $this->plugin->db->query("DELETE FROM home WHERE faction='$faction';");
                                 $sender->sendMessage($this->plugin->formatMessage("Faction successfully disbanded and the faction plot was unclaimed", true));
                                 $this->plugin->updateTag($sender->getName());
-                            } else {
+								unset($this->plugin->factionChatActive[$playerName]);
+								unset($this->plugin->allyChatActive[$playerName]);
+							} else {
                                 $sender->sendMessage($this->plugin->formatMessage("You are not leader!"));
                             }
                         } else {
@@ -666,9 +668,10 @@ class FactionCommands {
                             $name = $sender->getName();
                             $this->plugin->db->query("DELETE FROM master WHERE player='$name';");
                             $sender->sendMessage($this->plugin->formatMessage("You successfully left $faction", true));
-
                             $this->plugin->subtractFactionPower($faction, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
                             $this->plugin->updateTag($sender->getName());
+							unset($this->plugin->factionChatActive[$playerName]);
+							unset($this->plugin->allyChatActive[$playerName]);
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("You must delete the faction or give\nleadership to someone else first"));
                         }
