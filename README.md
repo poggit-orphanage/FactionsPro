@@ -23,8 +23,10 @@ Three ranks: Member, Officer and Leader
 
 ```
 /f about
+/f allychat
 /f accept
 /f overclaim [Takeover the plot of the requested faction]
+/f chat
 /f claim
 /f create <name>
 /f del
@@ -77,6 +79,55 @@ There is only one permission for all the faction commands. Some commands are OP 
 ### Extras
 
 Add PureChat to display factions in chat, and AntiSpamPro to prevent inappropriate fac names
+
+### Config
+
+Configure FactionsPro with Prefs.yml file in the FactionsPro plugin folder. Example Config:
+
+```
+MaxFactionNameLength: 15
+MaxPlayersPerFaction: 30
+OnlyLeadersAndOfficersCanInvite: true
+OfficersCanClaim: false
+PlotSize: 25
+PlayersNeededInFactionToClaimAPlot: 1
+PowerNeededToClaimAPlot: 0
+PowerNeededToSetOrUpdateAHome: 250
+PowerGainedPerPlayerInFaction: 50
+PowerGainedPerKillingAnEnemy: 10
+PowerGainedPerAlly: 100
+TheDefaultPowerEveryFactionStartsWith: 0
+EnableOverClaim: true
+AllyLimitPerFaction: 5
+ClaimWorlds:
+- world
+AllowChat: true
+ClaimingEnabled: true
+Member:
+  claim: false
+  demote: false
+  home: true
+  invite: false
+  kick: false
+  motd: false
+  promote: false
+  sethome: false
+  unclaim: false
+  unsethome: false
+Officer:
+  claim: true
+  demote: false
+  home: true
+  invite: true
+  kick: true
+  motd: true
+  promote: false
+  sethome: true
+  unclaim: true
+  unsethome: true
+AllowFactionPvp: false
+AllowAlliedPvp: false
+```
 
 ### Credits
 
