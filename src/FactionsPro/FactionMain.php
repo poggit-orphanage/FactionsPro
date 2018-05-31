@@ -465,7 +465,26 @@ class FactionMain extends PluginBase implements Listener {
 		if(!$pl->isEnabled()) return null;
 		return $pl;
 	}
-    
+}
+    public function updateTag($playername) {
+        $p = $this->getServer()->getPlayer($playername);
+        $f = $this->getPlayerFaction($playername);
+        if (!$this->isInFaction($playername)) {
+            if(isset($this->purechat)){
+                $levelName = $this->purechat->getConfig()->get("enable-multiworld-chat") ? $p->getLevel()->getName() : null;
+                $nameTag = $this->purechat->getNametag($p, $levelName);
+                $p->setNameTag($nameTag);
+            }else{
+                $p->setNameTag("§a§lPlayer - §r§b$p \n§a§lhasfaction: §r§dfalse");
+            }
+        }elseif(isset($this->purechat)) {
+            $levelName = $this->purechat->getConfig()->get("enable-multiworld-chat") ? $p->getLevel()->getName() : null;
+            $nameTag = $this->purechat->getNametag($p, $levelName);
+            $p->setNameTag($nameTag);
+        } else {
+            $p->setNameTag("§b§lPlayer: §r§c$p \n§b§lhasFaction: §r§ctrue \n§b§lFaction: §r§c$f");
+        }
+    }
     public function onDisable(): void {
         $this->db->close();
     }
