@@ -1,7 +1,5 @@
 <?php
-
 namespace FactionsPro;
-
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\event\Listener;
@@ -15,7 +13,6 @@ use pocketmine\block\Snow;
 use pocketmine\math\Vector3;
 use pocketmine\entity\{Skeleton, Pig, Chicken, Zombie, Creeper, Cow, Spider, Blaze, Ghast};
 use pocketmine\level\{Position, Level};
-
 class FactionMain extends PluginBase implements Listener {
     
     public $db;
@@ -465,7 +462,6 @@ class FactionMain extends PluginBase implements Listener {
 		if(!$pl->isEnabled()) return null;
 		return $pl;
 	}
-}
     public function updateTag($playername) {
         $p = $this->getServer()->getPlayer($playername);
         $f = $this->getPlayerFaction($playername);
