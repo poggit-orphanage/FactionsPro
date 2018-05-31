@@ -336,7 +336,7 @@ class FactionCommands {
                             return true;
                         }
                         if ($this->plugin->getPlayerFaction($playerName) != $this->plugin->getPlayerFaction($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe Player named §4$$args[1] §cis not in this faction"));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe Player named §4$args[1] §cis not in this faction"));
                             return true;
                         }
                         if ($playerName == $sender->getName()) {
@@ -522,7 +522,7 @@ class FactionCommands {
                         $faction = $this->plugin->getPlayerFaction($args[1]);
 			$player = $this->plugin->getServer()->getPlayer($args[1]);
                         if (!($player instanceof Player)) {
-                        $sender->sendMessage($this->plugin->formatMessage("$prefix §a-$player §bis in the faction: §a$faction-", true));
+                        $player->sendMessage($this->plugin->formatMessage("$prefix §a-$player §bis in the faction: §a$faction-", true));
 			}
                     }
                     
