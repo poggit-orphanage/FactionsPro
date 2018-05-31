@@ -520,10 +520,8 @@ class FactionCommands {
                             return true;
                         }
                         $faction = $this->plugin->getPlayerFaction($args[1]);
-			$player = $this->plugin->getServer()->getPlayer($args[1]);
-                        if (!($player instanceof Player)) {
-                        $player->sendMessage($this->plugin->formatMessage("$prefix §a-$player §bis in the faction: §a$faction-", true));
-			}
+			$playerName = $this->plugin->getServer()->getPlayer($args[1]);
+                        $sender->sendMessage($this->plugin->formatMessage("$prefix §a-$args[1] §bis in the faction: §a$faction-", true));
                     }
                     
                     if (strtolower($args[0]) == "overclaim" or strtolower($args[0]) == "oc"){
