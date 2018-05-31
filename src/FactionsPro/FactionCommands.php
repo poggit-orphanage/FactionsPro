@@ -148,6 +148,7 @@ class FactionCommands {
                             $this->plugin->updateAllies($factionName);
                             $this->plugin->setFactionPower($factionName, $this->plugin->prefs->get("TheDefaultPowerEveryFactionStartsWith"));
 			    $this->plugin->setBalance($factionName, $this->plugin->prefs->get("defaultFactionBalance"));
+			    $this->plugin->updateTag($sender->getName());
                             $this->plugin->getServer()->broadcastMessage("§a$playerName §bhas created a faction named §c$factionName");
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bYour Faction named §a$factionName §bhas been created. §6Next, use /f desc to make a faction description.", true));
 			    var_dump($this->plugin->db->query("SELECT * FROM balance;")->fetchArray(SQLITE3_ASSOC));
@@ -443,6 +444,9 @@ class FactionCommands {
                         $this->plugin->db->query("DELETE FROM motd WHERE faction='$args[1]';");
                         $this->plugin->db->query("DELETE FROM home WHERE faction='$args[1]';");
 		        $this->plugin->db->query("DELETE FROM balance WHERE faction='$args[1]';");
+			$this->plugin->updateTag($sender->getName());
+			unset($this->plugin->factionChatActive[$playerName]);
+			unset($this->plugin->allyChatActive[$playerName]);
 	                $this->plugin->getServer()->broadcastMessage("§4$playerName §chas forcefully deleted the faction named §4$args[1]");
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §aUnwanted faction was successfully deleted and their faction plot was unclaimed!", true));
                     }
@@ -698,6 +702,9 @@ class FactionCommands {
 			        $this->plugin->db->query("DELETE FROM balance WHERE faction='$faction';");
 		                $this->plugin->getServer()->broadcastMessage("§aThe player: §2$playerName §awho owned §3$faction §bhas been disbanded!");
                                 $sender->sendMessage($this->plugin->formatMessage("$prefix §bThe Faction named: §a$faction §bhas been successfully disbanded and the faction plot, and Overclaims are unclaimed.", true));
+				    $this->plugin->updateTag($sender->getName());
+				    unset($this->plugin->factionChatActive[$playerName]);
+			            unset($this->plugin->allyChatActive[$playerName]);
                             } else {
                                 $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou are not leader!"));
 				return true;
@@ -721,6 +728,9 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bYou successfully left §a$faction", true));
                             $this->plugin->subtractFactionPower($faction, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
 			    $this->plugin->takeFromBalance($faction, $this->plugin->prefs->get("MoneyGainedPerPlayerInFaction"));
+		    	    $this->plugin->updateTag($sender->getName());
+							unset($this->plugin->factionChatActive[$playerName]);
+							unset($this->plugin->allyChatActive[$playerName]);
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must delete the faction or give\nleadership to someone else first"));
 			    return true;
