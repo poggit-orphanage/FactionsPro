@@ -482,6 +482,6 @@ class FactionMain extends PluginBase implements Listener {
         }
     }
     public function onDisable(): void {
-        $this->db->close();
+         if (isset($this->db)) $this->db->close();
     }
 }
