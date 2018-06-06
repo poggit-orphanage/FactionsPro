@@ -78,7 +78,7 @@ class FactionCommands {
                                 if ($r == $args[1] && $f == $sFaction) {
                                     foreach ($this->plugin->getServer()->getOnlinePlayers() as $p) {
                                         $task = new FactionWar($this->plugin, $r);
-                                        $handler = $this->plugin->getServer()->getScheduler()->scheduleDelayedTask($task, 20 * 60 * 2);
+                                        $handler = $this->plugin->getScheduler()->scheduleDelayedTask($task, 20 * 60 * 2);
                                         $task->setHandler($handler);
                                         $p->sendMessage("The war against $factionName and $sFaction has started!");
                                         if ($this->plugin->getPlayerFaction($p->getName()) == $sFaction) {
