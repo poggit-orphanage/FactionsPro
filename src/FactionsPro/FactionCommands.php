@@ -259,11 +259,7 @@ class FactionCommands {
                         if ($args[1] == $sender->getName()) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't promote yourself"));
                             return true;
-			 }
-                         if ($this->plugin->isLeader($playerName) == true) {
-                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't get promoted because you're the leader of this faction.")); //This checks if the player is a leader, which should fix promoting yourself to Officer when you're leader.
-                             return true;
-                        }
+			}
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
                         $stmt->bindValue(":player", $playerName);
@@ -299,10 +295,6 @@ class FactionCommands {
                         if ($args[1] == $sender->getName()) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't demote yourself"));
                             return true;
-                        }
-			if ($this->plugin->isLeader($playerName) == true) {
-                              $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't get demoted because you're the leader of this faction.")); //This checks if the player is a leader, which should fix demoting yourself to Officer when you're leader.
-                              return true;
                         }
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
