@@ -260,8 +260,8 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't promote yourself"));
                             return true;
 			 }
-                         if ($this->plugin->isLeader($args[1]) == false) {
-                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't get promoted because you're the leader of this faction.")); //This checks if the player is a leader, which fixes promoting yourself to Officer when you're leader.
+                         if ($this->plugin->isLeader($playerName) == true) {
+                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't get promoted because you're the leader of this faction.")); //This checks if the player is a leader, which should fix promoting yourself to Officer when you're leader.
                              return true;
                         }
                         $factionName = $this->plugin->getPlayerFaction($playerName);
@@ -300,8 +300,8 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't demote yourself"));
                             return true;
                         }
-			if ($this->plugin->isLeader($args[1]) == false) {
-                              $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't get demoted because you're the leader of this faction.")); //This checks if the player is a leader, which fixes demoting yourself to Officer when you're leader.
+			if ($this->plugin->isLeader($playerName) == true) {
+                              $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't get demoted because you're the leader of this faction.")); //This checks if the player is a leader, which should fix demoting yourself to Officer when you're leader.
                               return true;
                         }
                         $factionName = $this->plugin->getPlayerFaction($playerName);
