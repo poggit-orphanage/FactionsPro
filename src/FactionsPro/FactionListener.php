@@ -224,7 +224,7 @@ class FactionListener implements Listener {
     $y = floor($event->getPlayer()->getY());
     $z = floor($event->getPlayer()->getZ());
        $Faction = $this->plugin->factionFromPoint($x,$z);
-           $asciiCompass = self::getASCIICompass($event->getPlayer()->getYaw(), TextFormat::RED, TextFormat::GREEN);
+           $asciiCompass = $this->plugin->getASCIICompass($event->getPlayer()->getYaw(), TextFormat::RED, TextFormat::GREEN);
              $compass = "     " . $asciiCompass[0] . "\n     " . $asciiCompass[1] . "\n     " . $asciiCompass[2] . "\n";
           if(isset($this->plugin->factionMapActive[$event->getPlayer()->getName()])){
           if($this->plugin->factionMapActive[$event->getPlayer()->getName()]){
