@@ -619,7 +619,7 @@ case "pf":
 			    break;
                     }
                     switch(strtolower($args[0])) {
-                    case “overclaim”:
+			    case "overclaim":
                         if ($this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction."));
                             return true;
