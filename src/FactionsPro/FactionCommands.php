@@ -1541,7 +1541,7 @@ switch(strtolower($args[0])) {
 					case "map":
                         if(!isset($args[1])) {
 					    $size = 1;
-						$map = $this->plugin->getMap($sender, self::MAP_WIDTH, self::MAP_HEIGHT, $sender->getYaw(), $size);
+						$map = $this->plugin->getMap($sender, $this->plugin->MAP_WIDTH, $this->plugin->MAP_HEIGHT, $sender->getYaw(), $size);
 						foreach($map as $line) {
 				        $sender->sendMessage($line);
                           
