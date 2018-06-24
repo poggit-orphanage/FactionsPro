@@ -245,8 +245,10 @@ class FactionListener implements Listener {
         if(!$this->plugin->isInPlot($event->getPlayer())){
                $tip = $compass . "§l§2Zona Book§r";
                $event->getPlayer()->sendTip($tip);
-            }
         }
+}
+}
+}
 	public function getMap(Player $observer, int $width, int $height, int $inDegrees, int $size) { // No compass
 		$to = (int)sqrt($size);
 		$centerPs = new Vector3($observer->x >> $to, 0, $observer->z >> $to);
