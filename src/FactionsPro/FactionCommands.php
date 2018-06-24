@@ -1402,6 +1402,7 @@ switch(strtolower($args[0])) {
                     ////////////////////////////// CHAT ////////////////////////////////
 		    switch(strtolower($args[0])) {
                     case "chat":
+			    case "fchat":
                         if (!$this->plugin->prefs->get("AllowChat")){
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §6All Faction chat is disabled", false));
 				break;
@@ -1425,6 +1426,7 @@ switch(strtolower($args[0])) {
                     }
 switch(strtolower($args[0])) {
                     case "allychat":
+	case "ac":
                         if (!$this->plugin->prefs->get("AllowChat")){
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cAll Faction chat is disabled", false));
 				break;
@@ -1463,6 +1465,7 @@ case "balance":
 					}
 switch(strtolower($args[0])) {
 		    		 case "seebalance":
+	case "sb":
                         		   if(!isset($args[1])){
                             		        $sender->sendMessage($this->plugin->formatMessage("$prefix §aPlease use: §b/f $args[0] <faction>\n§aDescription: §bAllows you to see A faction's balance."));
                            			return true;
@@ -1479,6 +1482,7 @@ break;
                     			}
 switch(strtolower($args[0])) {
 					case "withdraw":
+	case "wd":
 					   if(!isset($args[1])){
 							$sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <amount>\n§aDescription: §dWithdraw money from your faction bank."));
 							return true;
@@ -1515,6 +1519,7 @@ break;
 					}
 switch(strtolower($args[0])) {
 					case "donate":
+	case "pay":
 					   if(!isset($args[1])){
 						       $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <amount>\n§aDescription: §dDonate money to your/the faction you're in."));
 						       return true;
@@ -1549,6 +1554,7 @@ switch(strtolower($args[0])) {
 					// Coupon for compass: G1wEmEde0mp455
 switch(strtolower($args[0])) {
 					case "map":
+	case "compass":
                         if(!isset($args[1])) {
 					    $size = 1;
 						$map = $this->getMap($sender, self::MAP_WIDTH, self::MAP_HEIGHT, $sender->getYaw(), $size);
@@ -1616,6 +1622,7 @@ break;
                 }
 switch(strtolower($args[0])) {
 		case "help":
+	case "?":
 			if(!isset($args[1])) {
 			   $sender->sendMessage(TextFormat::BLUE . "$prefix §aPlease use §b/f help <page> §afor a list of pages. (1-7]");
 			   	return true;
@@ -1673,10 +1680,6 @@ switch(strtolower($args[0])) {
 				return true;
 			break;
 				}
-			}elseif($sender->isOp() == false){
-			    $sender->sendMessage("§4§lYou must be OP to use this command.");
-			    return true;
-			    break;
 			}
                      }
                 }
@@ -1688,13 +1691,14 @@ switch(strtolower($args[0])) {
 /////////////////////////////// ABOUT ///////////////////////////////
 switch(strtolower($args[0])) {
                     case "about":
+	case "info":
                         $sender->sendMessage(TextFormat::GREEN . "§7[§6Void§bFactions§cPE§dINFO§7]");
                         $sender->sendMessage(TextFormat::GOLD . "§7[§2MODDED§7] §3This version is by §6Void§bFactions§cPE\n§b");
 			$sender->sendMessage(TextFormat::GREEN . "§bPlugin Information:\n§aFaction Build release: §5381\n§aBuild Tested and works on: §5377-381\n§aPlugin Link: §5Not showing due to self-leak information\n§aPlugin download: §5Not showing due to self-leak information.\n§aAuthor: §5VMPE Development Team\n§aOriginal Author: §5Tethered\n§aDescription: §5A factions plugin which came back to life and re-added features like the good 'ol' versions of FactionsPro.\n§aVersion: §5v2.0.6\n§aPlugin Version: §5v2.0.0");
                         return true;
 break;
 default;
-		   $sender->sendMessage("§cWrong command! §bPlease use: §a/f help §bfor all Faction commands!");
+		   $sender->sendMessage("§cUnknown command! §bPlease use: §a/f help §bfor all Faction commands!");
 		    return true;
 		    break;
                 }
