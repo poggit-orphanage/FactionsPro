@@ -1399,19 +1399,6 @@ switch(strtolower($args[0])) {
 				break;
                         }
                     }
-                    /////////////////////////////// ABOUT ///////////////////////////////
-switch(strtolower($args[0])) {
-                    case "about":
-                        $sender->sendMessage(TextFormat::GREEN . "§7[§6Void§bFactions§cPE§dINFO§7]");
-                        $sender->sendMessage(TextFormat::GOLD . "§7[§2MODDED§7] §3This version is by §6Void§bFactions§cPE\n§b");
-			$sender->sendMessage(TextFormat::GREEN . "§bPlugin Information:\n§aFaction Build release: §5381\n§aBuild Tested and works on: §5377-381\n§aPlugin Link: §5Not showing due to self-leak information\n§aPlugin download: §5Not showing due to self-leak information.\n§aAuthor: §5VMPE Development Team\n§aOriginal Author: §5Tethered\n§aDescription: §5A factions plugin which came back to life and re-added features like the good 'ol' versions of FactionsPro.\n§aVersion: §5v2.0.6\n§aPlugin Version: §5v2.0.0");
-                        return true;
-break;
-default:
-		   $sender->sendMessage("§cWrong command! §bPlease use: §a/f help §bfor all Faction commands!");
-		    return true;
-		    break;
-                    }
                     ////////////////////////////// CHAT ////////////////////////////////
 		    switch(strtolower($args[0])) {
                     case "chat":
@@ -1679,16 +1666,29 @@ switch(strtolower($args[0])) {
 				$serverName = $this->plugin->prefs->get("ServerName");
 				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp (OP Commands) §2[§51/1§2]" . TextFormat::RED . "\n§4/f addstrto <faction> <STR> - §cAdds Strength to a faction.\n§4/f addbalto <faction> <money> - §cAdds Money to a faction.\n§4/f forcedelete|fdisband <faction> - §cForce deletes a faction.\n§4/f forceunclaim|func <faction> - §cForce unclaims a plot / land.");
 				return true;
-				break;
+			break;
 		        }
                      }
                 }
         } else {
 	    $prefix = $this->plugin->prefs->get("prefix");
             $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("$prefix Please run this command in game"));
-}
         return true;
-     }
+}
+/////////////////////////////// ABOUT ///////////////////////////////
+switch(strtolower($args[0])) {
+                    case "about":
+                        $sender->sendMessage(TextFormat::GREEN . "§7[§6Void§bFactions§cPE§dINFO§7]");
+                        $sender->sendMessage(TextFormat::GOLD . "§7[§2MODDED§7] §3This version is by §6Void§bFactions§cPE\n§b");
+			$sender->sendMessage(TextFormat::GREEN . "§bPlugin Information:\n§aFaction Build release: §5381\n§aBuild Tested and works on: §5377-381\n§aPlugin Link: §5Not showing due to self-leak information\n§aPlugin download: §5Not showing due to self-leak information.\n§aAuthor: §5VMPE Development Team\n§aOriginal Author: §5Tethered\n§aDescription: §5A factions plugin which came back to life and re-added features like the good 'ol' versions of FactionsPro.\n§aVersion: §5v2.0.6\n§aPlugin Version: §5v2.0.0");
+                        return true;
+break;
+default;
+		   $sender->sendMessage("§cWrong command! §bPlease use: §a/f help §bfor all Faction commands!");
+		    return true;
+		    break;
+                }
+    }
     public function alphanum($string){
         if(function_exists('ctype_alnum')){
             $return = ctype_alnum($string);
@@ -1696,136 +1696,5 @@ switch(strtolower($args[0])) {
             $return = preg_match('/^[a-z0-9]+$/i', $string) > 0;
         }
         return $return;
-    }
-    public function getMap(Player $observer, int $width, int $height, int $inDegrees, int $size) { // No compass
-		$to = (int)sqrt($size);
-		$centerPs = new Vector3($observer->x >> $to, 0, $observer->z >> $to);
-		$map = [];
-		$centerFaction = $this->plugin->factionFromPoint($observer->getFloorX(), $observer->getFloorZ());
-		$centerFaction = $centerFaction ? $centerFaction : "Wilderness";
-		$head = TextFormat::DARK_GREEN . "§3________________." . TextFormat::DARK_GRAY . "[" .TextFormat::GREEN . " (" . $centerPs->getX() . "," . $centerPs->getZ() . ") " . $centerFaction . TextFormat::DARK_GRAY . "]" . TextFormat::DARK_GREEN . "§3.________________";
-		$map[] = $head;
-		$halfWidth = $width / 2;
-		$halfHeight = $height / 2;
-		$width = $halfWidth * 2 + 1;
-		$height = $halfHeight * 2 + 1;
-		$topLeftPs = new Vector3($centerPs->x + -$halfWidth, 0, $centerPs->z + -$halfHeight);
-		// Get the compass
-		$asciiCompass = self::getASCIICompass($inDegrees, TextFormat::RED, TextFormat::GOLD);
-		// Make room for the list of names
-		$height--;
-		/** @var string[] $fList */
-		$fList = array();
-		$chrIdx = 0;
-		$overflown = false;
-		$chars = "-";
-		// For each row
-		for ($dz = 0; $dz < $height; $dz++) {
-			// Draw and add that row
-			$row = "";
-			for ($dx = 0; $dx < $width; $dx++) {
-				if ($dx == $halfWidth && $dz == $halfHeight) {
-					$row .= "§b". "-";
-					continue;
-				}
-				if (!$overflown && $chrIdx >= strlen($this->plugin->getMapBlock())) $overflown = true;
-				$herePs = $topLeftPs->add($dx, 0, $dz);
-				$hereFaction = $this->plugin->factionFromPoint($herePs->x << $to, $herePs->z << $to);
-				$contains = in_array($hereFaction, $fList, true);
-				if ($hereFaction === NULL) {
-                    $SemClaim = "§7". "-";
-					$row .= $SemClaim;
-				} elseif (!$contains && $overflown) {
-                    $Caverna = "§f"."-";
-					$row .= $Caverna;
-				} else {
-					if (!$contains) $fList[$chars{$chrIdx++}] = $hereFaction;
-					$fchar = "-";
-					$row .= $this->getColorForTo($observer, $hereFaction) . $fchar;
-				}
-			}
-			$line = $row; // ... ---------------
-			// Add the compass
-          $OPlayer = "§b". "-";
-			if ($dz == 0) $line = substr($row, 0 * strlen($OPlayer))."  ".$asciiCompass[0];
-			if ($dz == 1) $line = substr($row, 0 * strlen($OPlayer))."  ".$asciiCompass[1];
-			if ($dz == 2) $line = substr($row, 0 * strlen($OPlayer))."  ". $asciiCompass[2];
-          if ($dz == 4) $line = substr($row, 0 * strlen($OPlayer))."  §2". "-" . " §a Wilderness";
-          if ($dz == 5) $line = substr($row, 0 * strlen($OPlayer)). "  §3". "-" . " §b Claimed Land";
-         if ($dz == 6) $line = substr($row, 0 * strlen($OPlayer)). "  §4". "-" ." §c Warzone";
-         if ($dz == 7) $line = substr($row, 0 * strlen($OPlayer)). "  §5". "-" ." §d You";
-         if ($dz == 8) $line = substr($row, 0 * strlen($OPlayer));
-         
-			$map[] = $line;
-		}
-		$fRow = "";
-		foreach ($fList as $char => $faction) {
-			$fRow .= $this->getColorForTo($observer, $faction) . $this->plugin->getMapBlock() . ": " . $faction . " ";
-		}
-        if ($overflown) $fRow .= self::MAP_OVERFLOW_MESSAGE;
-		$fRow = trim($fRow);
-		$map[] = $fRow;
-		return $map;
-	}
-	public function getColorForTo(Player $player, $faction) {
-		if($this->plugin->getPlayerFaction($player->getName()) === $faction) {
-			return "§6";
-		}
-		return "§c";
-	}
-	   const N = 'N';
-    const NE = '/';
-    const E = 'E';
-    const SE = '\\';
-    const S = 'S';
-    const SW = '/';
-    const W = 'W';
-    const NW = '\\';
-    public static function getASCIICompass($degrees, $colorActive, $colorDefault) : array
-    {
-        $ret = [];
-        $point = self::getCompassPointForDirection($degrees);
-        $row = "";
-        $row .= ($point === self::NW ? $colorActive : $colorDefault) . self::NW;
-        $row .= ($point === self::N ? $colorActive : $colorDefault) . self::N;
-        $row .= ($point === self::NE ? $colorActive : $colorDefault) . self::NE;
-        $ret[] = $row;
-        $row = "";
-        $row .= ($point === self::W ? $colorActive : $colorDefault) . self::W;
-        $row .= $colorDefault . "+";
-        $row .= ($point === self::E ? $colorActive : $colorDefault) . self::E;
-        $ret[] = $row;
-        $row = "";
-        $row .= ($point === self::SW ? $colorActive : $colorDefault) . self::SW;
-        $row .= ($point === self::S ? $colorActive : $colorDefault) . self::S;
-        $row .= ($point === self::SE ? $colorActive : $colorDefault) . self::SE;
-        $ret[] = $row;
-        return $ret;
-    }
-    public static function getCompassPointForDirection($degrees)
-    {
-        $degrees = ($degrees - 180) % 360;
-        if ($degrees < 0)
-            $degrees += 360;
-        if (0 <= $degrees && $degrees < 22.5)
-            return self::N;
-        elseif (22.5 <= $degrees && $degrees < 67.5)
-            return self::NE;
-        elseif (67.5 <= $degrees && $degrees < 112.5)
-            return self::E;
-        elseif (112.5 <= $degrees && $degrees < 157.5)
-            return self::SE;
-        elseif (157.5 <= $degrees && $degrees < 202.5)
-            return self::S;
-        elseif (202.5 <= $degrees && $degrees < 247.5)
-            return self::SW;
-        elseif (247.5 <= $degrees && $degrees < 292.5)
-            return self::W;
-        elseif (292.5 <= $degrees && $degrees < 337.5)
-            return self::NW;
-        elseif (337.5 <= $degrees && $degrees < 360.0)
-            return self::N;
-        else
-            return null;
     }
 }
