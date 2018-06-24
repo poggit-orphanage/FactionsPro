@@ -364,7 +364,7 @@ class FactionCommands {
                     }
                     /////////////////////////////// KICK ///////////////////////////////
                     switch(strtolower($args[0])) {
-                    case “kick”:
+                    case "kick":
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <player>\n§aDescription: §dKicks a player from a faction."));
                             return true;
@@ -920,7 +920,7 @@ break;
                     }
                     /////////////////////////////// HOME ///////////////////////////////
 switch(strtolower($args[0])) {
-                    case “home”:
+                    case "home":
                         if ($this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
                             return true;
