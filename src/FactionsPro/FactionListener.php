@@ -19,6 +19,16 @@ class FactionListener implements Listener {
 	
 	public $plugin;
 	
+	// ASCII Map
+	CONST MAP_WIDTH = 50;
+	CONST MAP_HEIGHT = 11;
+	CONST MAP_HEIGHT_FULL = 17;
+	CONST MAP_KEY_CHARS = "\\/#?ç¬£$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZÄÖÜÆØÅ1234567890abcdeghjmnopqrsuvwxyÿzäöüæøåâêîûô";
+	CONST MAP_KEY_WILDERNESS = TextFormat::GRAY . "-"; /*Del*/
+	CONST MAP_KEY_SEPARATOR = TextFormat::AQUA . "*"; /*Del*/
+	CONST MAP_KEY_OVERFLOW = TextFormat::WHITE . "-" . TextFormat::WHITE; # ::MAGIC?
+	CONST MAP_OVERFLOW_MESSAGE = self::MAP_KEY_OVERFLOW . ": Too Many Factions (>" . 107 . ") on this Map.";
+	
 	public function __construct(FactionMain $pg) {
 		$this->plugin = $pg;
 	}
