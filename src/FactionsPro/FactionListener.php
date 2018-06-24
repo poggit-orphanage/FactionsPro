@@ -247,9 +247,83 @@ class FactionListener implements Listener {
                $event->getPlayer()->sendTip($tip);
             }
         }
-    }
-        }
-        const N = 'N';
+	public function getMap(Player $observer, int $width, int $height, int $inDegrees, int $size) { // No compass
+		$to = (int)sqrt($size);
+		$centerPs = new Vector3($observer->x >> $to, 0, $observer->z >> $to);
+		$map = [];
+		$centerFaction = $this->plugin->factionFromPoint($observer->getFloorX(), $observer->getFloorZ());
+		$centerFaction = $centerFaction ? $centerFaction : "Wilderness";
+		$head = TextFormat::DARK_GREEN . "§3________________." . TextFormat::DARK_GRAY . "[" .TextFormat::GREEN . " (" . $centerPs->getX() . "," . $centerPs->getZ() . ") " . $centerFaction . TextFormat::DARK_GRAY . "]" . TextFormat::DARK_GREEN . "§3.________________";
+		$map[] = $head;
+		$halfWidth = $width / 2;
+		$halfHeight = $height / 2;
+		$width = $halfWidth * 2 + 1;
+		$height = $halfHeight * 2 + 1;
+		$topLeftPs = new Vector3($centerPs->x + -$halfWidth, 0, $centerPs->z + -$halfHeight);
+		// Get the compass
+		$asciiCompass = self::getASCIICompass($inDegrees, TextFormat::RED, TextFormat::GOLD);
+		// Make room for the list of names
+		$height--;
+		/** @var string[] $fList */
+		$fList = array();
+		$chrIdx = 0;
+		$overflown = false;
+		$chars = "-";
+		// For each row
+		for ($dz = 0; $dz < $height; $dz++) {
+			// Draw and add that row
+			$row = "";
+			for ($dx = 0; $dx < $width; $dx++) {
+				if ($dx == $halfWidth && $dz == $halfHeight) {
+					$row .= "§b". "-";
+					continue;
+				}
+				if (!$overflown && $chrIdx >= strlen($this->plugin->getMapBlock())) $overflown = true;
+				$herePs = $topLeftPs->add($dx, 0, $dz);
+				$hereFaction = $this->plugin->factionFromPoint($herePs->x << $to, $herePs->z << $to);
+				$contains = in_array($hereFaction, $fList, true);
+				if ($hereFaction === NULL) {
+                    $SemClaim = "§7". "-";
+					$row .= $SemClaim;
+				} elseif (!$contains && $overflown) {
+                    $Caverna = "§f"."-";
+					$row .= $Caverna;
+				} else {
+					if (!$contains) $fList[$chars{$chrIdx++}] = $hereFaction;
+					$fchar = "-";
+					$row .= $this->getColorForTo($observer, $hereFaction) . $fchar;
+				}
+			}
+			$line = $row; // ... ---------------
+			// Add the compass
+          $OPlayer = "§b". "-";
+			if ($dz == 0) $line = substr($row, 0 * strlen($OPlayer))."  ".$asciiCompass[0];
+			if ($dz == 1) $line = substr($row, 0 * strlen($OPlayer))."  ".$asciiCompass[1];
+			if ($dz == 2) $line = substr($row, 0 * strlen($OPlayer))."  ". $asciiCompass[2];
+          if ($dz == 4) $line = substr($row, 0 * strlen($OPlayer))."  §2". "-" . " §a Wilderness";
+          if ($dz == 5) $line = substr($row, 0 * strlen($OPlayer)). "  §3". "-" . " §b Claimed Land";
+         if ($dz == 6) $line = substr($row, 0 * strlen($OPlayer)). "  §4". "-" ." §c Warzone";
+         if ($dz == 7) $line = substr($row, 0 * strlen($OPlayer)). "  §5". "-" ." §d You";
+         if ($dz == 8) $line = substr($row, 0 * strlen($OPlayer));
+         
+			$map[] = $line;
+		}
+		$fRow = "";
+		foreach ($fList as $char => $faction) {
+			$fRow .= $this->getColorForTo($observer, $faction) . $this->plugin->getMapBlock() . ": " . $faction . " ";
+		}
+        if ($overflown) $fRow .= self::MAP_OVERFLOW_MESSAGE;
+		$fRow = trim($fRow);
+		$map[] = $fRow;
+		return $map;
+	}
+	public function getColorForTo(Player $player, $faction) {
+		if($this->plugin->getPlayerFaction($player->getName()) === $faction) {
+			return "§6";
+		}
+		return "§c";
+	}
+	   const N = 'N';
     const NE = '/';
     const E = 'E';
     const SE = '\\';
@@ -302,6 +376,6 @@ class FactionListener implements Listener {
         elseif (337.5 <= $degrees && $degrees < 360.0)
             return self::N;
         else
-            return null;    
-           }
+            return null;
     }
+}
