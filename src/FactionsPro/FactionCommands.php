@@ -8,16 +8,6 @@ use pocketmine\level\{Level, Position};
 class FactionCommands {
 	
     public $plugin;
-    
-    // ASCII Map
-	CONST MAP_WIDTH = 50;
-	CONST MAP_HEIGHT = 11;
-	CONST MAP_HEIGHT_FULL = 17;
-	CONST MAP_KEY_CHARS = "\\/#?ç¬£$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZÄÖÜÆØÅ1234567890abcdeghjmnopqrsuvwxyÿzäöüæøåâêîûô";
-	CONST MAP_KEY_WILDERNESS = TextFormat::GRAY . "-"; /*Del*/
-	CONST MAP_KEY_SEPARATOR = TextFormat::AQUA . "*"; /*Del*/
-	CONST MAP_KEY_OVERFLOW = TextFormat::WHITE . "-" . TextFormat::WHITE; # ::MAGIC?
-	CONST MAP_OVERFLOW_MESSAGE = self::MAP_KEY_OVERFLOW . ": Too Many Factions (>" . 107 . ") on this Map.";
         
     public function __construct(FactionMain $pg) {
         $this->plugin = $pg;
@@ -1551,7 +1541,7 @@ switch(strtolower($args[0])) {
 					case "map":
                         if(!isset($args[1])) {
 					    $size = 1;
-						$map = $this->getMap($sender, self::MAP_WIDTH, self::MAP_HEIGHT, $sender->getYaw(), $size);
+						$map = $this->plugin->getMap($sender, self::MAP_WIDTH, self::MAP_HEIGHT, $sender->getYaw(), $size);
 						foreach($map as $line) {
 				        $sender->sendMessage($line);
                           
