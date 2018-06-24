@@ -126,6 +126,7 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// CREATE ///////////////////////////////
+                    switch(strtolower($args[0])) {
 		    case "create":
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <faction name>"));
@@ -177,6 +178,7 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// INVITE ///////////////////////////////
+                switch(strtolower($args[0])) {
 		case "invite":
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <player>\n§aDescription: §dInvites a player to your faction."));
@@ -225,6 +227,7 @@ class FactionCommands {
 		        break;
                     }
                     /////////////////////////////// LEADER ///////////////////////////////
+            switch(strtolower($args[0])) {
 	    case "leader":
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f leader <player>\n§aDescription: §dMake someone else leader of the faction."));
@@ -274,6 +277,7 @@ class FactionCommands {
 	                break;
                     }
                     /////////////////////////////// PROMOTE ///////////////////////////////
+                    switch(strtolower($args[0])) {
                     case "promote":
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f promote <player>\n§aDescription: §dPromote a player from your faction."));
@@ -316,6 +320,7 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// DEMOTE ///////////////////////////////
+                    switch(strtolower($args[0])) {
                     case "demote":
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f demote <player>\n§aDescription: §dDemote a player from your faction"));
@@ -358,7 +363,8 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// KICK ///////////////////////////////
-                    if(strtolower($args[0]) == "kick" or strtolower($args[0]) == "k"){
+                    switch(strtolower($args[0])) {
+                    case “kick”:
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <player>\n§aDescription: §dKicks a player from a faction."));
                             return true;
@@ -398,6 +404,7 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// CLAIM ///////////////////////////////
+switch(strtolower($args[0])) {
 case "claim":
 				if($this->plugin->prefs->get("ClaimingEnabled") == false){
 					$sender->sendMessage($this->plugin->formatMessage("$prefix §cPlots are not enabled on this server."));
@@ -460,6 +467,7 @@ case "claim":
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bYour Faction plot has been claimed.", true));
                         break;
 		    }
+switch(strtolower($args[0])) {
 case "plotinfo":
                         $x = floor($sender->getX());
 			$y = floor($sender->getY());
@@ -476,6 +484,7 @@ case "plotinfo":
 			return true;
                         break;
                     }
+switch(strtolower($args[0])) {
 case "fdel":
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <faction>\n§aDescription: §dForce deletes a faction. For Operators only."));
@@ -507,6 +516,7 @@ case "fdel":
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §aUnwanted faction was successfully deleted and their faction plot was unclaimed!", true));
                         break;
                     }
+switch(strtolower($args[0])) {
 case "addstrto":
                         if (!isset($args[1]) or ! isset($args[2])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f addstrto <faction> <STR>\n§aDescription: §dAdds STR to a faction."));
@@ -527,6 +537,7 @@ case "addstrto":
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bSuccessfully added §a$args[2] §bSTR to §a$args[1]", true));
                         break;
                     }
+switch(strtolower($args[0])) {
                     case "addbalto":
                         if (!isset($args[1]) or ! isset($args[2])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f addbalto <faction> <money>\n§aDescription: §dAdds Money to a faction."));
@@ -547,6 +558,7 @@ case "addstrto":
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bSuccessfully added §a$args[2] §bBalance to §a$args[1]", true));
 			    break;
                     }
+switch(strtolower($args[0])) {
 		    case "rmbalto":
 	                if (!isset($args[1]) or ! isset($args[2])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f rmbalto <faction> <money>\n§aDescription: §dRemoves Money from a faction."));
@@ -567,6 +579,7 @@ case "addstrto":
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bSuccessfully removed §a$args[2] §bBalance from §a$args[1]", true));
 			    break;
 		    }
+switch(strtolower($args[0])) {
 case "rmpower":
 		       if (!isset($args[1]) or ! isset($args[2])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f rmpower <faction> <power>\n§aDescription: §dRemoves Power from a faction."));
@@ -587,6 +600,7 @@ case "rmpower":
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bSuccessfully removed §a$args[2] §bPower from §a$args[1]", true));
                          break;
                     }
+switch(strtolower($args[0])) {
                     case "playerfaction":
 case "pf":
                         if (!isset($args[1])) {
@@ -604,8 +618,8 @@ case "pf":
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §a-$args[1] §bis in the faction: §a$faction-", true));
 			    break;
                     }
-                    
-                    if (strtolower($args[0]) == "overclaim" or strtolower($args[0]) == "oc"){
+                    switch(strtolower($args[0])) {
+                    case “overclaim”:
                         if ($this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction."));
                             return true;
@@ -674,6 +688,7 @@ case "pf":
                         }
                     }
                     /////////////////////////////// UNCLAIM ///////////////////////////////
+switch(strtolower($args[0])) {
                     case "unclaim":
 		       case "uncl":
 				  if($this->plugin->prefs->get("ClaimingEnabled") == false){
@@ -698,6 +713,7 @@ case "pf":
                         break;
                     }
                     /////////////////////////////// DESCRIPTION ///////////////////////////////
+switch(strtolower($args[0])) {
                     case "desc":
 		       case "motd":
                         if ($this->plugin->isInFaction($sender->getName()) == false) {
@@ -718,6 +734,7 @@ case "pf":
                         break;
 		    }
 		    /////////////////////////////// TOP, also by @PrimusLV //////////////////////////
+   switch(strtolower($args[0])) {
 					case "top":
 					          if(!isset($args[1])){
 					          $sender->sendMessage($this->plugin->formatMessage("$prefix §aPlease use: §a/f $args[0] money §d- To check top 10 Richest Factions on the server\n$prefix §aPlease use: §b/f $args[0] str §d- To check Top 10 BEST Factions (Highest STR)"));
@@ -737,6 +754,7 @@ case "pf":
 		                          }
                                         }
                     /////////////////////////////// ACCEPT ///////////////////////////////
+switch(strtolower($args[0])) {
                     case "accept":
                         $lowercaseName = strtolower($playerName);
                         $result = $this->plugin->db->query("SELECT * FROM confirm WHERE player='$lowercaseName';");
@@ -769,6 +787,7 @@ case "pf":
                         }
                     }
                     /////////////////////////////// DENY ///////////////////////////////
+switch(strtolower($args[0])) {
                     case "deny":
                         $lowercaseName = strtolower($playerName);
                         $result = $this->plugin->db->query("SELECT * FROM confirm WHERE player='$lowercaseName';");
@@ -792,6 +811,7 @@ case "pf":
                         }
                     }
                     /////////////////////////////// DELETE ///////////////////////////////
+switch(strtolower($args[0])) {
                     case "del":
                         if ($this->plugin->isInFaction($playerName) == true) {
                             if ($this->plugin->isLeader($playerName)) {
@@ -822,6 +842,7 @@ case "pf":
                         }
                     }
                     /////////////////////////////// LEAVE ///////////////////////////////
+switch(strtolower($args[0])) {
                     case "leave":
                         if ($this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
@@ -848,6 +869,7 @@ case "pf":
                         }
                     }
                     /////////////////////////////// SETHOME ///////////////////////////////
+switch(strtolower($args[0])) {
                     case "sethome":
                         if ($this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
@@ -879,6 +901,7 @@ case "pf":
 break;
                     }
                     /////////////////////////////// UNSETHOME ///////////////////////////////
+switch(strtolower($args[0])) {
                     case "unsethome":
                         if ($this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
@@ -896,7 +919,8 @@ break;
 break;
                     }
                     /////////////////////////////// HOME ///////////////////////////////
-                    if (strtolower($args[0] == "home")) {
+switch(strtolower($args[0])) {
+                    case “home”:
                         if ($this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
                             return true;
@@ -970,6 +994,7 @@ break;
 		    /*TODO LIST*/
 		    
 		    /////////////////////////////// POWER ///////////////////////////////
+switch(strtolower($args[0])) {
                     case "power":
                         if($this->plugin->isInFaction($playerName) == false) {
 							$sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
@@ -981,6 +1006,7 @@ break;
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bYour faction has§a $faction_power §bpower",true));
 break;
                     }
+switch(strtolower($args[0])) {
 case "seepower":
                         if(!isset($args[1])){
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §aPlease use: §b/f $args[0] <faction>\n§aDescription: §bAllows you to see A faction's power."));
@@ -997,6 +1023,7 @@ case "seepower":
 break;
                     }
                     /////////////////////////////// MEMBERS/OFFICERS/LEADER AND THEIR STATUSES ///////////////////////////////
+switch(strtolower($args[0])) {
                     case "ourmembers":
                         if ($this->plugin->isInFaction($playerName) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
@@ -1005,6 +1032,7 @@ break;
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $this->plugin->getPlayerFaction($playerName), "Member");
                     }
+switch(strtolower($args[0])) {
                     case "listmembers":
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f listmembers <faction>\n§aDescription: §dGet's a list of faction members in a faction."));
@@ -1018,6 +1046,7 @@ break;
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $args[1], "Member");
                     }
+switch(strtolower($args[0])) {
                     case "ourofficers":
                         if (!$this->plugin->isInFaction($playerName) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
@@ -1026,6 +1055,7 @@ break;
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $this->plugin->getPlayerFaction($playerName), "Officer");
                     }
+switch(strtolower($args[0])) {
                     case "listofficers":
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f listofficers <faction>\n§aDescription: §dGet's a list of officers in a faction."));
@@ -1039,6 +1069,7 @@ break;
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $args[1], "Officer");
                     }
+switch(strtolower($args[0])) {
                     case "ourleader":
                         if ($this->plugin->isInFaction($playerName) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
@@ -1047,6 +1078,7 @@ break;
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $this->plugin->getPlayerFaction($playerName), "Leader");
                     }
+switch(strtolower($args[0])) {
                     case "listleader":
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f listleader <faction>\n§aDescription: §dGet's the name of the leader of a faction."));
@@ -1060,6 +1092,7 @@ break;
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $args[1], "Leader");
                     }
+switch(strtolower($args[0])) {
                     case "say":
 			if (!$this->plugin->prefs->get("AllowChat")) {
 			    $sender->sendMessage($this->plugin->formatMessage("§c/f say is disabled"));
@@ -1096,6 +1129,7 @@ break;
 			}
 		    }
                     ////////////////////////////// ALLY SYSTEM ////////////////////////////////
+switch(strtolower($args[0])) {
                     case "enemy":
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f enemy <faction>\n§aDescription: §dEnemy a faction."));
@@ -1139,6 +1173,7 @@ break;
                         $leader->sendMessage($this->plugin->formatMessage("$prefix §bThe leader of §a$fac §bhas declared your faction as an enemy", true));
                         break;
                     }
+switch(strtolower($args[0])) {
 case "ally":
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <faction>\n§aDescription: §dAlly with a faction."));
@@ -1198,6 +1233,7 @@ case "ally":
                         $leader->sendMessage($this->plugin->formatMessage("$prefix §bThe leader of §a$fac §brequested an alliance.\nType §3/f allyok §bto accept or §3/f allyno §bto deny.", true));
 break;
                     }
+switch(strtolower($args[0])) {
 case "unally":
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <faction>\n§aDescription: §dUn allies a faction."));
@@ -1244,6 +1280,7 @@ case "unally":
 				break;
                         }
                     }
+switch(strtolower($args[0])) {
                     case "forceunclaim":
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <faction>\n§aDescription: §dForce Unclaims a land. - Operators only."));
@@ -1264,6 +1301,7 @@ case "unally":
                         $this->plugin->db->query("DELETE FROM plots WHERE faction='$args[1]';");
 break;
                     }
+switch(strtolower($args[0])) {
                     case "allies":
                         if (!isset($args[1])) {
                             if ($this->plugin->isInFaction($playerName) == false) {
@@ -1283,6 +1321,7 @@ break;
                             $this->plugin->getAllAllies($sender, $args[1]);
                         }
                     }
+switch(strtolower($args[0])) {
                     case "allyok":
                         if ($this->plugin->isInFaction($playerName) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
@@ -1325,6 +1364,7 @@ break;
 				break;
                         }
                     }
+switch(strtolower($args[0])) {
                     case "allyno":
                         if ($this->plugin->isInFaction($playerName) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
@@ -1360,15 +1400,20 @@ break;
                         }
                     }
                     /////////////////////////////// ABOUT ///////////////////////////////
+switch(strtolower($args[0])) {
                     case "about":
                         $sender->sendMessage(TextFormat::GREEN . "§7[§6Void§bFactions§cPE§dINFO§7]");
                         $sender->sendMessage(TextFormat::GOLD . "§7[§2MODDED§7] §3This version is by §6Void§bFactions§cPE\n§b");
 			$sender->sendMessage(TextFormat::GREEN . "§bPlugin Information:\n§aFaction Build release: §5381\n§aBuild Tested and works on: §5377-381\n§aPlugin Link: §5Not showing due to self-leak information\n§aPlugin download: §5Not showing due to self-leak information.\n§aAuthor: §5VMPE Development Team\n§aOriginal Author: §5Tethered\n§aDescription: §5A factions plugin which came back to life and re-added features like the good 'ol' versions of FactionsPro.\n§aVersion: §5v2.0.6\n§aPlugin Version: §5v2.0.0");
                         return true;
 break;
+default:
+		   $sender->sendMessage("§cWrong command! §bPlease use: §a/f help §bfor all Faction commands!");
+		    return true;
+		    break;
                     }
                     ////////////////////////////// CHAT ////////////////////////////////
-		    
+		    switch(strtolower($args[0])) {
                     case "chat":
                         if (!$this->plugin->prefs->get("AllowChat")){
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §6All Faction chat is disabled", false));
@@ -1391,6 +1436,7 @@ break;
 				break;
                         }
                     }
+switch(strtolower($args[0])) {
                     case "allychat":
                         if (!$this->plugin->prefs->get("AllowChat")){
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cAll Faction chat is disabled", false));
@@ -1414,6 +1460,7 @@ break;
                         }
                     }
 		////////////////////////////// BALANCE, by primus ;) ///////////////////////////////////////
+switch(strtolower($args[0])) {
 					case "bal":
 case "balance":
 						if($this->plugin->isInFaction($playerName) == false){
@@ -1427,6 +1474,7 @@ case "balance":
 						return true;
 						break;
 					}
+switch(strtolower($args[0])) {
 		    		 case "seebalance":
                         		   if(!isset($args[1])){
                             		        $sender->sendMessage($this->plugin->formatMessage("$prefix §aPlease use: §b/f $args[0] <faction>\n§aDescription: §bAllows you to see A faction's balance."));
@@ -1442,6 +1490,7 @@ case "balance":
                        			   $sender->sendMessage($this->plugin->formatMessage("$prefix §bThe faction §a $args[1] §bhas §a$balance §bMoney", true));
 break;
                     			}
+switch(strtolower($args[0])) {
 					case "withdraw":
 					   if(!isset($args[1])){
 							$sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <amount>\n§aDescription: §dWithdraw money from your faction bank."));
@@ -1477,6 +1526,7 @@ break;
 						return true;
 break;
 					}
+switch(strtolower($args[0])) {
 					case "donate":
 					   if(!isset($args[1])){
 						       $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <amount>\n§aDescription: §dDonate money to your/the faction you're in."));
@@ -1510,6 +1560,7 @@ break;
 					}
                 /////////////////////////////// MAP, map by Primus (no compass) ////////////////////////////////
 					// Coupon for compass: G1wEmEde0mp455
+switch(strtolower($args[0])) {
 					case "map":
                         if(!isset($args[1])) {
 					    $size = 1;
@@ -1524,6 +1575,7 @@ break;
                     }
                
                 /////////////////////////////// WHO ///////////////////////////////
+switch(strtolower($args[0])) {
 case "who":
                     if (isset($args[1])) {
                         if (!(ctype_alnum($args[1])) or !($this->plugin->factionExists($args[1]))) {
@@ -1575,6 +1627,7 @@ case "who":
                     return true;
 break;
                 }
+switch(strtolower($args[0])) {
 		case "help":
 			if(!isset($args[1])) {
 			   $sender->sendMessage(TextFormat::BLUE . "$prefix §aPlease use §b/f help <page> §afor a list of pages. (1-7]");
@@ -1633,14 +1686,9 @@ break;
         } else {
 	    $prefix = $this->plugin->prefs->get("prefix");
             $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("$prefix Please run this command in game"));
-        }
+}
         return true;
-        break;   
-       default:
-		   $sender->sendMessage("§cWrong command! §bPlease use: §a/f help §bfor all Faction commands!");
-		    return true;
-		    break;
-    }
+     }
     public function alphanum($string){
         if(function_exists('ctype_alnum')){
             $return = ctype_alnum($string);
@@ -1648,7 +1696,6 @@ break;
             $return = preg_match('/^[a-z0-9]+$/i', $string) > 0;
         }
         return $return;
-	    break;
     }
     public function getMap(Player $observer, int $width, int $height, int $inDegrees, int $size) { // No compass
 		$to = (int)sqrt($size);
@@ -1719,14 +1766,12 @@ break;
 		$fRow = trim($fRow);
 		$map[] = $fRow;
 		return $map;
-	    break;
 	}
 	public function getColorForTo(Player $player, $faction) {
 		if($this->plugin->getPlayerFaction($player->getName()) === $faction) {
 			return "§6";
 		}
 		return "§c";
-		break;
 	}
 	   const N = 'N';
     const NE = '/';
@@ -1782,6 +1827,5 @@ break;
             return self::N;
         else
             return null;
-	    break;
     }
 }
