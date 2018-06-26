@@ -1,6 +1,6 @@
 name: FactionsPro
 author: Tethered_, edited by VMPE Development Team
-description: A Extended Factions plugin. [Beta Branch]
+description: A Extended Factions plugin. [beta-testing Branch]
 version: 2.0.0-beta
 main: FactionsPro\FactionMain
 api: [3.0.0, 3.0.0-ALPHA12]
