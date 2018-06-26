@@ -30,6 +30,7 @@ class FactionMain extends PluginBase implements Listener {
     const HEX_SYMBOL = "e29688";
     
     public function onEnable(): void{
+        if (!$this->isSpoon()) {
         @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
             $file = fopen($this->getDataFolder() . "BannedNames.txt", "w");
@@ -125,6 +126,24 @@ class FactionMain extends PluginBase implements Listener {
             Server::getInstance()->getLogger()->info(TextFormat::GREEN . "FactionPro: Added 'world' column to plots");
         }catch(\ErrorException $ex){
         }
+    }
+    }
+     /**
+     * Checks if server is using a spoon.
+     *
+     * @return bool
+     */
+    public function isSpoon()
+    {
+        if ($this->getServer()->getName() !== "PocketMine-MP") {
+            $this->getLogger()->error("You're running on a spoon. We only support Pocketmine-MP. Please upgrade to PMMP and try again. The plugin will most likely not be functional until you update to PMMP.");
+            return true;
+        }
+        if ($this->getDescription()->getAuthors() !== ["Tethered_, edited by VMPE Development Team"] || $this->getDescription()->getName() !== "FactionsPro") {
+            $this->getLogger()->error("You're not using the original version of FactionsPro by Tethered_, edited by VMPE Development Team. In order to get the functional features, you'd need to install our original version here: https://poggit.pmmp.io/ci/TheFixerDevelopment/FactionsPro/FactionsPro");
+            return true;
+        }
+        return false;
     }
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
         return $this->fCommand->onCommand($sender, $command, $label, $args);
