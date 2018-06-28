@@ -636,7 +636,7 @@ class FactionCommands {
 
                     /////////////////////////////// DELETE ///////////////////////////////
 
-                    if (strtolower($args[0]) == "del") {
+                    if (strtolower($args[0]) == "disband") {
                         if ($this->plugin->isInFaction($playerName) == true) {
                             if ($this->plugin->isLeader($playerName)) {
                                 $faction = $this->plugin->getPlayerFaction($playerName);
@@ -701,7 +701,7 @@ class FactionCommands {
 
                     /////////////////////////////// UNSETHOME ///////////////////////////////
 
-                    if (strtolower($args[0] == "unsethome")) {
+                    if (strtolower($args[0] == "delhome")) {
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage("You must be in a faction to do this"));
                             return true;
@@ -834,9 +834,9 @@ class FactionCommands {
 
 
                     ////////////////////////////// ALLY SYSTEM ////////////////////////////////
-                    if (strtolower($args[0] == "enemywith")) {
+                    if (strtolower($args[0] == "enemy")) {
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("Usage: /f enemywith <faction>"));
+                            $sender->sendMessage($this->plugin->formatMessage("Usage: /f enemy <faction>"));
                             return true;
                         }
                         if (!$this->plugin->isInFaction($playerName)) {
@@ -870,9 +870,9 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("You are now enemies with $args[1]!", true));
                         $leader->sendMessage($this->plugin->formatMessage("The leader of $fac has declared your faction as an enemy", true));
                     }
-                    if (strtolower($args[0] == "allywith")) {
+                    if (strtolower($args[0] == "ally")) {
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("Usage: /f allywith <faction>"));
+                            $sender->sendMessage($this->plugin->formatMessage("Usage: /f ally <faction>"));
                             return true;
                         }
                         if (!$this->plugin->isInFaction($playerName)) {
@@ -921,9 +921,9 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("You requested to ally with $args[1]!\nWait for the leader's response...", true));
                         $leader->sendMessage($this->plugin->formatMessage("The leader of $fac requested an alliance.\nType /f allyok to accept or /f allyno to deny.", true));
                     }
-                    if (strtolower($args[0] == "breakalliancewith")) {
+                    if (strtolower($args[0] == "unally")) {
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("Usage: /f breakalliancewith <faction>"));
+                            $sender->sendMessage($this->plugin->formatMessage("Usage: /f unally <faction>"));
                             return true;
                         }
                         if (!$this->plugin->isInFaction($playerName)) {
@@ -960,9 +960,9 @@ class FactionCommands {
                             $leader->sendMessage($this->plugin->formatMessage("The leader of $fac broke the alliance with your faction $args[1]", false));
                         }
                     }
-                    if (strtolower($args[0] == "forceunclaim")) {
+                    if (strtolower($args[0] == "funclaim")) {
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("Usage: /f forceunclaim <faction>"));
+                            $sender->sendMessage($this->plugin->formatMessage("Usage: /f funclaim <faction>"));
                             return true;
                         }
                         if (!$this->plugin->factionExists($args[1])) {
@@ -1065,7 +1065,7 @@ class FactionCommands {
 
                     if (strtolower($args[0] == 'about')) {
                         $sender->sendMessage(TextFormat::GREEN . "[ORIGINAL] FactionsPro v1.3.2 by " . TextFormat::BOLD . "Tethered_");
-                        $sender->sendMessage(TextFormat::GOLD . "[MODDED] This version by MPE and " . TextFormat::BOLD . "Awzaw");
+                        $sender->sendMessage(TextFormat::GOLD . "[MODDED] This version by MCP and " . TextFormat::BOLD . "Awzaw");
                     }
                     ////////////////////////////// CHAT ////////////////////////////////
                     if (strtolower($args[0]) == "chat" or strtolower($args[0]) == "c") {
@@ -1090,9 +1090,9 @@ class FactionCommands {
                             return true;
                         }
                     }
-                    if (strtolower($args[0]) == "allychat" or strtolower($args[0]) == "ac") {
+                    if (strtolower($args[0]) == "ac" or strtolower($args[0]) == "ac") {
 
-                        if (!$this->plugin->prefs->get("AllowChat")){
+                        if (!$this->plugin->prefs->get("Ac")){
                             $sender->sendMessage($this->plugin->formatMessage("All Faction chat is disabled", false));
                             return true;
                         }
@@ -1115,7 +1115,7 @@ class FactionCommands {
 
                 /////////////////////////////// INFO ///////////////////////////////
 
-                if (strtolower($args[0]) == 'info') {
+                if (strtolower($args[0]) == 'who') {
                     if (isset($args[1])) {
                         if (!(ctype_alnum($args[1])) or !($this->plugin->factionExists($args[1]))) {
                             $sender->sendMessage($this->plugin->formatMessage("Faction does not exist"));
