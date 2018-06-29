@@ -1705,7 +1705,7 @@ default;
 		   $sender->sendMessage("§cUnknown command! §bPlease use: §a/$main $help §bfor all Faction commands!");
 		    return true;
 		    break;
-        `}
+        }
     }
     public function alphanum($string){
         if(function_exists('ctype_alnum')){
