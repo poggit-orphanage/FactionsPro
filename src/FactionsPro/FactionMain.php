@@ -1,4 +1,4 @@
-<<?php
+<?php
 namespace FactionsPro;
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\{Command, CommandSender};
