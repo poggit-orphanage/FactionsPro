@@ -64,11 +64,11 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe Faction named §4$args[1] §cdoes not exist"));
                             return true;
                         }
-                        if (!$this->plugin->isInFaction($sender->getName()) == false) {
+                        if ($this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
                             return true;
                         }
-                        if (!$this->plugin->isLeader($playerName) == false) {
+                        if ($this->plugin->isLeader($playerName) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cOnly your faction leader may start wars"));
                             return true;
                         }
