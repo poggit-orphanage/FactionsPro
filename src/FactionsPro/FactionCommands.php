@@ -1,10 +1,13 @@
 <?php
+
 namespace FactionsPro;
+
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\{Server, Player};
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 use pocketmine\level\{Level, Position};
+
 class FactionCommands {
 	
     public $plugin;
@@ -84,7 +87,7 @@ class FactionCommands {
                                         $task = new FactionWar($this->plugin, $r);
                                         $handler = $this->plugin->getServer()->getScheduler()->scheduleDelayedTask($task, 20 * 60 * 2);
                                         $task->setHandler($handler);
-                                        $p->sendMessage("§bThe war against §a$factionName §band §a$sFaction §bhas started!");
+                                        $p->sendMessage("$prefix §bThe war against §a$factionName §band §a$sFaction §bhas started!");
                                         if ($this->plugin->getPlayerFaction($p->getName()) == $sFaction) {
                                             $this->plugin->war_players[$sFaction][] = $p->getName();
                                         }
