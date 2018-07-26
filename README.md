@@ -3,7 +3,7 @@
 A modified plugin, better than ever. Being updated frequently. Edited by the VMPE development team. We update this plugin most of the time, features, bug fixes, and more. If you have any issues, or suggestions on what we should fix / add to this plugin, please open a new issue. We will make sure to read them. Thank you.
 
 ## What is this branch?
-This branch is called the "beta" branch. It's nothing special, and the fact this branch is mostly stabled. It's called the beta branch because this branch can sometimes have some bugs. We plan on fixing some issues that could be there for a while ago, and some bugs, which have just been implemented into this branch. We do plan on fixing almost ALL BUGS. At this stage, this branch is bug free, but when we add stuff, or fix stuff, bugs may rise. This doesn't happen often though. But just a heads up anyways.
+This branch is called the "beta" branch. It's nothing special, and the fact is; This branch is mostly stabled. It's called the beta branch because this branch can sometimes have some bugs. We plan on fixing some issues that could be there from a while ago, and some bugs, which have just been implemented into this branch. We do plan on fixing almost ALL BUGS. At this stage, this branch is bug free, but when we add stuff, or fix stuff, bugs may rise. This doesn't happen often though. But just a heads up anyways.
 
 ## Features
 * All the features from the good 'ol' days are now back, and working with PMMP Latest APi's.
