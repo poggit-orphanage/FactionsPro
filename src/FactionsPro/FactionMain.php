@@ -125,8 +125,15 @@ class FactionMain extends PluginBase implements Listener {
         $stmt->execute();
     }
 
+	public function unsetEnemies($faction1, $faction2) {
+		$stmt = $this->db->prepare("DELETE FROM enemies WHERE (faction1 = :faction1 AND faction2 = :faction2) OR (faction1 = :faction2 AND faction2 = :faction1);");
+		$stmt->bindValue(":faction1", $faction1);
+		$stmt->bindValue(":faction2", $faction2);
+		$stmt->execute();
+	}
+
     public function areEnemies($faction1, $faction2) {
-        $result = $this->db->query("SELECT ID FROM enemies WHERE faction1 = '$faction1' AND faction2 = '$faction2';");
+        $result = $this->db->query("SELECT ID FROM enemies WHERE (faction1 = '$faction1' AND faction2 = '$faction2') OR (faction1 = '$faction2' AND faction2 = '$faction1');");
         $resultArr = $result->fetchArray(SQLITE3_ASSOC);
         if (empty($resultArr) == false) {
             return true;
@@ -163,7 +170,7 @@ class FactionMain extends PluginBase implements Listener {
     }
 
     public function areAllies($faction1, $faction2) {
-        $result = $this->db->query("SELECT ID FROM allies WHERE faction1 = '$faction1' AND faction2 = '$faction2';");
+        $result = $this->db->query("SELECT ID FROM allies WHERE (faction1 = '$faction1' AND faction2 = '$faction2') OR (faction1 = '$faction2' AND faction2 = '$faction1');");
         $resultArr = $result->fetchArray(SQLITE3_ASSOC);
         if (empty($resultArr) == false) {
             return true;
@@ -173,7 +180,7 @@ class FactionMain extends PluginBase implements Listener {
     public function updateAllies($faction) {
         $stmt = $this->db->prepare("INSERT OR REPLACE INTO alliescountlimit(faction, count) VALUES (:faction, :count);");
         $stmt->bindValue(":faction", $faction);
-        $result = $this->db->query("SELECT ID FROM allies WHERE faction1='$faction';");
+        $result = $this->db->query("SELECT ID FROM allies WHERE faction1='$faction' OR faction2='$faction';");
         $i = 0;
         while ($resultArr = $result->fetchArray(SQLITE3_ASSOC)) {
             $i = $i + 1;
@@ -194,7 +201,7 @@ class FactionMain extends PluginBase implements Listener {
     }
 
     public function deleteAllies($faction1, $faction2) {
-        $stmt = $this->db->prepare("DELETE FROM allies WHERE faction1 = '$faction1' AND faction2 = '$faction2';");
+        $stmt = $this->db->prepare("DELETE FROM allies WHERE (faction1 = '$faction1' AND faction2 = '$faction2') OR (faction1 = '$faction2' AND faction2 = '$faction1');");
         $stmt->execute();
     }
 
@@ -271,23 +278,23 @@ class FactionMain extends PluginBase implements Listener {
     public function getAllAllies($s, $faction) {
 
         $team = "";
-        $result = $this->db->query("SELECT faction2 FROM allies WHERE faction1='$faction';");
-        $row = array();
+        $result = $this->db->query("SELECT faction1, faction2 FROM allies WHERE faction1='$faction' OR faction2='$faction';");
         $i = 0;
         while ($resultArr = $result->fetchArray(SQLITE3_ASSOC)) {
-            $row[$i]['faction2'] = $resultArr['faction2'];
-            $team .= TextFormat::ITALIC . TextFormat::RED . $row[$i]['faction2'] . TextFormat::RESET . TextFormat::WHITE . "||" . TextFormat::RESET;
+            $alliedFaction = $resultArr['faction1'] != $faction ? $resultArr['faction1'] : $resultArr['faction2'];
+            $team .= TextFormat::ITALIC . TextFormat::RED . $alliedFaction . TextFormat::RESET . TextFormat::WHITE . "||" . TextFormat::RESET;
             $i = $i + 1;
         }
-
-        $s->sendMessage($this->formatMessage("~ Allies of *$faction* ~", true));
-        $s->sendMessage($team);
-    }
+		if($i > 0) {
+			$s->sendMessage($this->formatMessage("~ Allies of *$faction* ~", true));
+			$s->sendMessage($team);
+		} else {
+			$s->sendMessage($this->formatMessage("~ *$faction* has no allies ~", true));
+		}
+	}
 
     public function sendListOfTop10FactionsTo($s) {
-        $tf = "";
         $result = $this->db->query("SELECT faction FROM strength ORDER BY power DESC LIMIT 10;");
-        $row = array();
         $i = 0;
         $s->sendMessage($this->formatMessage("~ Top 10 strongest factions ~", true));
         while ($resultArr = $result->fetchArray(SQLITE3_ASSOC)) {
@@ -338,10 +345,9 @@ class FactionMain extends PluginBase implements Listener {
 
     public function isNameBanned($name) {
         $bannedNames = file_get_contents($this->getDataFolder() . "BannedNames.txt");
-        $isbanned = false;
-        if (isset($name) && $this->antispam && $this->antispam->getProfanityFilter()->hasProfanity($name)) $isbanned = true;
-
-        return (strpos(strtolower($bannedNames), strtolower($name)) > 0 || $isbanned);
+        $isBanned = false;
+        if (isset($name) && $this->antispam && $this->antispam->getProfanityFilter()->hasProfanity($name)) $isBanned = true;
+        return (strpos(strtolower($bannedNames), strtolower($name)) > 0 || $isBanned);
     }
 
     public function newPlot($faction, $x1, $z1, $x2, $z2, string $level) {
