@@ -357,7 +357,10 @@ class FactionCommands {
                         }
                         $kicked = $this->plugin->getServer()->getPlayerExact($args[1]);
                         $factionName = $this->plugin->getPlayerFaction($playerName);
-                        $this->plugin->db->query("DELETE FROM master WHERE player='$args[1]';");
+                        $stmt = $this->plugin->db->prepare("DELETE FROM master WHERE player = :playername;");
+                        $stmt->bindvalue(":playername", $args[1]);
+                        $stmt->execute();
+
                         $sender->sendMessage($this->plugin->formatMessage("You successfully kicked $args[1]", true));
                         $this->plugin->subtractFactionPower($factionName, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
 
@@ -513,8 +516,8 @@ class FactionCommands {
                         }
                         $sender->sendMessage($this->plugin->formatMessage("Getting your coordinates...", true));
                         $x = floor($sender->getX());
-                        $y = floor($sender->getY());
                         $z = floor($sender->getZ());
+                        $level = $sender->getLevel()->getName();
                         if ($this->plugin->prefs->get("EnableOverClaim")) {
                             if ($this->plugin->isInPlot($sender)) {
                                 $faction_victim = $this->plugin->factionFromPoint($x, $z, $sender->getPlayer()->getLevel()->getName());
@@ -532,7 +535,7 @@ class FactionCommands {
                                         $this->plugin->db->query("DELETE FROM plots WHERE faction='$faction_ours';");
                                         $this->plugin->db->query("DELETE FROM plots WHERE faction='$faction_victim';");
                                         $arm = (($this->plugin->prefs->get("PlotSize")) - 1) / 2;
-                                        $this->plugin->newPlot($faction_ours, $x + $arm, $z + $arm, $x - $arm, $z - $arm);
+                                        $this->plugin->newPlot($faction_ours, $x + $arm, $z + $arm, $x - $arm, $z - $arm, $level);
                                         $sender->sendMessage($this->plugin->formatMessage("The land of $faction_victim has been claimed. It is now yours.", true));
                                         return true;
                                     }
@@ -852,24 +855,55 @@ class FactionCommands {
                             return true;
                         }
                         if ($this->plugin->getPlayerFaction($playerName) == $args[1]) {
-                            $sender->sendMessage($this->plugin->formatMessage("Your faction can not enemy with itself"));
+                            $sender->sendMessage($this->plugin->formatMessage("A faction can not be an enemy of itself"));
                             return true;
                         }
                         if ($this->plugin->areAllies($this->plugin->getPlayerFaction($playerName), $args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("Your faction is already enemied with $args[1]"));
+                            $sender->sendMessage($this->plugin->formatMessage("Your faction is an ally of $args[1]"));
                             return true;
                         }
+						if ($this->plugin->areEnemies($this->plugin->getPlayerFaction($playerName), $args[1])) {
+							$sender->sendMessage($this->plugin->formatMessage("Your faction is already an enemy of $args[1]"));
+							return true;
+						}
                         $fac = $this->plugin->getPlayerFaction($playerName);
                         $leader = $this->plugin->getServer()->getPlayerExact($this->plugin->getLeader($args[1]));
 
                         if (!($leader instanceof Player)) {
                             $sender->sendMessage($this->plugin->formatMessage("The leader of the requested faction is offline"));
-                            return true;
-                        }
+                        } else {
+							$leader->sendMessage($this->plugin->formatMessage("The leader of $fac has declared your factions are enemies", true));
+						}
                         $this->plugin->setEnemies($fac, $args[1]);
                         $sender->sendMessage($this->plugin->formatMessage("You are now enemies with $args[1]!", true));
-                        $leader->sendMessage($this->plugin->formatMessage("The leader of $fac has declared your faction as an enemy", true));
                     }
+				if (strtolower($args[0] == "notenemy")) {
+					if (!isset($args[1])) {
+						$sender->sendMessage($this->plugin->formatMessage("Usage: /f notenemy <faction>"));
+						return true;
+					}
+					if (!$this->plugin->isInFaction($playerName)) {
+						$sender->sendMessage($this->plugin->formatMessage("You must be in a faction to do this"));
+						return true;
+					}
+					if (!$this->plugin->isLeader($playerName)) {
+						$sender->sendMessage($this->plugin->formatMessage("You must be the leader to do this"));
+						return true;
+					}
+					if (!$this->plugin->factionExists($args[1])) {
+						$sender->sendMessage($this->plugin->formatMessage("The requested faction doesn't exist"));
+						return true;
+					}
+					$fac = $this->plugin->getPlayerFaction($playerName);
+					$leader = $this->plugin->getServer()->getPlayerExact($this->plugin->getLeader($args[1]));
+					$this->plugin->unsetEnemies($fac, $args[1]);
+					if(!($leader instanceof Player)) {
+						$sender->sendMessage($this->plugin->formatMessage("The leader of the requested faction is offline"));
+					} else {
+						$leader->sendMessage($this->plugin->formatMessage("The leader of $fac has declared your factions are no longer enemies", true));
+					}
+					$sender->sendMessage($this->plugin->formatMessage("You are no longer enemies with $args[1]!", true));
+				}
                     if (strtolower($args[0] == "allywith")) {
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("Usage: /f allywith <faction>"));
@@ -921,7 +955,7 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("You requested to ally with $args[1]!\nWait for the leader's response...", true));
                         $leader->sendMessage($this->plugin->formatMessage("The leader of $fac requested an alliance.\nType /f allyok to accept or /f allyno to deny.", true));
                     }
-                    if (strtolower($args[0] == "breakalliancewith")) {
+                    if (strtolower($args[0] == "breakalliancewith") or strtolower($args[0] == "notally")) {
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("Usage: /f breakalliancewith <faction>"));
                             return true;
@@ -950,7 +984,6 @@ class FactionCommands {
                         $fac = $this->plugin->getPlayerFaction($playerName);
                         $leader = $this->plugin->getServer()->getPlayerExact($this->plugin->getLeader($args[1]));
                         $this->plugin->deleteAllies($fac, $args[1]);
-                        $this->plugin->deleteAllies($args[1], $fac);
                         $this->plugin->subtractFactionPower($fac, $this->plugin->prefs->get("PowerGainedPerAlly"));
                         $this->plugin->subtractFactionPower($args[1], $this->plugin->prefs->get("PowerGainedPerAlly"));
                         $this->plugin->updateAllies($fac);
@@ -1017,12 +1050,12 @@ class FactionCommands {
                             $requested_fac = $this->plugin->getPlayerFaction($array["requestedby"]);
                             $sender_fac = $this->plugin->getPlayerFaction($playerName);
                             $this->plugin->setAllies($requested_fac, $sender_fac);
-                            $this->plugin->setAllies($sender_fac, $requested_fac);
                             $this->plugin->addFactionPower($sender_fac, $this->plugin->prefs->get("PowerGainedPerAlly"));
                             $this->plugin->addFactionPower($requested_fac, $this->plugin->prefs->get("PowerGainedPerAlly"));
                             $this->plugin->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
                             $this->plugin->updateAllies($requested_fac);
                             $this->plugin->updateAllies($sender_fac);
+							$this->plugin->unsetEnemies($requested_fac, $sender_fac);
                             $sender->sendMessage($this->plugin->formatMessage("Your faction has successfully allied with $requested_fac", true));
                             $this->plugin->getServer()->getPlayerExact($array["requestedby"])->sendMessage($this->plugin->formatMessage("$playerName from $sender_fac has accepted the alliance!", true));
                         } else {
