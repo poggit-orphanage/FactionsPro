@@ -85,7 +85,7 @@ class FactionCommands {
                                 if ($r == $args[1] && $f == $sFaction) {
                                     foreach ($this->plugin->getServer()->getOnlinePlayers() as $p) {
                                         $task = new FactionWar($this->plugin, $r);
-                                        $handler = $this->plugin->getServer()->getScheduler()->scheduleDelayedTask($task, 20 * 60 * 2);
+                                        $handler = $this->plugin->getScheduler()->scheduleDelayedTask($task, 20 * 60 * 2);
                                         $task->setHandler($handler);
                                         $p->sendMessage("$prefix §bThe war against §a$factionName §band §a$sFaction §bhas started!");
                                         if ($this->plugin->getPlayerFaction($p->getName()) == $sFaction) {
@@ -337,6 +337,9 @@ class FactionCommands {
                         }
                         $kicked = $this->plugin->getServer()->getPlayer($args[1]);
                         $factionName = $this->plugin->getPlayerFaction($playerName);
+						$stmt = $this->plugin->db->prepare("DELETE FROM master WHERE player = :playername;");
+                        $stmt->bindvalue(":playername", $args[1]);
+                        $stmt->execute();
                         $this->plugin->db->query("DELETE FROM master WHERE player='$playerName';");
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §aYou successfully kicked §2$kicked", true));
                         $this->plugin->subtractFactionPower($factionName, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
@@ -545,8 +548,9 @@ class FactionCommands {
                         }
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §5Getting your coordinates...", true));
                         $x = floor($sender->getX());
-                        $y = floor($sender->getY());
+                        
                         $z = floor($sender->getZ());
+						$level = $sender->getLevel()->getName();
                         if ($this->plugin->prefs->get("EnableOverClaim")) {
                             if ($this->plugin->isInPlot($sender)) {
                                 $faction_victim = $this->plugin->factionFromPoint($x, $z);
@@ -564,7 +568,7 @@ class FactionCommands {
                                         $this->plugin->db->query("DELETE FROM plots WHERE faction='$faction_ours';");
                                         $this->plugin->db->query("DELETE FROM plots WHERE faction='$faction_victim';");
                                         $arm = (($this->plugin->prefs->get("PlotSize")) - 1) / 2;
-                                        $this->plugin->newPlot($faction_ours, $x + $arm, $z + $arm, $x - $arm, $z - $arm);
+                                        $this->plugin->newPlot($faction_ours, $x + $arm, $z + $arm, $x - $arm, $z - $arm, $level);
 			                $this->plugin->getServer()->broadcastMessage("§aPlayer §2$playerName §afrom §b$faction_ours §ahave overclaimed §b$faction_victim");
                                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bThe faction plot of §3$faction_victim §bhas been over claimed! It is now yours.", true));
                                         return true;
@@ -972,6 +976,10 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYour faction can not enemy with itself"));
                             return true;
                         }
+						if ($this->plugin->areEnemies($this->plugin->getPlayerFaction($playerName), $args[1])) {
+							$sender->sendMessage($this->plugin->formatMessage("$prefix §cYour faction is already an enemy of §4$args[1]"));
+							return true;
+						}
                         if ($this->plugin->areAllies($this->plugin->getPlayerFaction($playerName), $args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYour faction is already enemied with §4$args[1]"));
                             return true;
@@ -986,6 +994,33 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bYou are now enemies with §a$args[1]!", true));
                         $leader->sendMessage($this->plugin->formatMessage("$prefix §bThe leader of §a$fac §bhas declared your faction as an enemy", true));
                     }
+					if (strtolower($args[0] == "notenemy")) {
+					if (!isset($args[1])) {
+						$sender->sendMessage($this->plugin->formatMessage("$prefix §aPlease use: §b/f notenemy <faction>"));
+						return true;
+					}
+					if (!$this->plugin->isInFaction($playerName)) {
+						$sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to do this"));
+						return true;
+					}
+					if (!$this->plugin->isLeader($playerName)) {
+						$sender->sendMessage($this->plugin->formatMessage("§cYou must be the leader to do this"));
+						return true;
+					}
+					if (!$this->plugin->factionExists($args[1])) {
+						$sender->sendMessage($this->plugin->formatMessage("§cThe requested faction named §4$args[1] §cdoesn't exist"));
+						return true;
+					}
+					$fac = $this->plugin->getPlayerFaction($playerName);
+					$leader = $this->plugin->getServer()->getPlayerExact($this->plugin->getLeader($args[1]));
+					$this->plugin->unsetEnemies($fac, $args[1]);
+					if(!($leader instanceof Player)) {
+						$sender->sendMessage($this->plugin->formatMessage("The leader of the requested faction is offline"));
+					} else {
+						$leader->sendMessage($this->plugin->formatMessage("The leader of $fac has declared your factions are no longer enemies", true));
+					}
+					$sender->sendMessage($this->plugin->formatMessage("You are no longer enemies with $args[1]!", true));
+				}
                     if(strtolower($args[0]) == "ally" or strtolower($args[0]) == "a"){
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <faction>\n§aDescription: §dAlly with a faction."));
@@ -1379,7 +1414,7 @@ class FactionCommands {
 			}
 			$serverName = $this->plugin->prefs->get("ServerName");
 			if($args[1] == 4){
-				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§54/7§2]" . TextFormat::RED . "\n§a/f enemy <faction> - §7Enemy with a faction\n§a/f ally <faction> - §7Ally a faction.\n§a/f allyok|allyaccept - §7Accepts a ally request.\n§a/f allydeny|no - §7Denies a ally request.\n§a/f unally|una - §7Un allies with a faction.\n§a/f allies - §7Checks a list of allies you currently have.\n§a/f say|bc <MESSAGE> - §7Broadcast a faction measage.");
+				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§54/7§2]" . TextFormat::RED . "\n§a/f enemy <faction> - §7Enemy with a faction\n§a/f notenemy <faction> - §7Un Enemy a faction\n§a/f ally <faction> - §7Ally a faction.\n§a/f allyok|allyaccept - §7Accepts a ally request.\n§a/f allydeny|no - §7Denies a ally request.\n§a/f unally|una - §7Un allies with a faction.\n§a/f allies - §7Checks a list of allies you currently have.\n§a/f say|bc <MESSAGE> - §7Broadcast a faction measage.");
 				return true;
 			}
 			$serverName = $this->plugin->prefs->get("ServerName");

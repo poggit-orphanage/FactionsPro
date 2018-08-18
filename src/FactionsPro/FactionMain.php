@@ -135,9 +135,14 @@ class FactionMain extends PluginBase implements Listener {
         $stmt->bindValue(":faction2", $faction2);
         $stmt->execute();
     }
-    
+    public function unsetEnemies($faction1, $faction2) {
+		$stmt = $this->db->prepare("DELETE FROM enemies WHERE (faction1 = :faction1 AND faction2 = :faction2) OR (faction1 = :faction2 AND faction2 = :faction1);");
+		$stmt->bindValue(":faction1", $faction1);
+		$stmt->bindValue(":faction2", $faction2);
+		$stmt->execute();
+	}
     public function areEnemies($faction1, $faction2) {
-        $result = $this->db->query("SELECT ID FROM enemies WHERE faction1 = '$faction1' AND faction2 = '$faction2';");
+        $result = $this->db->query("SELECT ID FROM enemies WHERE (faction1 = '$faction1' AND faction2 = '$faction2') OR (faction1 = '$faction2' AND faction2 = '$faction1');");
         $resultArr = $result->fetchArray(SQLITE3_ASSOC);
         if (empty($resultArr) == false) {
             return true;
@@ -172,7 +177,7 @@ class FactionMain extends PluginBase implements Listener {
         $stmt->execute();
     }
     public function areAllies($faction1, $faction2) {
-        $result = $this->db->query("SELECT ID FROM allies WHERE faction1 = '$faction1' AND faction2 = '$faction2';");
+        $result = $this->db->query("SELECT ID FROM allies WHERE (faction1 = '$faction1' AND faction2 = '$faction2') OR (faction1 = '$faction2' AND faction2 = '$faction1');");
         $resultArr = $result->fetchArray(SQLITE3_ASSOC);
         if (empty($resultArr) == false) {
             return true;
@@ -181,7 +186,7 @@ class FactionMain extends PluginBase implements Listener {
     public function updateAllies($faction) {
         $stmt = $this->db->prepare("INSERT OR REPLACE INTO alliescountlimit(faction, count) VALUES (:faction, :count);");
         $stmt->bindValue(":faction", $faction);
-        $result = $this->db->query("SELECT ID FROM allies WHERE faction1='$faction';");
+        $result = $this->db->query("SELECT ID FROM allies WHERE faction1='$faction' OR faction2='$faction';");
         $i = 0;
         while ($resultArr = $result->fetchArray(SQLITE3_ASSOC)) {
             $i = $i + 1;
@@ -198,7 +203,7 @@ class FactionMain extends PluginBase implements Listener {
         return (int) $this->prefs->get("AllyLimitPerFaction");
     }
     public function deleteAllies($faction1, $faction2) {
-        $stmt = $this->db->prepare("DELETE FROM allies WHERE faction1 = '$faction1' AND faction2 = '$faction2';");
+        $stmt = $this->db->prepare("DELETE FROM allies WHERE (faction1 = '$faction1' AND faction2 = '$faction2') OR (faction1 = '$faction2' AND faction2 = '$faction1');");
         $stmt->execute();
     }
     public function getFactionPower($faction) {
@@ -261,19 +266,22 @@ class FactionMain extends PluginBase implements Listener {
         $s->sendMessage($this->formatMessage("~ *<$rankname> of |$faction|* ~", true));
         $s->sendMessage($team);
     }
-    public function getAllAllies($s, $faction) {
+     public function getAllAllies($s, $faction) {
         $team = "";
-        $result = $this->db->query("SELECT faction2 FROM allies WHERE faction1='$faction';");
-        $row = array();
+        $result = $this->db->query("SELECT faction1, faction2 FROM allies WHERE faction1='$faction' OR faction2='$faction';");
         $i = 0;
         while ($resultArr = $result->fetchArray(SQLITE3_ASSOC)) {
-            $row[$i]['faction2'] = $resultArr['faction2'];
-            $team .= TextFormat::ITALIC . TextFormat::GREEN . $row[$i]['faction2'] . TextFormat::RESET . TextFormat::WHITE . "§2,§a " . TextFormat::RESET;
+            $alliedFaction = $resultArr['faction1'] != $faction ? $resultArr['faction1'] : $resultArr['faction2'];
+            $team .= TextFormat::ITALIC . TextFormat::RED . $alliedFaction . TextFormat::RESET . TextFormat::WHITE . "||" . TextFormat::RESET;
             $i = $i + 1;
         }
-        $s->sendMessage($this->formatMessage("§3_____§2[§5§lAllies of §d*$faction*§r§2]§3_____", true));
-        $s->sendMessage($team);
-    }
+		if($i > 0) {
+			$s->sendMessage($this->formatMessage("§3_____§2[§5§lAllies of §d*$faction*§r§2]§3_____", true));
+			$s->sendMessage($team);
+		} else {
+			$s->sendMessage($this->formatMessage("~ *$faction* has no allies ~", true));
+		}
+	}
     public function sendListOfTop10FactionsTo($s) {
         $tf = "";
         $result = $this->db->query("SELECT faction FROM strength ORDER BY power DESC LIMIT 10;");
