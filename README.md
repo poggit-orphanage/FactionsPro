@@ -61,6 +61,8 @@ This branch is called the "beta" branch. It's nothing special, and the fact is; 
 
 /f enemy <faction> - Enemies with a faction.
   
+/f notenemy <faction> - Undeclare an faction enemy.
+  
 /f ally <faction> - Requests an alli with a faction.
   
 /f allyok - Accepts an ally request.
