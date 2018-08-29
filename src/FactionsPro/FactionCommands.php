@@ -1080,7 +1080,7 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bSuccessfully unclaimed the unwanted plot of §a$args[1]"));
                         $this->plugin->db->query("DELETE FROM plots WHERE faction='$args[1]';");
                     }
-                    if (strtolower($args[0] == "allies" or strtolower($args[0] == "listallies")) {
+                    if (strtolower($args[0] == "allies" or strtolower($args[0] == "listallies"))) {
                         if (!isset($args[1])) {
                             if ($this->plugin->isInFaction($playerName) == false) {
                                 $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
