@@ -949,7 +949,7 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bYou are now enemies with §a$args[1]!", true));
                         $leader->sendMessage($this->plugin->formatMessage("$prefix §bThe leader of §a$fac §bhas declared your faction as an enemy", true));
                     }
-					if (strtolower($args[0] == "notenemy" or strtolower($args[0] == "unenemy")) {
+					if (strtolower($args[0] == "notenemy" or strtolower($args[0] == "unenemy"))) {
 					if (!isset($args[1])) {
 						$sender->sendMessage($this->plugin->formatMessage("$prefix §aPlease use: §b/f $args[0] <faction>"));
 						return true;
