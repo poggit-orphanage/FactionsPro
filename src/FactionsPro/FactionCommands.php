@@ -1249,6 +1249,9 @@ class FactionCommands {
 							$sender->sendMessage($this->plugin->formatMessage("$prefix §cOnly leader can withdraw from faction bank account!", false));
 							return true;
 						}
+						if($this->plugin->factionExists($args[1])) {
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe faction named §4$args[1] §cdoes not exist"));
+						}
 						$faction = $this->plugin->getPlayerFaction($sender->getName());
 						if( (($fM = $this->plugin->getBalance($faction)) - ($args[1]) ) < 0 ){
 							$sender->sendMessage($this->plugin->formatMessage("$prefix §cYour faction doesn't have enough money! It has: §4$fM", false));
