@@ -1278,6 +1278,9 @@ class FactionCommands {
 							$sender->sendMessage($this->plugin->formatMessage("$prefix §cYou dont have enough money!", false));
 							return true;
 						}
+						if($this->plugin->factionExists($args[1])) {
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe faction named §4$args[1] §cdoes not exist"));
+						}
 						$faction = $this->plugin->getPlayerFaction($sender->getName());
 						if($e->reduceMoney($sender, $args[1], false, "faction bank account") === EconomyAPI::RET_SUCCESS){
 							$this->plugin->addToBalance($faction, $args[1]);
