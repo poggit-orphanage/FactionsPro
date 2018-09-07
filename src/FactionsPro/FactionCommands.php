@@ -129,8 +129,9 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe name §4$args[1] §cis not allowed"));
                             return true;
                         }
-                        if ($this->plugin->factionExists($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe Faction named §4$args[1] §calready exists"));
+			    $factionName = $this->plugin->getPlayerFaction($playerName);
+                        if ($this->plugin->factionExists($factionName)) {
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe Faction named §4$factionName §calready exists"));
                             return true;
                         }
                         if (strlen($args[1]) > $this->plugin->prefs->get("MaxFactionNameLength")) {
@@ -141,7 +142,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must leave the faction first"));
                             return true;
                         } else {
-                            $factionName = $args[1];
+                            $factionName = $this->plugin->getPlayerFaction($playerName);
                             $rank = "Leader";
                             $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
                             $stmt->bindValue(":player", $playerName);
