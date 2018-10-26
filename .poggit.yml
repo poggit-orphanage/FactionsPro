@@ -1,6 +1,7 @@
 ---
 branches:
 - 4.0.0-api
+- beta
 projects:
   FactionsPro:
     path: ""
