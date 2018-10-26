@@ -1,28 +1,18 @@
 <?php
-
 namespace FactionsPro;
-
-//Pocketmine imports
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\event\Listener;
+use pocketmine\event\block\BlockBreakEvent;
+use pocketmine\event\player\{PlayerJoinEvent, PlayerChatEvent};
 use pocketmine\{Server, Player};
+use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\utils\{Config, TextFormat};
+use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\block\Snow;
 use pocketmine\math\Vector3;
+use pocketmine\entity\{Skeleton, Pig, Chicken, Zombie, Creeper, Cow, Spider, Blaze, Ghast};
 use pocketmine\level\{Position, Level};
-
-//TeaSpoon imports
-use CortexPE\entity\mob\{Skeleton, Pig, Chicken, Zombie, Creeper, Cow, Spider, Blaze, Ghast}; //To-Do improve spawners
-
-//EconomyAPI imports
-use onebone\economyapi\EconomyAPI;
-
-//FactionsPro imports
-use FactionsPro\commands\FactionCommands;
-use FactionsPro\listeners\FactionListener;
-use FactionsPro\utils\SpoonDetector;
-
 class FactionMain extends PluginBase implements Listener {
     
     public $db;
@@ -33,29 +23,38 @@ class FactionMain extends PluginBase implements Listener {
     public $antispam;
     public $purechat;
     public $esssentialspe;
-    public $economyapi;
-    public $teaspoon;
     public $factionChatActive = [];
     public $allyChatActive = [];
-    private $prefix = "§7[§6Void§bFactions§cPE§7]"; //This can easilly be changed in configurations (prefs.yml)
+    private $prefix = "§7[§6Void§bFactions§cPE§7]";
     
-    public const HEX_SYMBOL = "e29688";
+    const HEX_SYMBOL = "e29688";
     
-    //Let's the console know that this plugin's loading.
-   protected function onLoad() : void {
-       $this->getLogger()->info("Plugin loading..");
-       $this->getLogger()->info("Loading in all checks..");
-   }
-	//All checks before plugin enables.
-   public function checkConfigurations() : void { //Checks and loads configurations within this plugin.
-	    $this->getLogger()->info("Checking configurations..");
-	    @mkdir($this->getDataFolder());
+    public function onEnable(): void{
+        @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
             $file = fopen($this->getDataFolder() . "BannedNames.txt", "w");
             $txt = "Admin:admin:Staff:staff:Owner:owner:Builder:builder:Op:OP:op";
             fwrite($file, $txt);
         }
-         $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", CONFIG::YAML, array(
+        $this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
+        $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
+        if (!$this->antispam) {
+            $this->getLogger()->info("AntiSpamPro is not installed. If you want to ban rude Faction names, then AntiSpamPro needs to be installed. Disabling Rude faction names system.");
+        }
+        $this->purechat = $this->getServer()->getPluginManager()->getPlugin("PureChat");
+        if (!$this->purechat) {
+            $this->getLogger()->info("PureChat is not installed. If you want to display Faction ranks in chat, then PureChat needs to be installed. Disabling Faction chat system.");
+        }
+        $this->essentialspe = $this->getServer()->getPluginManager()->getPlugin("EssentialsPE");
+        if (!$this->essentialspe) {
+            $this->getLogger()->info("EssentialsPE is not installed. If you want to use the new Faction Raiding system, then EssentialsPE needs to be installed. Disabling Raiding system.");
+    	}
+	$this->economyapi = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+	if (!$this->economyapi) {
+	    $this->getLogger()->info("EconomyAPI is not installed. If you want to use the Faction Values system, then EconomyAPI needs to be installed. Disabling the Factions Value system.");
+	}
+        $this->fCommand = new FactionCommands($this);
+        $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", CONFIG::YAML, array(
             "MaxFactionNameLength" => 15,
             "MaxPlayersPerFaction" => 30,
             "OnlyLeadersAndOfficersCanInvite" => true,
@@ -75,15 +74,17 @@ class FactionMain extends PluginBase implements Listener {
             "AllowChat" => true,
             "AllowFactionPvp" => false,
             "AllowAlliedPvp" => false,
+            "BroadcastFactionCreation" => true,
+            "FactionCreationBroadcast" => "%PLAYER% created a faction named %FACTION%",
+            "BroadcastFactionDisband" => true,
+            "FactionDisbandBroadcast" => "The Faction named %FACTION% was disbaned by %PLAYER%",
             "defaultFactionBalance" => 0,
 	    "MoneyGainedPerPlayerInFaction" => 20,
-	    "MoneyGainedPerAlly" => 50, //To-do make this feature work
+	    "MoneyGainedPerAlly" => 50,
             "MoneyNeededToClaimAPlot" => 0,
-	    "accept_time" => 60,
-	    "deny_time" => 60,
 	    "ServerName" => "§6Void§bFactions§cPE",
                 "prefix" => "§7[§6Void§bFactions§cPE§7]",
-                "spawnerPrices" => [ //To-Do make this system actually work.
+                "spawnerPrices" => [
                 	"skeleton" => 500,
                 	"pig" => 200,
                 	"chicken" => 100,
@@ -122,86 +123,25 @@ class FactionMain extends PluginBase implements Listener {
         try{
             $this->db->exec("ALTER TABLE plots ADD COLUMN world TEXT default null");
             Server::getInstance()->getLogger()->info(TextFormat::GREEN . "FactionPro: Added 'world' column to plots");
-            $this->getLogger()->info("All configurations checked.");
         }catch(\ErrorException $ex){
         }
     }
-
-    public function registerEvents() : void { //Handles all the events within this plugin.
-	$this->getLogger()->info("Checking events..");
-	$this->fCommand = new FactionCommands($this);
-	$this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
-   $this->getLogger()->info("All events checked.");
-    }
-    
-    public function checkPlugins() : void { //Checks for plugins and it's compatibility with FactionsPro.
-	    $this->getLogger()->info("Checking for plugins..");
-	    $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
-        if (!$this->antispam) {
-            $this->getLogger()->info("AntiSpamPro is not installed. If you want to ban rude Faction names, then AntiSpamPro needs to be installed. Disabling Rude faction names system...");
-        }
-        
-        $this->purechat = $this->getServer()->getPluginManager()->getPlugin("PureChat");
-        if (!$this->purechat) {
-            $this->getLogger()->info("PureChat is not installed. If you want to display Faction ranks in chat, then PureChat needs to be installed. Disabling Faction chat system...");
-        }
-        
-        $this->essentialspe = $this->getServer()->getPluginManager()->getPlugin("EssentialsPE");
-        if (!$this->essentialspe) {
-            $this->getLogger()->info("EssentialsPE is not installed. If you want to use the new Faction Raiding system, then EssentialsPE needs to be installed. Disabling Raiding system...");
-    	}
-    	
-	$this->economyapi = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-	if (!$this->economyapi) {
-	    $this->getLogger()->info("EconomyAPI is not installed. If you want to use the Faction Values system, then EconomyAPI needs to be installed. Disabling the Factions Value system...");
-	}
-	
-	$this->teaspoon = $this->getServer()->getPluginManager()->getPlugin("TeaSpoon");
-        if (!$this->teaspoon) {
-            $this->getLogger()->info("TeaSpoon is currently not installed. If you want mob spawners implementations, then TeaSpoon needs to be installed. Disabling the Mob spawners system..");
-        $this->getLogger()->info("All plugins checked.");
-        }
-    }
-    
-    public function checkSpoons() : void { //Checks for spoons!
-    $this->getLogger()->info("Checking for spoons..");
-	    //This is the check if you have the plugin, but have a spoon installed.
-	   SpoonDetector::printSpoon($this, "spoon.txt"); //If you're using a spoon, this file will be generated.
-    $this->getLogger()->info("All spoons checked.");
-	   
-    }
-    public function checkOriginal() : void { //Checks if this plugin's from this repo, and not from other repos.
-    if ($this->getDescription()->getAuthors() !== ["Tethered, edited by VMPE Development Team"] || $this->getDescription()->getName() !== "FactionsPro") {
-            $this->getLogger()->error("You are not using the original version of FactionsPro by Tethered, edited by VMPE Development Team. Disabling plugin.");
-             $this->getServer()->getPluginManager()->disablePlugin($this); //We stop people from changing the author's names when they probably never did any of the work, by disabling the plugin if the player or user were to do so.
-    $this->getLogger()->info("Original author checked.");
-    }
-    }
-    protected function onEnable() : void { //Main class file to handle all the checks
-              $this->registerEvents();
-              $this->checkConfigurations();
-              $this->checkPlugins();
-	      $this->checkSpoons();
-	      $this->checkOriginal();
-	      $this->getLogger()->info("All checks have been processed. Finding any errors.. (If none, won't display)");
-	      }
-	
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
         return $this->fCommand->onCommand($sender, $command, $label, $args);
     }
-    public function setEnemies(string $faction1, string $faction2) {
+    public function setEnemies($faction1, $faction2) {
         $stmt = $this->db->prepare("INSERT INTO enemies (faction1, faction2) VALUES (:faction1, :faction2);");
         $stmt->bindValue(":faction1", $faction1);
         $stmt->bindValue(":faction2", $faction2);
         $stmt->execute();
     }
-    public function unsetEnemies(string $faction1, string $faction2) {
+    public function unsetEnemies($faction1, $faction2) {
 		$stmt = $this->db->prepare("DELETE FROM enemies WHERE (faction1 = :faction1 AND faction2 = :faction2) OR (faction1 = :faction2 AND faction2 = :faction1);");
 		$stmt->bindValue(":faction1", $faction1);
 		$stmt->bindValue(":faction2", $faction2);
 		$stmt->execute();
 	}
-    public function areEnemies(string $faction1, string $faction2) {
+    public function areEnemies($faction1, $faction2) {
         $result = $this->db->query("SELECT ID FROM enemies WHERE (faction1 = '$faction1' AND faction2 = '$faction2') OR (faction1 = '$faction2' AND faction2 = '$faction1');");
         $resultArr = $result->fetchArray(SQLITE3_ASSOC);
         if (empty($resultArr) == false) {
@@ -209,19 +149,19 @@ class FactionMain extends PluginBase implements Listener {
         }
     }
     
-    public function isInFaction(string $player) { //To-do see if this is correct.
+    public function isInFaction($player) {
         $result = $this->db->query("SELECT player FROM master WHERE player='$player';");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
     
-    public function getFaction(string $player) { //To-do see if this is correct.
+    public function getFaction($player) {
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["faction"];
     }
     
-    public function setFactionPower(string $faction, int $power) {
+    public function setFactionPower($faction, $power) {
         if ($power < 0) {
             $power = 0;
         }
@@ -230,20 +170,20 @@ class FactionMain extends PluginBase implements Listener {
         $stmt->bindValue(":power", $power);
         $stmt->execute();
     }
-    public function setAllies(string $faction1, string $faction2) {
+    public function setAllies($faction1, $faction2) {
         $stmt = $this->db->prepare("INSERT INTO allies (faction1, faction2) VALUES (:faction1, :faction2);");
         $stmt->bindValue(":faction1", $faction1);
         $stmt->bindValue(":faction2", $faction2);
         $stmt->execute();
     }
-    public function areAllies(string $faction1, string $faction2) {
+    public function areAllies($faction1, $faction2) {
         $result = $this->db->query("SELECT ID FROM allies WHERE (faction1 = '$faction1' AND faction2 = '$faction2') OR (faction1 = '$faction2' AND faction2 = '$faction1');");
         $resultArr = $result->fetchArray(SQLITE3_ASSOC);
         if (empty($resultArr) == false) {
             return true;
         }
     }
-    public function updateAllies(string $faction) : int {
+    public function updateAllies($faction) {
         $stmt = $this->db->prepare("INSERT OR REPLACE INTO alliescountlimit(faction, count) VALUES (:faction, :count);");
         $stmt->bindValue(":faction", $faction);
         $result = $this->db->query("SELECT ID FROM allies WHERE faction1='$faction' OR faction2='$faction';");
@@ -254,24 +194,24 @@ class FactionMain extends PluginBase implements Listener {
         $stmt->bindValue(":count", (int) $i);
         $stmt->execute();
     }
-    public function getAlliesCount(string $faction) : int {
+    public function getAlliesCount($faction) {
         $result = $this->db->query("SELECT count FROM alliescountlimit WHERE faction = '$faction';");
         $resultArr = $result->fetchArray(SQLITE3_ASSOC);
         return (int) $resultArr["count"];
     }
-    public function getAlliesLimit() : int {
+    public function getAlliesLimit() {
         return (int) $this->prefs->get("AllyLimitPerFaction");
     }
-    public function deleteAllies(string $faction1, string $faction2) {
+    public function deleteAllies($faction1, $faction2) {
         $stmt = $this->db->prepare("DELETE FROM allies WHERE (faction1 = '$faction1' AND faction2 = '$faction2') OR (faction1 = '$faction2' AND faction2 = '$faction1');");
         $stmt->execute();
     }
-    public function getFactionPower(string $faction) : int {
+    public function getFactionPower($faction) {
         $result = $this->db->query("SELECT power FROM strength WHERE faction = '$faction';");
         $resultArr = $result->fetchArray(SQLITE3_ASSOC);
         return (int) $resultArr["power"];
     }
-    public function addFactionPower(string $faction, int $power) {
+    public function addFactionPower($faction, $power) {
         if ($this->getFactionPower($faction) + $power < 0) {
             $power = $this->getFactionPower($faction);
         }
@@ -280,7 +220,7 @@ class FactionMain extends PluginBase implements Listener {
         $stmt->bindValue(":power", $this->getFactionPower($faction) + $power);
         $stmt->execute();
     }
-    public function subtractFactionPower(string $faction, int $power) {
+    public function subtractFactionPower($faction, $power) {
         if ($this->getFactionPower($faction) - $power < 0) {
             $power = $this->getFactionPower($faction);
         }
@@ -289,22 +229,22 @@ class FactionMain extends PluginBase implements Listener {
         $stmt->bindValue(":power", $this->getFactionPower($faction) - $power);
         $stmt->execute();
     }
-    public function isLeader(string $player) { //To-do see if this is correct.
+    public function isLeader($player) {
         $faction = $this->db->query("SELECT rank FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["rank"] == "Leader";
     }
-    public function isOfficer(string $player) { //To-do see if this is correct.
+    public function isOfficer($player) {
         $faction = $this->db->query("SELECT rank FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["rank"] == "Officer";
     }
-    public function isMember(string $player) { //To-do see if this is correct.
+    public function isMember($player) {
         $faction = $this->db->query("SELECT rank FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["rank"] == "Member";
     }
-    public function getPlayersInFactionByRank(Player $s, string $faction, string $rank) {
+    public function getPlayersInFactionByRank($s, $faction, $rank) {
         if ($rank != "Leader") {
             $rankname = $rank . 's';
         } else {
@@ -316,7 +256,7 @@ class FactionMain extends PluginBase implements Listener {
         $i = 0;
         while ($resultArr = $result->fetchArray(SQLITE3_ASSOC)) {
             $row[$i]['player'] = $resultArr['player'];
-            if ($this->getServer()->getPlayerExact($row[$i]['player']) instanceof Player) {
+            if ($this->getServer()->getPlayer($row[$i]['player']) instanceof Player) {
                 $team .= TextFormat::ITALIC . TextFormat::AQUA . $row[$i]['player'] . TextFormat::GREEN . "[ON]" . TextFormat::RESET . TextFormat::WHITE . "||" . TextFormat::RESET;
             } else {
                 $team .= TextFormat::ITALIC . TextFormat::AQUA . $row[$i]['player'] . TextFormat::RED . "[OFF]" . TextFormat::RESET . TextFormat::WHITE . "||" . TextFormat::RESET;
@@ -326,7 +266,7 @@ class FactionMain extends PluginBase implements Listener {
         $s->sendMessage($this->formatMessage("~ *<$rankname> of |$faction|* ~", true));
         $s->sendMessage($team);
     }
-     public function getAllAllies(Player $s, string $faction) {
+     public function getAllAllies($s, $faction) {
         $team = "";
         $result = $this->db->query("SELECT faction1, faction2 FROM allies WHERE faction1='$faction' OR faction2='$faction';");
         $i = 0;
@@ -342,7 +282,7 @@ class FactionMain extends PluginBase implements Listener {
 			$s->sendMessage($this->formatMessage("~ *$faction* has no allies ~", true));
 		}
 	}
-    public function sendListOfTop10FactionsTo(Player $s) {
+    public function sendListOfTop10FactionsTo($s) {
         $tf = "";
         $result = $this->db->query("SELECT faction FROM strength ORDER BY power DESC LIMIT 10;");
         $row = array();
@@ -357,55 +297,55 @@ class FactionMain extends PluginBase implements Listener {
             $i = $i + 1;
         }
     }
-    public function getPlayerFaction(string $player) { //To-do see if this is correct.
+    public function getPlayerFaction($player) {
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["faction"];
     }
-    public function getLeader(string $faction) {
+    public function getLeader($faction) {
         $leader = $this->db->query("SELECT player FROM master WHERE faction='$faction' AND rank='Leader';");
         $leaderArray = $leader->fetchArray(SQLITE3_ASSOC);
         return $leaderArray['player'];
     }
-    public function factionExists(string $faction) {
+    public function factionExists($faction) {
         $result = $this->db->query("SELECT player FROM master WHERE faction='$faction';");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
-    public function sameFaction(string $player1, string $player2) { //To-do see if this is correct.
+    public function sameFaction($player1, $player2) {
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player1';");
         $player1Faction = $faction->fetchArray(SQLITE3_ASSOC);
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player2';");
         $player2Faction = $faction->fetchArray(SQLITE3_ASSOC);
         return $player1Faction["faction"] == $player2Faction["faction"];
     }
-    public function getNumberOfPlayers(string $faction) : int {
+    public function getNumberOfPlayers($faction) {
         $query = $this->db->query("SELECT COUNT(player) as count FROM master WHERE faction='$faction';");
         $number = $query->fetchArray();
         return $number['count'];
     }
-    public function isFactionFull(string $faction) : int {
+    public function isFactionFull($faction) {
         return $this->getNumberOfPlayers($faction) >= $this->prefs->get("MaxPlayersPerFaction");
     }
-    public function isNameBanned(string $name) {
+    public function isNameBanned($name) {
         $bannedNames = file_get_contents($this->getDataFolder() . "BannedNames.txt");
         $isbanned = false;
         if (isset($name) && $this->antispam && $this->antispam->getProfanityFilter()->hasProfanity($name)) $isbanned = true;
         return (strpos(strtolower($bannedNames), strtolower($name)) > 0 || $isbanned);
     }
-    public function newPlot(string $faction, int $x1, int $z1, int $x2, int $z2) {
+    public function newPlot($faction, $x1, $z1, $x2, $z2) {
         $stmt = $this->db->prepare("INSERT OR REPLACE INTO plots (faction, x1, z1, x2, z2) VALUES (:faction, :x1, :z1, :x2, :z2);");
         $stmt->bindValue(":faction", $faction);
-        $stmt->bindValue(":x1", (int) $x1);
-        $stmt->bindValue(":z1", (int) $z1);
-        $stmt->bindValue(":x2", (int) $x2);
-        $stmt->bindValue(":z2", (int) $z2);
+        $stmt->bindValue(":x1", $x1);
+        $stmt->bindValue(":z1", $z1);
+        $stmt->bindValue(":x2", $x2);
+        $stmt->bindValue(":z2", $z2);
         $stmt->execute();
     }
-    public function drawPlot(Player $sender, string $faction, int $x, int $y, int $z, Level $level, int $size) { //To-do see if this is correct.
+    public function drawPlot($sender, $faction, $x, $y, $z, $level, $size) {
         $arm = ($size - 1) / 2;
         $block = new Snow();
-        if ($this->cornerIsInPlot($x + $arm, $z + $arm, $x - $arm, $z - $arm)) { //To-do see if anything needs changing.
+        if ($this->cornerIsInPlot($x + $arm, $z + $arm, $x - $arm, $z - $arm)) {
             $claimedBy = $this->factionFromPoint($x, $z);
             $power_claimedBy = $this->getFactionPower($claimedBy);
             $power_sender = $this->getFactionPower($faction);
@@ -427,63 +367,63 @@ class FactionMain extends PluginBase implements Listener {
         $this->newPlot($faction, $x + $arm, $z + $arm, $x - $arm, $z - $arm);
         return true;
     }
-    public function isInPlot(string $player) : Position { //To-do see if this is correct.
+    public function isInPlot($player) {
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
         $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
-    public function factionFromPoint(int $x, int $z) {
+    public function factionFromPoint($x, $z) {
         $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return $array["faction"];
     }
-    public function inOwnPlot(string $player) : Position { //To-do see if this is correct.
+    public function inOwnPlot($player) {
         $playerName = $player->getName();
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
         return $this->getPlayerFaction($playerName) == $this->factionFromPoint($x, $z);
     }
-    public function pointIsInPlot(int $x, int $z) {
+    public function pointIsInPlot($x, $z) {
         $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return !empty($array);
     }
-    public function cornerIsInPlot(int $x1, int $z1, int $x2, int $z2) {
+    public function cornerIsInPlot($x1, $z1, $x2, $z2) {
         return($this->pointIsInPlot($x1, $z1) || $this->pointIsInPlot($x1, $z2) || $this->pointIsInPlot($x2, $z1) || $this->pointIsInPlot($x2, $z2));
     }
-    public function formatMessage(string $string, bool $confirm = false) {
+    public function formatMessage($string, $confirm = false) {
         if ($confirm) {
             return TextFormat::GREEN . "$string";
         } else {
             return TextFormat::YELLOW . "$string";
         }
     }
-    public function motdWaiting(string $player) { //To-do see if this is correct.
+    public function motdWaiting($player) {
         $stmt = $this->db->query("SELECT player FROM motdrcv WHERE player='$player';");
         $array = $stmt->fetchArray(SQLITE3_ASSOC);
         return !empty($array);
     }
-    public function getMOTDTime(string $player) : int { //To-do see if this is correct.
+    public function getMOTDTime($player) {
         $stmt = $this->db->query("SELECT timestamp FROM motdrcv WHERE player='$player';");
         $array = $stmt->fetchArray(SQLITE3_ASSOC);
         return $array['timestamp'];
     }
-    public function setMOTD(string $faction, string $player, string $msg) { //To-do see if this is correct.
+    public function setMOTD($faction, $player, $msg) {
         $stmt = $this->db->prepare("INSERT OR REPLACE INTO motd (faction, message) VALUES (:faction, :message);");
         $stmt->bindValue(":faction", $faction);
         $stmt->bindValue(":message", $msg);
         $result = $stmt->execute();
         $this->db->query("DELETE FROM motdrcv WHERE player='$player';");
     }
-    public function getMapBlock() : string{
+    public function getMapBlock(){
         
     $symbol = hex2bin(self::HEX_SYMBOL);
         
     return $symbol;
     }
-    public function getBalance(string $faction) : int {
+    public function getBalance($faction){
 		$stmt = $this->db->query("SELECT * FROM balance WHERE `faction` LIKE '$faction';");
 		$array = $stmt->fetchArray(SQLITE3_ASSOC);
 		if(!$array){
@@ -492,17 +432,17 @@ class FactionMain extends PluginBase implements Listener {
 		}
 		return $array["cash"];
 	}
-	public function setBalance(string $faction, int $money){
+	public function setBalance($faction, int $money){
 		$stmt = $this->db->prepare("INSERT OR REPLACE INTO balance (faction, cash) VALUES (:faction, :cash);");
-		$stmt->bindValue(":faction", (string) $faction);
-		$stmt->bindValue(":cash", (int) $money);
+		$stmt->bindValue(":faction", $faction);
+		$stmt->bindValue(":cash", $money);
 		return $stmt->execute();
 	}
-	public function addToBalance(string $faction, int $money){
+	public function addToBalance($faction, int $money){
 		if($money < 0) return false;
 		return $this->setBalance($faction, $this->getBalance($faction) + $money);
 	}
-	public function takeFromBalance(string $faction, int $money){
+	public function takeFromBalance($faction, int $money){
 		if($money < 0) return false;
 		return $this->setBalance($faction, $this->getBalance($faction) - $money);
 	}
@@ -514,7 +454,7 @@ class FactionMain extends PluginBase implements Listener {
         	var_dump($resultArr);
             $j = $i + 1;
             $cf = $resultArr['faction'];
-            $pf = $resultArr['cash'];
+            $pf = $resultArr["cash"];
             $s->sendMessage(TextFormat::BOLD.TextFormat::GOLD.$j.". ".TextFormat::RESET.TextFormat::AQUA.$cf.TextFormat::RED.TextFormat::BOLD." §c- ".TextFormat::LIGHT_PURPLE."§d$".$pf);
             $i = $i + 1;
         } 
@@ -524,8 +464,14 @@ class FactionMain extends PluginBase implements Listener {
 		if(isset($sp[$type])) return $sp[$type];
 		return 0;
 	}
-    public function updateTag(string $playername) { //To-do see if this is correct.
-        $p = $this->getServer()->getPlayerExact($playername);
+	public function getEconomy(){
+		$pl = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+		if(!$pl) return $pl;
+		if(!$pl->isEnabled()) return null;
+		return $pl;
+	}
+    public function updateTag($playername) {
+        $p = $this->getServer()->getPlayer($playername);
         $f = $this->getPlayerFaction($playername);
         if (!$this->isInFaction($playername)) {
             if(isset($this->purechat)){
@@ -540,10 +486,10 @@ class FactionMain extends PluginBase implements Listener {
             $nameTag = $this->purechat->getNametag($p, $levelName);
             $p->setNameTag($nameTag);
         } else {
-            $p->setNameTag("§b§lPlayer: §r§c$p \n§b§lhasFaction: §r§ctrue \n§b§lFaction: §r§c$f"); //To-do make some changes
+            $p->setNameTag("§b§lPlayer: §r§c$p \n§b§lhasFaction: §r§ctrue \n§b§lFaction: §r§c$f");
         }
     }
-    protected function onDisable() : void {
+    public function onDisable(): void {
          if (isset($this->db)) $this->db->close();
     }
 }
