@@ -74,7 +74,8 @@ TopMoney: "§5§lTop 10 RICHEST Factions"
 # NEW: Customise /f top money list to your own.
 # Use § color code.
 pluginprefix: "§l§f[§bFactions§f] §r"
-# Faction Commands prefix, coming soon.
+## NEW
+# Faction Commands prefix
 spawnerPrices:
 skeleton: 500
 pig: 200

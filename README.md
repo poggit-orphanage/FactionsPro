@@ -3,7 +3,7 @@
 A modified plugin, better than ever. Being updated frequently. Edited by the VMPE development team. We update this plugin most of the time, features, bug fixes, and more. If you have any issues, or suggestions on what we should fix / add to this plugin, please open a new issue. We will make sure to read them. Thank you.
 
 ## What is this branch?
-This branch is called the "beta" branch. It's nothing special, and the fact is; This branch is mostly stabled. It's called the beta branch because this branch can sometimes have some bugs. We plan on fixing some issues that could be there from a while ago, and some bugs, which have just been implemented into this branch. We do plan on fixing almost ALL BUGS. At this stage, this branch is bug free, but when we add stuff, or fix stuff, bugs may rise. This doesn't happen often though. But just a heads up anyways.
+This branch is called "4.0.0-API". This branch allows us to update the plugin to 4.0.0 before they release to the public. That way, if some people are using the development builds for Pocketmine 4.0.0 API, then this branch will be good for them. That way, they can now get the API 4.0.0. We're still looking into issues raised with 4.0.0 API so we can get them updated to the latest API ASAP. If you have any issues regarding this branch and you're having issues with the PMMP 4.0.0 API, then you can open an issue.
 
 ## Features
 * All the features from the good 'ol' days are now back, and working with PMMP Latest APi's.
@@ -103,8 +103,23 @@ This branch is called the "beta" branch. It's nothing special, and the fact is; 
 
 /f rmpower - Force removes a faction's STR / power.
 
-## TO-DO LIST
-Check out the to-do list here:
-https://github.com/TheFixerDevelopment/FactionsPro/issues/16
+## LATEST TO-DO LIST
+- [X] Update to 4.0.0 API
+- [X] Reformat plugin
+- [X] Bump API version to 4.0.0
+- [X] Bump Plugin version to 3.0.0-BETA
+- [X] Implement Accept_time & deny_time configurations (Untested)
+- [X] Fix onEnable and on Disable() function, and make them protected due to the latest API updates.
+- [X] Add more return types, and fixes relating to the outdated code (Untested)
+- [X] Remove useless imports that aren't needed.
+- [X] No spoons allowed implementation
+- [X] System bug fixes and much improvements.
+- [X] Add the following checks for the onEnable() check: checkConfigurations(), registerEvents(), checkPlugins(), checkOriginal(), and checkSpoon()
+- [X] Add onLoad() function and make that protected.
+- [X] Add new folders: tasks, and listeners for FactionWar and FactionListener, instead of making it more confusing.
+- [X] Rename FactionWar to FactionWarTask so people know it's a task rather than just a normal class file.
+- [ ] Make this plugin stable. (There's still lots to do.)
+- [ ] Release out of the BETA stages.
+- [ ] Merge to beta branch (When complete and released.)
 
 If you want anything else added, please open a issue. Thank you.
