@@ -320,7 +320,8 @@ class FactionMain extends PluginBase implements Listener {
     }
 
     public function factionExists($faction) {
-        $result = $this->db->query("SELECT player FROM master WHERE faction='$faction';");
+		$lowercasefaction = strtolower($faction);
+        $result = $this->db->query("SELECT player FROM master WHERE lower(faction)='$lowercasefaction';");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
