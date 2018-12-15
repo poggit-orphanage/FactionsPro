@@ -607,7 +607,8 @@ class FactionCommands {
                             $this->plugin->db->query("DELETE FROM confirm WHERE player='$lowercaseName';");
                             $sender->sendMessage($this->plugin->formatMessage("You successfully joined $faction", true));
                             $this->plugin->addFactionPower($faction, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
-                            $this->plugin->getServer()->getPlayerExact($array["invitedby"])->sendMessage($this->plugin->formatMessage("$playerName joined the faction", true));
+                            $inviter = $this->plugin->getServer()->getPlayerExact($array["invitedby"]);
+                            if ($inviter !== null) $inviter->sendMessage($this->plugin->formatMessage("$playerName joined the faction", true));
                             $this->plugin->updateTag($sender->getName());
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("Invite has timed out"));
