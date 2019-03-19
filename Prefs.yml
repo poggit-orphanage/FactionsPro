@@ -10,6 +10,7 @@ PowerNeededToSetOrUpdateAHome: 250
 PowerGainedPerPlayerInFaction: 50
 PowerGainedPerKillingAnEnemy: 10
 PowerGainedPerAlly: 100
+AllowOpToChangeFactionPower: false
 TheDefaultPowerEveryFactionStartsWith: 0
 EnableOverClaim: true
 AllyLimitPerFaction: 7

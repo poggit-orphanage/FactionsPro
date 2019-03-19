@@ -17,8 +17,32 @@ class FactionCommands {
         $this->plugin = $pg;
     }
 
-    public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
-        if ($sender instanceof Player) {
+    public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool {
+        if (!$sender instanceof Player || ($sender->isOp() && $this->plugin->prefs->get("AllowOpToChangeFactionPower"))) {
+            if (strtolower($args[0]) == "addpower") {
+                if (!isset($args[1]) || !isset($args[2]) || !$this->alphanum($args[1]) || !is_numeric($args[2])) {
+                    $sender->sendMessage($this->plugin->formatMessage("Usage: /f addpower <faction name> <power>"));
+                }
+                if ($this->plugin->factionExists($args[1])) {
+                    $this->plugin->addFactionPower($args[1], $args[2]);
+                    $sender->sendMessage($this->plugin->formatMessage("Power " . $args[2] . " added to Faction " . $args[1]));
+                } else {
+                    $sender->sendMessage($this->plugin->formatMessage("Faction " . $args[1] . " does not exist"));
+                }
+            }
+            if (strtolower($args[0]) == "setpower") {
+                if (!isset($args[1]) || !isset($args[2]) || !$this->alphanum($args[1]) || !is_numeric($args[2])) {
+                    $sender->sendMessage($this->plugin->formatMessage("Usage: /f setpower <faction name> <power>"));
+                }
+                if ($this->plugin->factionExists($args[1])) {
+                    $this->plugin->setFactionPower($args[1], $args[2]);
+                    $sender->sendMessage($this->plugin->formatMessage("Faction " . $args[1] . " set to Power " . $args[2]));
+                } else {
+                    $sender->sendMessage($this->plugin->formatMessage("Faction " . $args[1] . " does not exist"));
+                }
+            }
+            if (!$sender instanceof Player) return true;
+        }
             $playerName = $sender->getPlayer()->getName();
             if (strtolower($command->getName()) === "f") {
                 if (empty($args)) {
@@ -1108,7 +1132,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("All Faction chat is disabled", false));
                             return true;
                         }
-                        
+
                         if ($this->plugin->isInFaction($playerName)) {
                             if (isset($this->plugin->factionChatActive[$playerName])) {
                                 unset($this->plugin->factionChatActive[$playerName]);
@@ -1130,7 +1154,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("All Faction chat is disabled", false));
                             return true;
                         }
-                        
+
                         if ($this->plugin->isInFaction($playerName)) {
                             if (isset($this->plugin->allyChatActive[$playerName])) {
                                 unset($this->plugin->allyChatActive[$playerName]);
@@ -1203,9 +1227,6 @@ class FactionCommands {
                 }
                 return true;
             }
-        } else {
-            $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("Please run command in game"));
-        }
         return true;
     }
 
