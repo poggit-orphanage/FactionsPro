@@ -955,7 +955,12 @@ class FactionCommands {
                             return true;
                         }
                         $fac = $this->plugin->getPlayerFaction($playerName);
-                        $leader = $this->plugin->getServer()->getPlayerExact($this->plugin->getLeader($args[1]));
+                        $leaderName = $this->plugin->getLeader($args[1]);
+                        if (!isset($fac) || !isset($leaderName)) {
+                            $sender->sendMessage($this->plugin->formatMessage("Faction not found"));
+                            return true;
+                        }
+                        $leader = $this->plugin->getServer()->getPlayerExact($leaderName);
                         $this->plugin->updateAllies($fac);
                         $this->plugin->updateAllies($args[1]);
 
