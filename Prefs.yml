@@ -13,6 +13,7 @@ PowerGainedPerAlly: 100
 AllowOpToChangeFactionPower: false
 TheDefaultPowerEveryFactionStartsWith: 0
 EnableOverClaim: true
+OverClaimCostsPower: false
 AllyLimitPerFaction: 7
 ClaimWorlds: []
 AllowChat: true

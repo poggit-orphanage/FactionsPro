@@ -79,6 +79,7 @@ class FactionMain extends PluginBase implements Listener {
             "AllyLimitPerFaction" => 5,
             "TheDefaultPowerEveryFactionStartsWith" => 0,
             "EnableOverClaim" => true,
+			"OverClaimCostsPower" => false,
             "ClaimWorlds" => [],
             "AllowChat" => true,
             "AllowFactionPvp" => false,

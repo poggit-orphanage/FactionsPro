@@ -561,6 +561,10 @@ class FactionCommands {
                                         $arm = (($this->plugin->prefs->get("PlotSize")) - 1) / 2;
                                         $this->plugin->newPlot($faction_ours, $x + $arm, $z + $arm, $x - $arm, $z - $arm, $level);
                                         $sender->sendMessage($this->plugin->formatMessage("The land of $faction_victim has been claimed. It is now yours.", true));
+										if ($this->plugin->prefs->get("OverClaimCostsPower")) {
+											$this->plugin->setFactionPower($faction_ours, $faction_ours_power - $faction_victim_power);
+											$sender->sendMessage($this->plugin->formatMessage("Your faction has used $faction_victim_power STR overclaiming $faction_victim", true));
+										}
                                         return true;
                                     }
                                 }
