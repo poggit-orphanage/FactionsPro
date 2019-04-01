@@ -288,7 +288,8 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("Player is not in this faction"));
                             return true;
                         }
-                        if ($this->plugin->getServer()->getPlayerExact($args[1])->getName() == $sender->getName()) {
+                        $promotee = $this->plugin->getServer()->getPlayerExact($args[1]);
+                        if ($promotee instanceof Player && $promotee->getName() == $sender->getName()) {
                             $sender->sendMessage($this->plugin->formatMessage("You can't promote yourself"));
                             return true;
                         }
@@ -303,12 +304,11 @@ class FactionCommands {
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":rank", "Officer");
                         $result = $stmt->execute();
-                        $promotee = $this->plugin->getServer()->getPlayerExact($args[1]);
                         $sender->sendMessage($this->plugin->formatMessage("$args[1] has been promoted to Officer", true));
 
                         if ($promotee instanceof Player) {
                             $promotee->sendMessage($this->plugin->formatMessage("You were promoted to officer of $factionName!", true));
-                            $this->plugin->updateTag($this->plugin->getServer()->getPlayerExact($args[1])->getName());
+                            $this->plugin->updateTag($promotee->getName());
                             return true;
                         }
                     }
