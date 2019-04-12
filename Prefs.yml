@@ -19,4 +19,6 @@ ClaimWorlds: []
 AllowChat: true
 AllowFactionPvp: false
 AllowAlliedPvp: false
+BroadcastFactionCreation: true
+FactionCreationBroadcastMessage: "%PLAYER% created faction %FACTION%"
 ...
