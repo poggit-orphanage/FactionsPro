@@ -1225,6 +1225,56 @@ class FactionCommands {
                     }
                     return true;
                 }
+                if ($this->plugin->prefs->get("EnableMap") && (strtolower($args[0]) == "map" or strtolower($args[0]) == "m")) {
+                    $factionPlots = $this->plugin->getNearbyPlots($sender);
+                    if ($factionPlots == null) {
+                        $sender->sendMessage(TextFormat::RED . "No nearby factions found");
+                        return true;
+                    }
+                    $playerFaction = $this->plugin->getPlayerFaction(($sender->getName()));
+                    $found = false;
+                    foreach ($factionPlots as $key => $faction) {
+                        $plotFaction = $factionPlots[$key]['faction'];
+                        if ($plotFaction == $playerFaction) {
+                            continue;
+                        }
+                        if ($this->plugin->isInPlot($sender)) {
+                            $inWhichPlot = $this->plugin->factionFromPoint($sender->getX(), $sender->getZ(), $sender->getLevel()->getName());
+                            if ($inWhichPlot == $plotFaction) {
+                                $sender->sendMessage(TextFormat::GREEN . "You are in faction " . $plotFaction . "'s plot");
+                                $found = true;
+                                continue;
+                            }
+                        }
+                        $found = true;
+                        $x1 = $factionPlots[$key]['x1'];
+                        $x2 = $factionPlots[$key]['x2'];
+                        $z1 = $factionPlots[$key]['z1'];
+                        $z2 = $factionPlots[$key]['z2'];
+                        $plotX = $x1 + ($x2 - $x1) / 2;
+                        $plotZ = $z1 + ($z2 - $z1) / 2;
+                        $deltaX = $plotX - $sender->getX();
+                        $deltaZ = $plotZ - $sender->getZ();
+                        $bearing = rad2deg(atan2($deltaZ, $deltaX));
+                        if ($bearing >= -22.5 && $bearing < 22.5) $direction = "south";
+                        else if ($bearing >= 22.5 && $bearing < 67.5) $direction = "southwest";
+                        else if ($bearing >= 67.5 && $bearing < 112.5) $direction = "west";
+                        else if ($bearing >= 112.5 && $bearing < 157.5) $direction = "northwest";
+                        else if ($bearing >= 157.5) $direction = "north";
+                        else if ($bearing < -22.5 && $bearing > -67.5) $direction = "southeast";
+                        else if ($bearing <= -67.5 && $bearing > -112.5) $direction = "east";
+                        else if ($bearing <= -112.5 && $bearing > -157.5) $direction = "northeast";
+                        else if ($bearing <= -157.5) $direction = "north";
+                        $distance = floor(sqrt(pow($deltaX, 2) + pow($deltaZ, 2)));
+                        $sender->sendMessage(TextFormat::GREEN . $plotFaction . "'s plot is " . $distance . " blocks " . $direction);
+                    }
+                    if (!$found) {
+                        $sender->sendMessage(TextFormat::RED . "No nearby factions found");
+                    } else {
+                        $points = ["south", "west", "north", "east"];
+                        $sender->sendMessage(TextFormat::YELLOW . "You are facing " . $points[$sender->getDirection()]);
+                    }
+                }
                 if (strtolower($args[0]) == "help") {
                         $sender->sendMessage(TextFormat::RED . "\n/f about\n/f accept\n/f overclaim [Takeover the plot of the requested faction]\n/f claim\n/f create <name>\n/f del\n/f demote <player>\n/f deny");
                         $sender->sendMessage(TextFormat::RED . "\n/f home\n/f help <page>\n/f info\n/f info <faction>\n/f invite <player>\n/f kick <player>\n/f leader <player>\n/f leave");

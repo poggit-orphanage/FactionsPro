@@ -83,7 +83,9 @@ class FactionMain extends PluginBase implements Listener {
             "ClaimWorlds" => [],
             "AllowChat" => true,
             "AllowFactionPvp" => false,
-            "AllowAlliedPvp" => false
+            "AllowAlliedPvp" => false,
+            "EnableMap" => false,
+            "MaxMapDistance" => 500
         ));
 
 		$this->db = new \SQLite3($this->getDataFolder() . "FactionsPro.db");
@@ -306,6 +308,26 @@ class FactionMain extends PluginBase implements Listener {
             $s->sendMessage(TextFormat::ITALIC . TextFormat::GOLD . "$j -> " . TextFormat::GREEN . "$cf" . TextFormat::GOLD . " with " . TextFormat::RED . "$pf STR" . TextFormat::GOLD . " and " . TextFormat::LIGHT_PURPLE . "$df PLAYERS" . TextFormat::RESET);
             $i = $i + 1;
         }
+    }
+
+    public function getNearbyPlots(Player $player) {
+        $playerLevel = $player->getLevel()->getName();
+        $playerX = $player->getX();
+        $playerZ = $player->getZ();
+        $maxDistance = $this->prefs->get("MaxMapDistance");
+        $result = $this->db->query("SELECT faction, x1, z1, x2, z2 FROM plots WHERE ((x1 + (x2 - x1) / 2) - $playerX) * ((x1 + (x2 - x1) / 2) - $playerX) + ((z1 + (z2 - z1) / 2) - $playerZ) * ((z1 + (z2 - z1) / 2) - $playerZ) <= $maxDistance * $maxDistance AND world = '$playerLevel';");
+        $factionPlots = array();
+        $i = 0;
+        while($res = $result->fetchArray(SQLITE3_ASSOC)){
+            if(!isset($res['faction'])) continue;
+            $factionPlots[$i]['faction'] = $res['faction'];
+            $factionPlots[$i]['x1'] = $res['x1'];
+            $factionPlots[$i]['x2'] = $res['x2'];
+            $factionPlots[$i]['z1'] = $res['z1'];
+            $factionPlots[$i]['z2'] = $res['z2'];
+            $i++;
+        }
+        return $factionPlots;
     }
 
     public function getPlayerFaction($player) {
