@@ -19,6 +19,10 @@ class FactionCommands {
 
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool {
         if (!$sender instanceof Player || ($sender->isOp() && $this->plugin->prefs->get("AllowOpToChangeFactionPower"))) {
+            if (empty($args)){
+                $sender->sendMessage($this->plugin->formatMessage("Please use /f help for a list of commands"));
+                return true;
+            }
             if (strtolower($args[0]) == "addpower") {
                 if (!isset($args[1]) || !isset($args[2]) || !$this->alphanum($args[1]) || !is_numeric($args[2])) {
                     $sender->sendMessage($this->plugin->formatMessage("Usage: /f addpower <faction name> <power>"));
