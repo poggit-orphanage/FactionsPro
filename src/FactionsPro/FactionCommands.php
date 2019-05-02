@@ -26,7 +26,7 @@ class FactionCommands {
             if (strtolower($args[0]) == "addpower") {
                 if (!isset($args[1]) || !isset($args[2]) || !$this->alphanum($args[1]) || !is_numeric($args[2])) {
                     $sender->sendMessage($this->plugin->formatMessage("Usage: /f addpower <faction name> <power>"));
-                    return false;
+                    return true;
                 }
                 if ($this->plugin->factionExists($args[1])) {
                     $this->plugin->addFactionPower($args[1], $args[2]);
@@ -38,7 +38,7 @@ class FactionCommands {
             if (strtolower($args[0]) == "setpower") {
                 if (!isset($args[1]) || !isset($args[2]) || !$this->alphanum($args[1]) || !is_numeric($args[2])) {
                     $sender->sendMessage($this->plugin->formatMessage("Usage: /f setpower <faction name> <power>"));
-                    return false;
+                    return true;
                 }
                 if ($this->plugin->factionExists($args[1])) {
                     $this->plugin->setFactionPower($args[1], $args[2]);
