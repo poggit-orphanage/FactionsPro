@@ -8,7 +8,7 @@ softdepend: ["PureChat", "AntiSpamPro"]
 extensions: [sqlite3]
 commands:
   f:
-    description: use /f help for all parameters
+    description: use /f help for all parameter
     permission: f.command
 permissions:
   f.command:
