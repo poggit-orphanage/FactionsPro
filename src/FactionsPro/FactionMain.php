@@ -57,10 +57,6 @@ class FactionMain extends PluginBase implements Listener {
         if (!$this->antispam) {
             $this->getLogger()->info("Add AntiSpamPro to ban rude Faction names");
         }
-        $this->purechat = $this->getServer()->getPluginManager()->getPlugin("PureChat");
-        if (!$this->purechat) {
-            $this->getLogger()->info("Add PureChat to display Faction ranks in chat");
-        }
 
         $this->fCommand = new FactionCommands($this);
 
@@ -475,6 +471,9 @@ class FactionMain extends PluginBase implements Listener {
     }
 
     public function updateTag($playername) {
+        if (!isset ($this->purechat)){
+            $this->purechat = $this->getServer()->getPluginManager()->getPlugin("PureChat");
+        }
         $p = $this->getServer()->getPlayer($playername);
         $f = $this->getPlayerFaction($playername);
         if (!$this->isInFaction($playername)) {
