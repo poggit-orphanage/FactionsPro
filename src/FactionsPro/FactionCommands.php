@@ -1202,7 +1202,7 @@ class FactionCommands {
                     $result = $this->plugin->db->query("SELECT * FROM motd WHERE faction='$faction';");
                     $array = $result->fetchArray(SQLITE3_ASSOC);
                     $power = $this->plugin->getFactionPower($faction);
-                    $message = $array["message"];
+                    $message = $array["message"]?? "";
                     $leader = $this->plugin->getLeader($faction);
                     $numPlayers = $this->plugin->getNumberOfPlayers($faction);
                     $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "-------INFORMATION-------" . TextFormat::RESET);
@@ -1221,7 +1221,7 @@ class FactionCommands {
                     $result = $this->plugin->db->query("SELECT * FROM motd WHERE faction='$faction';");
                     $array = $result->fetchArray(SQLITE3_ASSOC);
                     $power = $this->plugin->getFactionPower($faction);
-                    $message = $array["message"];
+                    $message = $array["message"]?? "";
                     $leader = $this->plugin->getLeader($faction);
                     $numPlayers = $this->plugin->getNumberOfPlayers($faction);
                     $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "-------INFORMATION-------" . TextFormat::RESET);
