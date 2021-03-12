@@ -329,7 +329,7 @@ class FactionMain extends PluginBase implements Listener {
     public function getPlayerFaction($player) {
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
-        return $factionArray["faction"];
+        return $factionArray["faction"]?? "";
     }
 
     public function getLeader($faction) {
